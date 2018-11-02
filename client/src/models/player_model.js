@@ -2,7 +2,7 @@ const PubSub = require('../helpers/pub_sub.js');
 
 const Player = function () {
   this.hp = 100
-  this.attack = 0
+  this.attack = 1
   this.heals = 0
 }
 
@@ -17,3 +17,5 @@ Player.prototype.upgradeAttack = function () {
 Player.prototype.useHealthPack = function () {
   this.hp += 25
 };
+
+module.exports = Player

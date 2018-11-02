@@ -14,5 +14,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   roomCreate.bindEvents();
 
   const playerstats = document.querySelector("div#stats")
-  const playerView = new PlayerView();
+  const playerView = new PlayerView(playerstats);
+  playerView.showstats()
 });
