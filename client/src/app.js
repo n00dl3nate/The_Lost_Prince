@@ -20,4 +20,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const textBoxContainer = document.querySelector('div.text_box');
   const textBox = new TextView(textBoxContainer);
   textBox.bindEvents();
+
+  // Text to force an update
 });
