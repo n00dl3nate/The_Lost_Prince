@@ -19,14 +19,8 @@ Monster.prototype.getMonster = function (choice) {
   const url = `http://www.dnd5eapi.co/api/monsters/${choice}`
   const request = new RequestHelper(url);
   request.get().then((data) => {
-<<<<<<< HEAD
-    console.log(data);
-    this.data = data.data.results;
-    console.log(data.data.results);
-=======
     this.data = data
     this.createMonster(this.data)
->>>>>>> 79759829e40301d5470ade916eb174f68ddadf82
   });
 };
 
