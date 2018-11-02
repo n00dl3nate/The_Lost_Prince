@@ -13,6 +13,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const roomCreate = new RoomGenerator();
   roomCreate.bindEvents();
 
-  const playerstats = document.querySelector()
+  const playerstats = document.querySelector("div#stats")
   const playerView = new PlayerView();
 });
