@@ -1,7 +1,7 @@
 const PubSub = require('../helpers/pub_sub.js');
 
 const Interface = function(){
-
+  
 };
 
 Interface.prototype.bindEvents = function(){
@@ -9,5 +9,7 @@ Interface.prototype.bindEvents = function(){
     PubSub.publish('DirectionButton:direction-clicked');
   });
 }
+
+
 
 module.exports = Interface;
