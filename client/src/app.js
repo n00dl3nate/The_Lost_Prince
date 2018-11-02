@@ -1,4 +1,5 @@
-const Monster = require('./models/monster.js');
+const Monster = require('./models/monster_model.js');
+const RoomGenerator = require('./models/room_model.js');
 const PubSub = require('./helpers/pub_sub.js');
 
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -7,7 +8,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   // PubSub.publish('Monster:monster-choice',choice);
   const monster = new Monster;
   monster.bindEvents()
-  
+
   const roomCreate = new RoomGenerator();
   roomCreate.bindEvents();
 });
