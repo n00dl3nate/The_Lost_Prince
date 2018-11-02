@@ -22,9 +22,6 @@ Monster.prototype.getMonster = function (choice) {
     console.log(data);
     this.data = data.data.results;
     console.log(data.data.results);
-    PubSub.publish('Movie:character-ready', this.data );
-  }).catch((error) => {
-    PubSub.publish('Movie:error', error);
   });
 };
 
