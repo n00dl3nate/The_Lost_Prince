@@ -1,6 +1,6 @@
 const Monster = require('./models/monster_model.js');
-const RoomGenerator = require('./models/room_model.js');
 const PubSub = require('./helpers/pub_sub.js');
+const RoomGenerator = require('./models/room_model.js');
 
 document.addEventListener('DOMContentLoaded', ()=>{
   console.log("DOMContentLoaded");

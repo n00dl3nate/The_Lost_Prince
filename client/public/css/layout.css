@@ -1,0 +1,34 @@
+body {
+  background-color: black;
+}
+
+.image {
+  background: black;
+}
+
+.text_box {
+  background: black;
+  color: white;
+}
+
+.stats {
+  background: black;
+  border-right: 1px solid grey;
+  color: white;
+}
+
+.options {
+  background: black;
+  border-left: 1px solid grey;
+  color: white;
+}
+
+.items {
+  background: black;
+  color: white;
+}
+
+.border {
+  border: 1px solid black;
+
+}
