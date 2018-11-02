@@ -7,4 +7,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   // PubSub.publish('Monster:monster-choice',choice);
   const monster = new Monster;
   monster.bindEvents()
+  
+  const roomCreate = new RoomGenerator();
+  roomCreate.bindEvents();
 });
