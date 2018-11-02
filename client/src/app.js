@@ -1,6 +1,7 @@
 const Monster = require('./models/monster_model.js');
 const PubSub = require('./helpers/pub_sub.js');
 const RoomGenerator = require('./models/room_model.js');
+const PlayerView = require('./views/player_view.js');
 
 document.addEventListener('DOMContentLoaded', ()=>{
   console.log("DOMContentLoaded");
@@ -11,4 +12,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   const roomCreate = new RoomGenerator();
   roomCreate.bindEvents();
+
+  const playerstats = document.querySelector()
+  const playerView = new PlayerView();
 });
