@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const interfaceButtons = new InterfaceStuff();
   interfaceButtons.bindEvents();
 
-  const textBoxContainer = document.querySelector('div.text_box');
+  const textBoxContainer = document.querySelector('div#text-display');
   const textBox = new TextView(textBoxContainer);
   textBox.bindEvents();
 

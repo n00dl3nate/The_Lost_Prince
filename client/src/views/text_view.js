@@ -21,13 +21,61 @@ TextView.prototype.bindEvents = function(){
     if (exitLeft == 1){exits += 'LEFT '};
     if (exitRight == 1){exits += 'RIGHT '};
     if (exitForward == 1){exits += 'FORWARD '};
+    // Fancy up the room contents
+    var content_result = '';
+    var playerHP = 100;
+    var roomDescription = '';
+    switch(content){
+      case 'health':
+        content_result = 'You have found a Health Pack!';
+        // Run function to add 1 to health packs
+        roomDescription = document.createElement('p');
+        roomDescription.textContent = `This room has exits to the ${exits}. ${content_result}.`;
+        this.container.appendChild(roomDescription);
+        break;
+      case 'upgrade':
+        content_result = 'You have found a Weapon Upgrade! (Attack + 1)';
+        // run function to increase attack
+        roomDescription = document.createElement('p');
+        roomDescription.textContent = `This room has exits to the ${exits}. ${content_result}.`;
+        this.container.appendChild(roomDescription);
+        break;
+      case 'monster':
+        // generate a monster!
+        // console.log('YOU ARE HERE');
+        PubSub.publish('Monster:monster-choice');
+        PubSub.subscribe('Monster:monster-ready',(evt)=>{
+          this.container.innerHTML = "";
+          // console.log('MONSTER: ',evt.detail.name);
+          const name = evt.detail.name;
+          const attack = evt.detail.attack;
+          var monsterHP = evt.detail.hp;
+          const rating = evt.detail.rating;
+          const size = evt.detail.size;
+          const type = evt.detail.type;
 
-    console.log('container: ',this.container);
-    const roomDescription = document.createElement('p');
-    roomDescription.textContent = `This room has exits to the ${exits}. There is a ${content} here. Oh Shit.`
+          // Display your chances of beating the monster
+          var fight_chance = '';
+          if (playerHP < monsterHP){
+            fight_chance = `The ${name} looks very tough...`;
+          } else if (playerHP > monsterHP){
+            fight_chance = `The ${name} looks weak...`;
+          } else {
+            fight_chance = `The ${name} looks like you could take it...`;
+          };
 
-    // evt.detail;
-    this.container.appendChild(roomDescription);
+          content_result = `You have stumbled upon a monster... The ${name} is a ${size} ${type}. ${fight_chance}`
+          // console.log(`You have stumbled upon a monster... The ${name} is a ${size} ${type}. ${fight_chance}`);
+          roomDescription = document.createElement('p');
+          roomDescription.textContent = `This room has exits to the ${exits}. ${content_result}.`;
+
+          this.container.appendChild(roomDescription);
+        });
+        break;
+    }
+
+    // console.log('container: ',this.container);
+
     // console.log('Room Display: ',evt.detail)
   });
 };
