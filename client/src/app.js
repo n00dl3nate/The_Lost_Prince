@@ -2,6 +2,7 @@ const PubSub = require('./helpers/pub_sub.js');
 const Monster = require('./models/monster_model.js');
 const RoomGenerator = require('./models/room_model.js');
 const InterfaceStuff = require('./models/interface.js');
+const PlayerView = require('./views/player_view.js');
 const TextView = require('./views/text_view.js');
 
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -21,5 +22,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const textBox = new TextView(textBoxContainer);
   textBox.bindEvents();
 
-  // Text to force an update
+  const roomCreate = new RoomGenerator();
+  roomCreate.bindEvents();
+
+  const playerstats = document.querySelector()
+  const playerView = new PlayerView();
+  // Text to force an update});
 });
