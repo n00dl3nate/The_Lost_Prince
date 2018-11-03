@@ -6,7 +6,6 @@ const Monster = function () {
 }
 
 Monster.prototype.bindEvents = function() {
-  console.log("in bind events");
   // PubSub.subscribe('Monster:monster-choice',event =>{
   //   const choice = event.detail;
     const choice = 1
@@ -19,13 +18,24 @@ Monster.prototype.getMonster = function (choice) {
   const url = `http://www.dnd5eapi.co/api/monsters/${choice}`
   const request = new RequestHelper(url);
   request.get().then((data) => {
-    console.log(data);
-    this.data = data.data.results;
-    console.log(data.data.results);
-    PubSub.publish('Movie:character-ready', this.data );
-  }).catch((error) => {
-    PubSub.publish('Movie:error', error);
+    this.data = data
+    this.createMonster(this.data)
   });
 };
+
+Monster.prototype.createMonster = function (data) {
+  const monster =
+  {
+  name: data.name,
+  attack: data.strength,
+  hp: data.hit_points,
+  type: data.type,
+  size: data.size,
+  rating: data.challenge_rating
+};
+
+  PubSub.publish('Monster:monster-ready', monster);
+  console.log(monster);
+  };
 
 module.exports = Monster;
