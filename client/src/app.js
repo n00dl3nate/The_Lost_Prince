@@ -1,6 +1,8 @@
-const Monster = require('./models/monster_model.js');
 const PubSub = require('./helpers/pub_sub.js');
+const Monster = require('./models/monster_model.js');
 const RoomGenerator = require('./models/room_model.js');
+const InterfaceStuff = require('./models/interface.js');
+const TextView = require('./views/text_view.js');
 const PlayerView = require('./views/player_view.js');
 
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -10,8 +12,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const monster = new Monster;
   monster.bindEvents()
 
-  const roomCreate = new RoomGenerator();
-  roomCreate.bindEvents();
+  const newRoom = new RoomGenerator();
+  newRoom.bindEvents();
+
+  const interfaceButtons = new InterfaceStuff();
+  interfaceButtons.bindEvents();
+
+  const textBoxContainer = document.querySelector('div#text-display');
+  const textBox = new TextView(textBoxContainer);
+  textBox.bindEvents();
 
   const playerstats = document.querySelector("div#stats")
   const playerView = new PlayerView(playerstats);
