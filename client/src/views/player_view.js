@@ -6,6 +6,12 @@ const PlayerView = function(container){
   this.player = new Player;
 }
 
+PlayerView.prototype.bindEvents = function(){
+  PubSub.publish('GameEvent:get-stats',(evt)=>{
+    this.showstats()
+  });
+};
+
 PlayerView.prototype.showstats = function () {
   const health = document.createElement('h4');
   health.textContent = `Hp: ${this.player.hp}`;
