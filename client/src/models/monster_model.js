@@ -6,13 +6,12 @@ const Monster = function () {
 }
 
 Monster.prototype.bindEvents = function() {
-  PubSub.subscribe('Monster:monster-choice',event =>{
+  // PubSub.subscribe('Monster:monster-choice',event =>{
   //   const choice = event.detail;
-    // const choice = 1
-    const choice = Math.floor(Math.random()*365)+1;
+    const choice = 1
     console.log(choice);
     this.getMonster(choice);
-  })
+  // })
 }
 
 Monster.prototype.getMonster = function (choice) {
@@ -33,10 +32,10 @@ Monster.prototype.createMonster = function (data) {
   type: data.type,
   size: data.size,
   rating: data.challenge_rating
-};
+  };
 
   PubSub.publish('Monster:monster-ready', monster);
-  console.log('Monster published: ',monster);
+  console.log(monster);
   };
 
 module.exports = Monster;

@@ -1,11 +1,13 @@
 const PubSub = require('../helpers/pub_sub.js');
-
+const TextView = require('../views/text_view.js');
 const RoomGenerator = function(){};
 
 RoomGenerator.prototype.bindEvents = function(){
+  var counter = 0
   // Listen for a direction button to be clicked. Makes no difference, really
   PubSub.subscribe('DirectionButton:direction-clicked',(evt)=>{
     // Randomise what the room contains
+
     var content_select_random = Math.floor(Math.random()*3);
     console.log('Contents: ',content_select_random);
     var content_select = '';
@@ -35,7 +37,13 @@ RoomGenerator.prototype.bindEvents = function(){
       exit_forward: exit_forward
     };
 
-    PubSub.publish('RoomGenerated:room-created',room);
+    const textBoxContainer = document.querySelector('div#text-display');
+    const textBox = new TextView(textBoxContainer);
+    textBox.bindEvents();
+
+    PubSub.publish(`RoomGenerated:room-created${counter}`,room);
+    counter += 1
+    console.log(counter,'ROOM');
   });
 
 };

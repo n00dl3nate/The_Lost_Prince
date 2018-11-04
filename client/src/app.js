@@ -11,22 +11,16 @@ document.addEventListener('DOMContentLoaded', ()=>{
   // PubSub.publish('Monster:monster-choice',choice);
   const monster = new Monster;
   monster.bindEvents()
-
-  const newRoom = new RoomGenerator();
-  newRoom.bindEvents();
+  // 
+  // const newRoom = new RoomGenerator();
+  // newRoom.bindEvents();
 
   const interfaceButtons = new InterfaceStuff();
   interfaceButtons.bindEvents();
 
-  const textBoxContainer = document.querySelector('div#text-display');
-  const textBox = new TextView(textBoxContainer);
-  textBox.bindEvents();
-
-  const roomCreate = new RoomGenerator();
-  roomCreate.bindEvents();
-
   const playerstats = document.querySelector("div#stats")
   const playerView = new PlayerView(playerstats);
   playerView.showstats()
+  playerView.roomContent()
   // Text to force an update});
 });
