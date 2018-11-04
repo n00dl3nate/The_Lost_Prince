@@ -36,12 +36,8 @@ RoomGenerator.prototype.bindEvents = function(){
     };
 
     PubSub.publish('RoomGenerated:room-created',room);
-    console.log('Room Details: ',room);
   });
 
-  // PubSub.subscribe('RoomGenerated:room-created',(evt)=>{
-  //
-  // });
 };
 
 

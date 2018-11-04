@@ -18,14 +18,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const interfaceButtons = new InterfaceStuff();
   interfaceButtons.bindEvents();
 
-  const textBoxContainer = document.querySelector('div.text_box');
+  const textBoxContainer = document.querySelector('div#text-display');
   const textBox = new TextView(textBoxContainer);
   textBox.bindEvents();
 
   const roomCreate = new RoomGenerator();
   roomCreate.bindEvents();
 
-  const playerstats = document.querySelector()
-  const playerView = new PlayerView();
+  const playerstats = document.querySelector("div#stats")
+  const playerView = new PlayerView(playerstats);
+  playerView.showstats()
   // Text to force an update});
 });
