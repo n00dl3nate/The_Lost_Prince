@@ -1,22 +1,16 @@
 const PubSub = require('../helpers/pub_sub.js');
 
-const PointsTracker = function (monsters) {
-  this.monsters = monsters;
+const PointsTracker = function () {
+  this.easyMonsters = [35, 264, 180, 150];
+  this.mediumMonsters = [177, 143, 144, 199];
+  this.hardMonsters = [79, 298, 118, 148];
   this.playerPoints = 0;
   this.roomPoints = 0;
 };
 
-//Easy, Medium, Hard monster arrays:
-this.easyMonsters = this.monsters.filter((monster) => {
-  monster.hit_points < 8;
-});
-this.mediumMonsters = this.monsters.filter((monster) => {
-  monster.hit_points > 8 && < 15;
-});
-this.hardMonsters = this.monsters.filter((monster) => {
-  monster.hit_points > 15;
-});
-
+PointsTracker.prototype.bindEvents = function () {
+  this.monsterLevel();
+};
 
 //Increase player points by monster HP:
 PointsTracker.prototype.killMonster = function (monster) {
@@ -24,15 +18,17 @@ PointsTracker.prototype.killMonster = function (monster) {
 };
 
 
-//Reach medium/hard monsters (based on player points):
-PointsTracker.prototype.reachHigherMonster = function () {
+// Reach medium/hard monsters (based on player points):
+PointsTracker.prototype.monsterLevel = function () {
+  var monsters = null;
   if (this.playerPoints < 30) {
-    PubSub.publish('PointsTracker:easy-monsters', this.easyMonsters);
-  } else if (this.playerPoints > 30 && < 60) {
-    PubSub.publish('PointsTracker:medium-monsters', this.mediumMonsters);
+    monsters = this.easyMonsters;
+  } else if (this.playerPoints > 30 && this.playerPoints < 60) {
+    monsters = this.mediumMonsters;
   } else if (this.playerPoints > 20) {
-    PubSub.publish('PointsTracker:hard-monsters', this.hardMonsters);
+    monsters = this.hardMonsters;
   };
+  PubSub.publish('PointsTracker:monster-level', monsters);
 };
 
 
@@ -48,3 +44,5 @@ PointsTracker.prototype.addRoomPoints = function () {
 //
 //   };
 // };
+
+module.exports = PointsTracker;
