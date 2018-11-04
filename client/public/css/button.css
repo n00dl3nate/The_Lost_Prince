@@ -10,3 +10,7 @@
   background: white;
   color: black;
 }
+
+.btn-disabled {
+  cursor:not-allowed;
+}

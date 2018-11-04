@@ -19,23 +19,34 @@ TextView.prototype.bindEvents = function(){
     const content = evt.detail.content;
     // Organise the exits into a fancy style
     var exits = 'Exits: ';
+    const leftNavButton = document.getElementById('nav-left-btn');
+    const rightNavButton = document.getElementById('nav-right-btn');
+    const forwardNavButton = document.getElementById('nav-forward-btn');
+
+
     if (exitLeft == 1){
       exits += 'LEFT ';
-      document.getElementById('nav-left-btn').setAttribute('class','navigate btn btn-lg');
+      leftNavButton.disabled=false;
+      leftNavButton.setAttribute('class','navigate btn btn-lg');
     } else {
-      document.getElementById('nav-left-btn').setAttribute('class','disabled navigate btn btn-lg');
+      leftNavButton.disabled=true;
+      leftNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
     };
     if (exitRight == 1){
       exits += 'RIGHT ';
-      document.getElementById('nav-right-btn').setAttribute('class','navigate btn btn-lg');
+      rightNavButton.disabled=false;
+      rightNavButton.setAttribute('class','navigate btn btn-lg');
     } else {
-      document.getElementById('nav-right-btn').setAttribute('class','disabled navigate btn btn-lg');
+      rightNavButton.disabled=true;
+      rightNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
     };
     if (exitForward == 1){
       exits += 'FORWARD ';
-      document.getElementById('nav-forward-btn').setAttribute('class','navigate btn btn-lg');
+      forwardNavButton.disabled=false;
+      forwardNavButton.setAttribute('class','navigate btn btn-lg');
     } else {
-      document.getElementById('nav-forward-btn').setAttribute('class','disabled navigate btn btn-lg');
+      forwardNavButton.disabled=true;
+      forwardNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
     };
 
     // Describe the room
