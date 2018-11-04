@@ -17,9 +17,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const points = new PointsTracker();
   points.bindEvents();
 
-  const newRoom = new RoomGenerator();
-  newRoom.bindEvents();
-
   const interfaceButtons = new InterfaceStuff();
   interfaceButtons.bindEvents();
 

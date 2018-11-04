@@ -19,9 +19,25 @@ TextView.prototype.bindEvents = function(){
     const content = evt.detail.content;
     // Organise the exits into a fancy style
     var exits = 'Exits: ';
-    if (exitLeft == 1){exits += 'LEFT '};
-    if (exitRight == 1){exits += 'RIGHT '};
-    if (exitForward == 1){exits += 'FORWARD '};
+    if (exitLeft == 1){
+      exits += 'LEFT ';
+      document.getElementById('nav-left-btn').setAttribute('class','navigate btn btn-lg');
+    } else {
+      document.getElementById('nav-left-btn').setAttribute('class','disabled navigate btn btn-lg');
+    };
+    if (exitRight == 1){
+      exits += 'RIGHT ';
+      document.getElementById('nav-right-btn').setAttribute('class','navigate btn btn-lg');
+    } else {
+      document.getElementById('nav-right-btn').setAttribute('class','disabled navigate btn btn-lg');
+    };
+    if (exitForward == 1){
+      exits += 'FORWARD ';
+      document.getElementById('nav-forward-btn').setAttribute('class','navigate btn btn-lg');
+    } else {
+      document.getElementById('nav-forward-btn').setAttribute('class','disabled navigate btn btn-lg');
+    };
+
     // Describe the room
     var room_details = '+ Room Description Placeholder +';
 
