@@ -18,10 +18,34 @@ PlayerView.prototype.showstats = function () {
   this.container.appendChild(health)
   const attack = document.createElement('h4');
   attack.textContent = `Attack: ${this.player.attack}`;
+  attack.id = "playerStatsAttack"
   this.container.appendChild(attack)
   const heals = document.createElement('h4');
   heals.textContent = `Health Packs: ${this.player.heals}`;
+  heals.id = "playerStatsHeals"
   this.container.appendChild(heals)
+};
+
+PlayerView.prototype.roomContent = function () {
+  PubSub.subscribe('TextView:room-content',(event) => {
+    content = event.detail;
+    console.log(content,"this is your content Player view")
+    if (content == "upgrade") {
+      this.player.attack += 1
+      attack = document.querySelector('#playerStatsAttack')
+      attack.textContent = `Attack: ${this.player.attack}`
+      // this.container.appendChild(attack)
+    }
+    if (content == "health"){
+      this.player.heals += 1
+      heals = document.querySelector('#playerStatsHeals')
+      heals.textContent = `Heals: ${this.player.heals}`
+    }
+    // if (content == "trap"){
+    //   this.player.hp -=
+    // }
+  });
+
 };
 
 module.exports = PlayerView
