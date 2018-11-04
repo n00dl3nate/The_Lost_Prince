@@ -35,6 +35,9 @@ PlayerView.prototype.roomContent = function () {
       heals = document.querySelector('#playerStatsHeals')
       heals.textContent = `Heals: ${this.player.heals}`
     }
+    // if (content == "trap"){
+    //   this.player.hp -=
+    // }
   });
 
 };
