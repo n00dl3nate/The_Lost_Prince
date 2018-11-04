@@ -1,4 +1,5 @@
 const PubSub = require('../helpers/pub_sub.js');
+const Player = require('../models/player_model.js');
 
 const TextView = function(container){
   this.container = container;
@@ -10,11 +11,11 @@ TextView.prototype.bindEvents = function(){
 
     // Assign Variables for the room
     const exitLeft = evt.detail.exit_left;
-    console.log('left: ',exitLeft);
+    // console.log('left: ',exitLeft);
     const exitRight = evt.detail.exit_right;
-    console.log('right: ',exitRight);
+    // console.log('right: ',exitRight);
     const exitForward = evt.detail.exit_forward;
-    console.log('Forward: ',exitForward);
+    // console.log('Forward: ',exitForward);
     const content = evt.detail.content;
     // Organise the exits into a fancy style
     var exits = 'Exits: ';
@@ -39,9 +40,24 @@ TextView.prototype.bindEvents = function(){
       case 'upgrade':
         content_result = 'You have found a Weapon Upgrade! (Attack + 1)';
         // run function to increase attack
+        PubSub.publish('GameEvent:weapon-upgrade');
+
         roomDescription = document.createElement('p');
         roomDescription.textContent = `${room_details} ${content_result} ${exits}.`;
         this.container.appendChild(roomDescription);
+        break;
+      case 'trap':
+        console.log('Trap Room');
+        PubSub.publish('GameEvent:trap-triggered');
+        PubSub.subscribe('GameEvent:trap-ready',(evt)=>{
+          this.container.innerHTML = "";
+          const trap = evt.detail.trap;
+          const trapDamage = evt.detail.damage;
+
+          roomDescription = document.createElement('p');
+          roomDescription.textContent = `${room_details} ${trap} It hurts you for ${trapDamage}HP! ${exits}.`;
+          this.container.appendChild(roomDescription);
+        });
         break;
       case 'monster':
         // generate a monster!
