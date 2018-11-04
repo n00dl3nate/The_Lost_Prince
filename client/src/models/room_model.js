@@ -7,15 +7,17 @@ RoomGenerator.prototype.bindEvents = function(){
   // Listen for a direction button to be clicked. Makes no difference, really
   PubSub.subscribe('DirectionButton:direction-clicked',(evt)=>{
     // Randomise what the room contains
-
-    var content_select_random = Math.floor(Math.random()*3);
-    console.log('Contents: ',content_select_random);
+    
+    var content_select_random = Math.floor(Math.random()*4);
+    // console.log('Contents: ',content_select_random);
+    
     var content_select = '';
 
     switch (content_select_random){
       case 0: content_select = 'monster';break;
       case 1: content_select = 'health';break;
       case 2: content_select = 'upgrade';break;
+      case 3: content_select = 'trap';break;
       default: content_select = 'null';
     }
 

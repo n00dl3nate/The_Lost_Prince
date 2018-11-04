@@ -1,6 +1,7 @@
 const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('./player_view.js')
 
+
 const TextView = function(container){
   this.container = container;
 };
@@ -16,9 +17,11 @@ TextView.prototype.bindEvents = function(){
     // Assign Variables for the room
     const exitLeft = evt.detail.exit_left;
 
+    // console.log('left: ',exitLeft);
     const exitRight = evt.detail.exit_right;
-
+    // console.log('right: ',exitRight);
     const exitForward = evt.detail.exit_forward;
+    // console.log('Forward: ',exitForward);
 
     const content = evt.detail.content;
 
@@ -26,9 +29,25 @@ TextView.prototype.bindEvents = function(){
 
     // Organise the exits into a fancy style
     var exits = 'Exits: ';
-    if (exitLeft == 1){exits += 'LEFT '};
-    if (exitRight == 1){exits += 'RIGHT '};
-    if (exitForward == 1){exits += 'FORWARD '};
+    if (exitLeft == 1){
+      exits += 'LEFT ';
+      document.getElementById('nav-left-btn').setAttribute('class','navigate btn btn-lg');
+    } else {
+      document.getElementById('nav-left-btn').setAttribute('class','disabled navigate btn btn-lg');
+    };
+    if (exitRight == 1){
+      exits += 'RIGHT ';
+      document.getElementById('nav-right-btn').setAttribute('class','navigate btn btn-lg');
+    } else {
+      document.getElementById('nav-right-btn').setAttribute('class','disabled navigate btn btn-lg');
+    };
+    if (exitForward == 1){
+      exits += 'FORWARD ';
+      document.getElementById('nav-forward-btn').setAttribute('class','navigate btn btn-lg');
+    } else {
+      document.getElementById('nav-forward-btn').setAttribute('class','disabled navigate btn btn-lg');
+    };
+
     // Describe the room
     var room_details = '+ Room Description Placeholder +';
 
@@ -47,9 +66,24 @@ TextView.prototype.bindEvents = function(){
       case 'upgrade':
         content_result = 'You have found a Weapon Upgrade! (Attack + 1)';
         // run function to increase attack
+        PubSub.publish('GameEvent:weapon-upgrade');
+
         roomDescription = document.createElement('p');
         roomDescription.textContent = `${room_details} ${content_result} ${exits}.`;
         this.container.appendChild(roomDescription);
+        break;
+      case 'trap':
+        console.log('Trap Room');
+        PubSub.publish('GameEvent:trap-triggered');
+        PubSub.subscribe('GameEvent:trap-ready',(evt)=>{
+          this.container.innerHTML = "";
+          const trap = evt.detail.trap;
+          const trapDamage = evt.detail.damage;
+
+          roomDescription = document.createElement('p');
+          roomDescription.textContent = `${room_details} ${trap} It hurts you for ${trapDamage}HP! ${exits}.`;
+          this.container.appendChild(roomDescription);
+        });
         break;
       case 'monster':
         // generate a monster!

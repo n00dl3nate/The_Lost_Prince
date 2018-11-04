@@ -14,7 +14,6 @@ UnfortunateCircumstance.prototype.bindEvents = function(){
   ];
 
   PubSub.subscribe('GameEvent:trap-triggered',(evt)=>{
-    // A trap has been triggered
     // What type of trap?
     const trapDescription = trapType[Math.floor(Math.random())*trapType.length];
     // How much damage?
