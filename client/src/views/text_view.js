@@ -168,11 +168,29 @@ TextView.prototype.bindEvents = function(){
               console.log('Fight Result: ',fightResult);
 
               this.container.innerHTML = "";
-              roomDescription = document.createElement('p');
-              roomDescription.textContent = `${fightResult}`;
-              this.container.appendChild(roomDescription);
+              attackDescription = document.createElement('p');
+              attackDescription.textContent = fightResult;
+              this.container.appendChild(attackDescription);
             });
-          }
+            PubSub.publish('Fight:enemy-attack',evt.detail);
+            PubSub.subscribe('Fight:enemy-result',(evt)=>{
+              console.log('SUBBED: ',evt.detail);
+              var revengeResult = evt.detail;
+              console.log('RR: ',revengeResult)
+              console.log('Fight Result: ',revengeResult);
+
+              var revengeDescription = document.createElement('p');
+              revengeDescription.textContent = revengeResult;
+              this.container.appendChild(revengeDescription);
+            });
+            PubSub.subscribe('Fight:escape',(evt)=>{
+              var escapeDescription = document.createElement('p');
+              escapeDescription.textContent = evt.detail;
+              this.container.appendChild(escapeDescription);
+
+              fight = false;
+            });
+          };
         });
         break;
     }
