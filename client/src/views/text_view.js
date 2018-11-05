@@ -1,22 +1,32 @@
 const PubSub = require('../helpers/pub_sub.js');
-const Player = require('../models/player_model.js');
+const PlayerView = require('./player_view.js')
+
 
 const TextView = function(container){
   this.container = container;
 };
 
+player = new PlayerView;
+var counter = 0
 TextView.prototype.bindEvents = function(){
-  PubSub.subscribe('RoomGenerated:room-created',(evt)=>{
+  PubSub.subscribe(`RoomGenerated:room-created${counter}`,(evt)=>{
+    counter += 1
+    console.log(counter,'textView');
     this.container.innerHTML = "";
 
     // Assign Variables for the room
     const exitLeft = evt.detail.exit_left;
+
     // console.log('left: ',exitLeft);
     const exitRight = evt.detail.exit_right;
     // console.log('right: ',exitRight);
     const exitForward = evt.detail.exit_forward;
     // console.log('Forward: ',exitForward);
+
     const content = evt.detail.content;
+
+    PubSub.publish('TextView:room-content',content);
+
     // Organise the exits into a fancy style
     var exits = 'Exits: ';
     const leftNavButton = document.getElementById('nav-left-btn');
