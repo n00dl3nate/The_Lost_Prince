@@ -19,6 +19,16 @@ Interface.prototype.bindEvents = function(){
   const forwardButton = document.getElementById('nav-forward-btn').addEventListener('click',()=>{
     PubSub.publish('DirectionButton:direction-clicked',forwardButton);
   });
+
+  const attackButton = document.getElementById('nav-attack-btn').addEventListener('click',()=>{
+    PubSub.publish('Fight:attack-clicked');
+  });
+  const defendButton = document.getElementById('nav-defend-btn').addEventListener('click',()=>{
+    PubSub.publish('Fight:defend-clicked');
+  });
+  const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
+    PubSub.publish('Fight:run-clicked');
+  });
 };
 
 

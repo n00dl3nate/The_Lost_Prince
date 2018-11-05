@@ -5,6 +5,7 @@ const RoomGenerator = require('./models/room_model.js');
 const InterfaceStuff = require('./models/interface.js');
 const PlayerView = require('./views/player_view.js');
 const TextView = require('./views/text_view.js');
+const FightGood = require('./models/combat_model.js');
 // const UnfortunateCircumstance = require('./models/traps.js');
 
 
@@ -27,5 +28,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   // const unfortunateCircumstance = new UnfortunateCircumstance();
   // unfortunateCircumstance.bindEvents();
+  const fightTime = new FightGood();
+  fightTime.bindEvents();
 
 });

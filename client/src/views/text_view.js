@@ -35,6 +35,13 @@ TextView.prototype.bindEvents = function(){
     const leftNavButton = document.getElementById('nav-left-btn');
     const rightNavButton = document.getElementById('nav-right-btn');
     const forwardNavButton = document.getElementById('nav-forward-btn');
+    const attackButton = document.getElementById('nav-attack-btn');
+    const defendButton = document.getElementById('nav-defend-btn');
+    const runButton = document.getElementById('nav-run-btn');
+
+    attackButton.disabled = true;
+    defendButton.disabled = true;
+    runButton.disabled = true;
 
 
     if (exitLeft == 1){
@@ -136,6 +143,35 @@ TextView.prototype.bindEvents = function(){
           roomDescription.textContent = `${room_details} ${content_result} ${exits}.`;
           this.container.appendChild(roomDescription);
 
+          // Run fight logic
+          var fight = true;
+
+          if (fight == true){
+            leftNavButton.disabled = true;
+            leftNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
+            rightNavButton.disabled = true;
+            rightNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
+            forwardNavButton.disabled = true;
+            forwardNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
+
+            attackButton.disabled = false;
+            attackButton.setAttribute('class','btn-block navigate btn btn-lg');
+            defendButton.disabled = false;
+            defendButton.setAttribute('class','btn-block navigate btn btn-lg');
+            runButton.disabled = false;
+            runButton.setAttribute('class','btn-block navigate btn btn-lg');
+
+            PubSub.publish('Fight:fight-started',evt.detail);
+            PubSub.subscribe('Fight:fight-result',(evt)=>{
+              var fightResult = evt.detail;
+              console.log('Fight Result: ',fightResult);
+
+              this.container.innerHTML = "";
+              roomDescription = document.createElement('p');
+              roomDescription.textContent = `${fightResult}`;
+              this.container.appendChild(roomDescription);
+            });
+          }
         });
         break;
     }
