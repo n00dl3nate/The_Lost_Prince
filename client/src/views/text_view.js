@@ -74,6 +74,7 @@ TextView.prototype.bindEvents = function(){
         break;
       case 'trap':
         console.log('Trap Room');
+        
         PubSub.publish('GameEvent:trap-triggered');
         PubSub.subscribe('GameEvent:trap-ready',(evt)=>{
           this.container.innerHTML = "";
