@@ -23,7 +23,8 @@ Player.prototype.upgradeAttack = function () {
 };
 
 Player.prototype.useHealthPack = function () {
-  // this.hp += 25
+  this.hp += 25;
+  this.heals -= 1;
 };
 
 module.exports = Player

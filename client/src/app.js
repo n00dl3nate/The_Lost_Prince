@@ -24,8 +24,14 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const playerView = new PlayerView(playerstats);
   playerView.showstats();
   playerView.roomContent();
+  // if (playerView.CheckingHeals() === true){
+    playerView.heal();
+  //   }
+  // else  {
+  //   const healButton = document.getElementById("nav-heal-btn")
+  //   healButton.disabled = true
+  //   healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
+  // };
 
-  // const unfortunateCircumstance = new UnfortunateCircumstance();
-  // unfortunateCircumstance.bindEvents();
 
 });

@@ -7,7 +7,7 @@ const PlayerView = function(container){
   this.player = new Player;
 }
 
-var x = 0
+var x = 0;
 
 PlayerView.prototype.bindEvents = function(){
   PubSub.publish('GameEvent:get-stats',(evt)=>{
@@ -34,6 +34,7 @@ PlayerView.prototype.roomContent = function () {
   PubSub.subscribe('TextView:room-content',(event) => {
     content = event.detail;
     console.log(content,"this is your content Player view")
+
     if (content == "upgrade") {
       this.player.attack += 1
       attack = document.querySelector('#playerStatsAttack')
@@ -44,7 +45,11 @@ PlayerView.prototype.roomContent = function () {
       this.player.heals += 1
       heals = document.querySelector('#playerStatsHeals')
       heals.textContent = `Health Packs: ${this.player.heals}`
+      const healButton = document.getElementById("nav-heal-btn")
+      healButton.disabled = false
+      healButton.setAttribute('class','navigate btn btn-lg')
     }
+
     if (content == "trap"){
       PubSub.subscribe(`Trap:trap-damage${x}`,(evt)=>{
         x += 1
@@ -61,6 +66,32 @@ PlayerView.prototype.roomContent = function () {
     }
   });
 };
+
+PlayerView.prototype.CheckingHeals = function () {
+  if (this.player.heals >= 1){
+    return true;
+  }
+  else
+    return false;
+};
+
+PlayerView.prototype.heal = function () {
+  PubSub.subscribe(`PlayerButton:Heal`, (evt) => {
+    if (evt.detail == 'heal'){
+      this.player.useHealthPack()
+      health = document.querySelector('#playerStatsHp')
+      health.textContent = `Hp: ${this.player.hp}`
+      heals = document.querySelector('#playerStatsHeals')
+      heals.textContent = `Health Packs: ${this.player.heals}`
+      if (this.CheckingHeals() === false){
+        const healButton = document.getElementById("nav-heal-btn")
+        healButton.disabled = true
+        healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
+      };
+    };
+  });
+};
+
 
 
 module.exports = PlayerView
