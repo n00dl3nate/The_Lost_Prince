@@ -12,12 +12,10 @@ var counter = 0;
 player = new PlayerView;
 
 TextView.prototype.bindEvents = function(){
-  PubSub.subscribe(`RoomGenerated:room-created${counter}`,(evt)=>{
+  PubSub.subscribe(`RoomGenerated:room-created`,(evt)=>{
     counter += 1
     console.log(counter,'textView');
     this.container.innerHTML = "";
-    console.log(count,"@@@@@@@");
-    count +=1;
 
     // Assign Variables for the room
     const exitLeft = evt.detail.exit_left;
@@ -90,7 +88,7 @@ TextView.prototype.bindEvents = function(){
         break;
       case 'trap':
         console.log('Trap Room');
-        
+
         PubSub.publish('GameEvent:trap-triggered');
         PubSub.subscribe('GameEvent:trap-ready',(evt)=>{
           this.container.innerHTML = "";
