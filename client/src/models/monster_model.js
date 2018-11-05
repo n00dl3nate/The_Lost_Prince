@@ -6,13 +6,19 @@ const Monster = function () {
 }
 
 Monster.prototype.bindEvents = function() {
-  console.log("in bind events");
-  // PubSub.subscribe('Monster:monster-choice',event =>{
-  //   const choice = event.detail;
-    const choice = 1
+
+  PubSub.subscribe('Monster:monster-choice',(event) =>{
+    // const choice = event.detail;
+    // const choice = 1
+    // const choice = Math.floor(Math.random()*365)+1;
+    const monsterIndex = [
+      35, 264, 180, 150, 177, 143, 144, 199, 79, 298, 118, 148
+    ];
+    const choice = monsterIndex[Math.floor(Math.random()*monsterIndex.length)];
+
     console.log(choice);
     this.getMonster(choice);
-  // })
+   })
 }
 
 Monster.prototype.getMonster = function (choice) {
@@ -25,16 +31,17 @@ Monster.prototype.getMonster = function (choice) {
 };
 
 Monster.prototype.createMonster = function (data) {
-  console.log(data);
   const monster =
   {
-  name: data.name,
-  attack: data.strength,
-  hp: data.hit_points,
-  type: data.type,
-  size: data.size,
-  rating: data.challenge_rating
-};
+
+    name: data.name,
+    attack: data.strength,
+    hp: data.hit_points,
+    type: data.type,
+    size: data.size,
+    rating: data.challenge_rating
+
+  };
 
   PubSub.publish('Monster:monster-ready', monster);
   console.log(monster);
