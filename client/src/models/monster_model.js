@@ -16,9 +16,7 @@ Monster.prototype.bindEvents = function() {
     // ];
     const choice = choices[Math.floor(Math.random()*choices.length)];
 
-    console.log(event.detail);
     this.getMonster(choice);
-    console.log(choice)
    })
 }
 
@@ -45,7 +43,6 @@ Monster.prototype.createMonster = function (data) {
   };
 
   PubSub.publish('Monster:monster-ready', monster);
-  console.log(monster);
   };
 
 module.exports = Monster;

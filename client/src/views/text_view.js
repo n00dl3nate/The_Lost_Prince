@@ -65,7 +65,6 @@ TextView.prototype.bindEvents = function(){
     // Describe the room
     const details = new RoomDetails();
     const room_description = details.bindEvents();
-    console.log("@@@@@@", room_description);
     var room_details = `${room_description}`;
 
     // Fancy up the room contents
@@ -130,7 +129,6 @@ TextView.prototype.bindEvents = function(){
           } else {
             fight_chance = `The ${name} looks like you could take it...`;
           };
-
 
 
           content_result = `You have stumbled upon a monster... The ${name} is a ${size} ${type}. ${fight_chance}`

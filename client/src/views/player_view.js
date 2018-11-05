@@ -9,6 +9,8 @@ const PlayerView = function(container){
 
 var x = 0;
 
+const points = new PointsTracker();
+
 PlayerView.prototype.bindEvents = function(){
   PubSub.publish('GameEvent:get-stats',(evt)=>{
     this.showstats()
@@ -33,19 +35,25 @@ PlayerView.prototype.showstats = function () {
 PlayerView.prototype.roomContent = function () {
   PubSub.subscribe('TextView:room-content',(event) => {
 
+
     if ((this.CheckingHeals() == true) && (this.player.hp < 100)){
       const healButton = document.getElementById("nav-heal-btn")
       healButton.disabled = false
       healButton.setAttribute('class','navigate btn btn-lg')
     };
 
+
+    points.roomPoints += 1;
+
     content = event.detail;
     console.log(content,"this is your content Player view")
+
 
 
     attack = document.querySelector('#playerStatsAttack')
     heals = document.querySelector('#playerStatsHeals')
     health = document.querySelector('#playerStatsHp')
+
 
 
     if (content == "upgrade") {
@@ -86,7 +94,6 @@ PlayerView.prototype.roomContent = function () {
       });
     };
     if (content == "monster"){
-      const points = new PointsTracker();
       const monsters = points.monsterLevel();
       PubSub.publish(`PointsTracker:monster-level`,monsters)
     }
