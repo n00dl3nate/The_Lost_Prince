@@ -32,26 +32,40 @@ PlayerView.prototype.showstats = function () {
 
 PlayerView.prototype.roomContent = function () {
   PubSub.subscribe('TextView:room-content',(event) => {
+
+    if ((this.CheckingHeals() == true) && (this.player.hp < 100)){
+      const healButton = document.getElementById("nav-heal-btn")
+      healButton.disabled = false
+      healButton.setAttribute('class','navigate btn btn-lg')
+    };
+
     content = event.detail;
     console.log(content,"this is your content Player view")
 
 
-//     attack = document.querySelector('#playerStatsAttack')
-//     heals = document.querySelector('#playerStatsHeals')
-//     health = document.querySelector('#playerStatsHp')
+    attack = document.querySelector('#playerStatsAttack')
+    heals = document.querySelector('#playerStatsHeals')
+    health = document.querySelector('#playerStatsHp')
 
 
     if (content == "upgrade") {
       this.player.attack += 1
       attack.textContent = `Attack: ${this.player.attack}`
-      // this.container.appendChild(attack)
-    }
+    };
     if (content == "health"){
       this.player.heals += 1
       heals.textContent = `Health Packs: ${this.player.heals}`
-      const healButton = document.getElementById("nav-heal-btn")
-      healButton.disabled = false
-      healButton.setAttribute('class','navigate btn btn-lg')
+
+      if (this.player.hp >= 100){
+        const healButton = document.getElementById("nav-heal-btn")
+        healButton.disabled = true
+        healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
+      }
+      else{
+        const healButton = document.getElementById("nav-heal-btn")
+        healButton.disabled = false
+        healButton.setAttribute('class','navigate btn btn-lg')
+        }
     }
 
     if (content == "trap"){
@@ -95,7 +109,7 @@ PlayerView.prototype.heal = function () {
       health.textContent = `Hp: ${this.player.hp}`
       heals = document.querySelector('#playerStatsHeals')
       heals.textContent = `Health Packs: ${this.player.heals}`
-      if (this.CheckingHeals() === false){
+      if ((this.CheckingHeals() === false) || (this.player.hp > 99)){
         const healButton = document.getElementById("nav-heal-btn")
         healButton.disabled = true
         healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
