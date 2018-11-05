@@ -6,13 +6,18 @@ const TextView = function(container){
   this.container = container;
 };
 
+var counter = 0;
+
+
 player = new PlayerView;
-var counter = 0
+
 TextView.prototype.bindEvents = function(){
   PubSub.subscribe(`RoomGenerated:room-created${counter}`,(evt)=>{
     counter += 1
     console.log(counter,'textView');
     this.container.innerHTML = "";
+    console.log(count,"@@@@@@@");
+    count +=1;
 
     // Assign Variables for the room
     const exitLeft = evt.detail.exit_left;
