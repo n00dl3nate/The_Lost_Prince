@@ -17,8 +17,13 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-12 image border" id="image">
-          <img src="./images/fire.png" class="img-responsive" alt="No image buddy">
+        <div class="col-sm-12 image border" id="image-display">
+          <img src="./images/Background2.gif" class="img-responsive" id="background-img" alt="No image buddy">
+          <div id="enemy-image"/>
+            <img src="./images/WarhorseSkeleton.gif" class="" alt="No image buddy">
+          </div>
+        </div>
+        <!-- <div class="col-sm-6 image border text-center" id="image"> -->
         </div>
       </div>
       <div class="row">
@@ -48,6 +53,9 @@
           <button type="button" name="button" id="nav-left-btn" class="navigate btn btn-lg">Left</button>
           <button type="button" name="button" id="nav-forward-btn" class="navigate btn btn-lg">Forward</button>
           <button type="button" name="button" id="nav-right-btn" class="navigate btn btn-lg">Right</button>
+
+          <button type="button" name="button" id="nav-heal-btn" class='btn-disabled navigate btn btn-lg' disabled='true'  >Use Health Pack</button>
+
 
         </div>
       </div>

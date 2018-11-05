@@ -1,6 +1,7 @@
 const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('./player_view.js')
 const UnfortunateCircumstance = require('../models/traps.js');
+const RoomDetails = require('../models/room_details.js');
 
 const TextView = function(container){
   this.container = container;
@@ -14,7 +15,6 @@ player = new PlayerView;
 TextView.prototype.bindEvents = function(){
   PubSub.subscribe(`RoomGenerated:room-created${counter}`,(evt)=>{
     counter += 1
-    console.log(counter,'textView');
     this.container.innerHTML = "";
 
     // Assign Variables for the room
@@ -70,7 +70,9 @@ TextView.prototype.bindEvents = function(){
     };
 
     // Describe the room
-    var room_details = '+ Room Description Placeholder +';
+    const details = new RoomDetails();
+    const room_description = details.bindEvents();
+    var room_details = `${room_description}`;
 
     // Fancy up the room contents
     var content_result = '';
@@ -134,7 +136,6 @@ TextView.prototype.bindEvents = function(){
           } else {
             fight_chance = `The ${name} looks like you could take it...`;
           };
-
 
 
           content_result = `You have stumbled upon a monster... The ${name} is a ${size} ${type}. ${fight_chance}`

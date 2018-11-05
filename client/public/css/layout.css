@@ -2,6 +2,10 @@ body {
   background-color: black;
 }
 
+/* .img-center {
+  text-align: center;
+} */
+
 .image {
   background: black;
 }
@@ -35,4 +39,26 @@ body {
 
 .pad10 {
   padding:10px;
+
+#image-display {
+  position: relative;
+  height: 600px;
+}
+
+#enemy-image,
+#background-img{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+#enemy-image {
+  top: 350px;
+  left: 80%;
+  z-index: 10;
+}
+
+#background-img {
+  z-index: 5;
 }

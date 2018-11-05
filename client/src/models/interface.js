@@ -1,6 +1,5 @@
 const PubSub = require('../helpers/pub_sub.js');
-const RoomGenerator = require('./room_model.js')
-
+const RoomGenerator = require('./room_model.js');
 
 const Interface = function(){};
 
@@ -28,6 +27,11 @@ Interface.prototype.bindEvents = function(){
   });
   const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
     PubSub.publish('Fight:run-clicked');
+  });
+  
+  const healButton = document.getElementById("nav-heal-btn").addEventListener('click',()=> {
+    const playerstats = document.querySelector("div#stats");
+    PubSub.publish(`PlayerButton:Heal`,'heal');
   });
 };
 
