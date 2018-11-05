@@ -43,7 +43,7 @@ RoomGenerator.prototype.bindEvents = function(){
     const textBox = new TextView(textBoxContainer);
     textBox.bindEvents();
 
-    PubSub.publish(`RoomGenerated:room-created`,room);
+    PubSub.publish(`RoomGenerated:room-created${counter}`,room);
     counter += 1
     console.log(counter,'ROOM');
   });

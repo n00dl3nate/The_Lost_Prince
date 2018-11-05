@@ -1,10 +1,13 @@
 const PubSub = require('../helpers/pub_sub.js');
 const Player = require('../models/player_model.js');
+const PointsTracker = require('../models/points_model.js');
 
 const PlayerView = function(container){
   this.container = container;
   this.player = new Player;
 }
+
+var x = 0
 
 PlayerView.prototype.bindEvents = function(){
   PubSub.publish('GameEvent:get-stats',(evt)=>{
@@ -43,13 +46,19 @@ PlayerView.prototype.roomContent = function () {
       heals.textContent = `Health Packs: ${this.player.heals}`
     }
     if (content == "trap"){
-      PubSub.subscribe('GameEvent:trap-ready',(evt)=>{
-        const trapDamage = evt.detail.damage;
+      PubSub.subscribe(`Trap:trap-damage${x}`,(evt)=>{
+        x += 1
+        const trapDamage = evt.detail;
         this.player.hp -= trapDamage;
         health = document.querySelector('#playerStatsHp')
         health.textContent = `Hp: ${this.player.hp}`
       });
     };
+    if (content == "monster"){
+      const points = new PointsTracker();
+      const monsters = points.monsterLevel();
+      PubSub.publish(`PointsTracker:monster-level`,monsters)
+    }
   });
 };
 

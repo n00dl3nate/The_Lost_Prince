@@ -1,18 +1,18 @@
 const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('./player_view.js')
-
+const UnfortunateCircumstance = require('../models/traps.js');
 
 const TextView = function(container){
   this.container = container;
 };
 
 var counter = 0;
-
+var x = 0;
 
 player = new PlayerView;
 
 TextView.prototype.bindEvents = function(){
-  PubSub.subscribe(`RoomGenerated:room-created`,(evt)=>{
+  PubSub.subscribe(`RoomGenerated:room-created${counter}`,(evt)=>{
     counter += 1
     console.log(counter,'textView');
     this.container.innerHTML = "";
@@ -67,7 +67,6 @@ TextView.prototype.bindEvents = function(){
 
     // Fancy up the room contents
     var content_result = '';
-    var playerHP = 100;
     var roomDescription = '';
     switch(content){
       case 'health':
@@ -77,6 +76,7 @@ TextView.prototype.bindEvents = function(){
         roomDescription.textContent = `${room_details} ${content_result} ${exits}.`;
         this.container.appendChild(roomDescription);
         break;
+
       case 'upgrade':
         content_result = 'You have found a Weapon Upgrade! (Attack + 1)';
         // run function to increase attack
@@ -86,24 +86,28 @@ TextView.prototype.bindEvents = function(){
         roomDescription.textContent = `${room_details} ${content_result} ${exits}.`;
         this.container.appendChild(roomDescription);
         break;
+
       case 'trap':
         console.log('Trap Room');
+        const unfortunateCircumstance = new UnfortunateCircumstance();
+        const circumstance = unfortunateCircumstance.bindEvents();
 
-        PubSub.publish('GameEvent:trap-triggered');
-        PubSub.subscribe('GameEvent:trap-ready',(evt)=>{
           this.container.innerHTML = "";
-          const trap = evt.detail.trap;
-          const trapDamage = evt.detail.damage;
+          const trap = circumstance.trap;
+          const trapDamage = circumstance.damage;
 
+
+          PubSub.publish(`Trap:trap-damage${x}`,trapDamage);
+          x += 1
           roomDescription = document.createElement('p');
           roomDescription.textContent = `${room_details} ${trap} It hurts you for ${trapDamage}HP! ${exits}.`;
           this.container.appendChild(roomDescription);
-        });
         break;
+
       case 'monster':
         // generate a monster!
         // console.log('YOU ARE HERE');
-        PubSub.publish('Monster:monster-choice');
+
         PubSub.subscribe('Monster:monster-ready',(evt)=>{
           this.container.innerHTML = "";
           // console.log('MONSTER: ',evt.detail.name);
@@ -116,9 +120,9 @@ TextView.prototype.bindEvents = function(){
 
           // Display your chances of beating the monster
           var fight_chance = '';
-          if (playerHP < monsterHP){
+          if (monsterHP > 20){
             fight_chance = `The ${name} looks very tough...`;
-          } else if (playerHP > monsterHP){
+          } else if (monsterHP < 8){
             fight_chance = `The ${name} looks weak...`;
           } else {
             fight_chance = `The ${name} looks like you could take it...`;
