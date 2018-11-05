@@ -15,15 +15,15 @@ Player.prototype.bindEvents = function(){
 };
 
 Player.prototype.removeHealth = function (amount) {
-  this.hp -= amount;
+  // this.hp -= amount;
 };
 
 Player.prototype.upgradeAttack = function () {
-  this.attack += 1;
+  // this.attack += 1;
 };
 
 Player.prototype.useHealthPack = function () {
-  this.hp += 25
+  // this.hp += 25
 };
 
 module.exports = Player

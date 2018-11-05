@@ -4,7 +4,7 @@ const PointsTracker = function () {
   this.easyMonsters = [35, 264, 180, 150];
   this.mediumMonsters = [177, 143, 144, 199];
   this.hardMonsters = [79, 298, 118, 148];
-  this.playerPoints = 0;
+  this.playerPoints = 60;
   this.roomPoints = 0;
 };
 
@@ -28,7 +28,9 @@ PointsTracker.prototype.monsterLevel = function () {
   } else if (this.playerPoints > 20) {
     monsters = this.hardMonsters;
   };
-  PubSub.publish('PointsTracker:monster-level', monsters);
+  // console.log("Points Model",monsters);
+  // PubSub.publish('PointsTracker:monster-level', monsters);
+  return monsters
 };
 
 
