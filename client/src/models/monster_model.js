@@ -12,7 +12,7 @@ Monster.prototype.bindEvents = function() {
 
     //const choice = Math.floor(Math.random()*4)+1;
     // const monsterIndex = [
-    //   35, 264, 180, 150, 177, 143, 144, 199, 79, 298, 118, 148
+    //   35, 264, 180, 150, 177, 143, 133, 199, 79, 298, 118, 148
     // ];
     const choice = choices[Math.floor(Math.random()*choices.length)];
 

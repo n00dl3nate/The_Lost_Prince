@@ -2,19 +2,10 @@ const PubSub = require('../helpers/pub_sub.js');
 
 const PointsTracker = function () {
   this.easyMonsters = [35, 264, 180, 150];
-  this.mediumMonsters = [177, 143, 144, 199];
+  this.mediumMonsters = [177, 143, 133, 199];
   this.hardMonsters = [79, 298, 118, 148];
-  this.playerPoints = 60;
+  this.playerPoints = 0;
   this.roomPoints = 0;
-};
-
-PointsTracker.prototype.bindEvents = function () {
-  this.monsterLevel();
-};
-
-//Increase player points by monster HP:
-PointsTracker.prototype.killMonster = function (monster) {
-  this.playerPoints += monster.hit_points;
 };
 
 
@@ -34,17 +25,29 @@ PointsTracker.prototype.monsterLevel = function () {
 };
 
 
+//Increase player points by monster HP:
+PointsTracker.prototype.killMonster = function (monster) {
+  PubSub.subscribe('GameEvent:monster-killed', (event) => {
+    this.playerPoints += monster.hit_points;
+  });
+};
+
+
 //Increase room points by 1:
 PointsTracker.prototype.addRoomPoints = function () {
-  this.roomPoints += 1;
+  PubSub.subscribe('DirectionButton:direction-clicked', (event) => {
+    this.roomPoints += 1;
+    console.log("!!!!!!!!!",this.roomPoints);
+    this.reachStoryRoom();
+  });
 };
 
 
 //Reach story room (based on room points):
-// PointsTracker.prototype.reachStoryRoom = function () {
-//   if (this.roomPoints > 5) {
-//
-//   };
-// };
+PointsTracker.prototype.reachStoryRoom = function () {
+  if (this.roomPoints > 5) {
+   PubSub.publish('PointsTracker:story-room-reached');
+  };
+};
 
 module.exports = PointsTracker;

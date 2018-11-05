@@ -18,6 +18,7 @@ Interface.prototype.bindEvents = function(){
   const forwardButton = document.getElementById('nav-forward-btn').addEventListener('click',()=>{
     PubSub.publish('DirectionButton:direction-clicked',forwardButton);
   });
+
   const healButton = document.getElementById("nav-heal-btn").addEventListener('click',()=> {
     const playerstats = document.querySelector("div#stats");
     PubSub.publish(`PlayerButton:Heal`,'heal');
