@@ -1,41 +1,67 @@
 const PubSub = require('../helpers/pub_sub.js');
-const Player = require('../models/player_model.js');
+const PlayerView = require('./player_view.js')
+
 
 const TextView = function(container){
   this.container = container;
 };
 
+var counter = 0;
+
+
+player = new PlayerView;
+
 TextView.prototype.bindEvents = function(){
-  PubSub.subscribe('RoomGenerated:room-created',(evt)=>{
+  PubSub.subscribe(`RoomGenerated:room-created${counter}`,(evt)=>{
+    counter += 1
+    console.log(counter,'textView');
     this.container.innerHTML = "";
+    console.log(count,"@@@@@@@");
+    count +=1;
 
     // Assign Variables for the room
     const exitLeft = evt.detail.exit_left;
+
     // console.log('left: ',exitLeft);
     const exitRight = evt.detail.exit_right;
     // console.log('right: ',exitRight);
     const exitForward = evt.detail.exit_forward;
     // console.log('Forward: ',exitForward);
+
     const content = evt.detail.content;
+
+    PubSub.publish('TextView:room-content',content);
+
     // Organise the exits into a fancy style
     var exits = 'Exits: ';
+    const leftNavButton = document.getElementById('nav-left-btn');
+    const rightNavButton = document.getElementById('nav-right-btn');
+    const forwardNavButton = document.getElementById('nav-forward-btn');
+
+
     if (exitLeft == 1){
       exits += 'LEFT ';
-      document.getElementById('nav-left-btn').setAttribute('class','navigate btn btn-lg');
+      leftNavButton.disabled=false;
+      leftNavButton.setAttribute('class','navigate btn btn-lg');
     } else {
-      document.getElementById('nav-left-btn').setAttribute('class','disabled navigate btn btn-lg');
+      leftNavButton.disabled=true;
+      leftNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
     };
     if (exitRight == 1){
       exits += 'RIGHT ';
-      document.getElementById('nav-right-btn').setAttribute('class','navigate btn btn-lg');
+      rightNavButton.disabled=false;
+      rightNavButton.setAttribute('class','navigate btn btn-lg');
     } else {
-      document.getElementById('nav-right-btn').setAttribute('class','disabled navigate btn btn-lg');
+      rightNavButton.disabled=true;
+      rightNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
     };
     if (exitForward == 1){
       exits += 'FORWARD ';
-      document.getElementById('nav-forward-btn').setAttribute('class','navigate btn btn-lg');
+      forwardNavButton.disabled=false;
+      forwardNavButton.setAttribute('class','navigate btn btn-lg');
     } else {
-      document.getElementById('nav-forward-btn').setAttribute('class','disabled navigate btn btn-lg');
+      forwardNavButton.disabled=true;
+      forwardNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
     };
 
     // Describe the room

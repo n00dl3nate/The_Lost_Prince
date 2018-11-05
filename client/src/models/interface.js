@@ -1,13 +1,23 @@
 const PubSub = require('../helpers/pub_sub.js');
+const RoomGenerator = require('./room_model.js')
 
-const Interface = function(){
 
-};
+const Interface = function(){};
 
 Interface.prototype.bindEvents = function(){
-  const navigate = document.addEventListener('click',()=>{
-    PubSub.publish('DirectionButton:direction-clicked');
+
+  const leftButton = document.getElementById('nav-left-btn').addEventListener('click',()=>{
+    PubSub.publish('DirectionButton:direction-clicked',leftButton);
   });
+  const rightButton = document.getElementById('nav-right-btn').addEventListener('click',()=>{
+    PubSub.publish('DirectionButton:direction-clicked',rightButton);
+  });
+  const forwardButton = document.getElementById('nav-forward-btn').addEventListener('click',()=>{
+    PubSub.publish('DirectionButton:direction-clicked',forwardButton);
+
+  });
+
 };
+
 
 module.exports = Interface;
