@@ -1,6 +1,7 @@
 const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('./player_view.js')
 const UnfortunateCircumstance = require('../models/traps.js');
+const RoomDetails = require('../models/room_details.js');
 
 const TextView = function(container){
   this.container = container;
@@ -63,7 +64,10 @@ TextView.prototype.bindEvents = function(){
     };
 
     // Describe the room
-    var room_details = '+ Room Description Placeholder +';
+    const details = new RoomDetails();
+    const room_description = details.bindEvents();
+    console.log("@@@@@@", room_description);
+    var room_details = `${room_description}`;
 
     // Fancy up the room contents
     var content_result = '';
