@@ -4,10 +4,12 @@ const Player = require('../models/player_model.js');
 const TextView = function(container){
   this.container = container;
 };
-
+var count = 0;
 TextView.prototype.bindEvents = function(){
   PubSub.subscribe('RoomGenerated:room-created',(evt)=>{
     this.container.innerHTML = "";
+    console.log(count,"@@@@@@@");
+    count +=1;
 
     // Assign Variables for the room
     const exitLeft = evt.detail.exit_left;
