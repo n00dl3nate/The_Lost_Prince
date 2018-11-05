@@ -1,6 +1,5 @@
 const PubSub = require('../helpers/pub_sub.js');
-const RoomGenerator = require('./room_model.js')
-
+const RoomGenerator = require('./room_model.js');
 
 const Interface = function(){};
 
@@ -20,6 +19,10 @@ Interface.prototype.bindEvents = function(){
     PubSub.publish('DirectionButton:direction-clicked',forwardButton);
   });
 
+  const healButton = document.getElementById("nav-heal-btn").addEventListener('click',()=> {
+    const playerstats = document.querySelector("div#stats");
+    PubSub.publish(`PlayerButton:Heal`,'heal');
+  });
 
 };
 
