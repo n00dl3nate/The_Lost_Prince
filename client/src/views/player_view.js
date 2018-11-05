@@ -15,6 +15,7 @@ PlayerView.prototype.bindEvents = function(){
 PlayerView.prototype.showstats = function () {
   const health = document.createElement('h4');
   health.textContent = `Hp: ${this.player.hp}`;
+  health.id = "playerStatsHp"
   this.container.appendChild(health)
   const attack = document.createElement('h4');
   attack.textContent = `Attack: ${this.player.attack}`;
@@ -39,13 +40,18 @@ PlayerView.prototype.roomContent = function () {
     if (content == "health"){
       this.player.heals += 1
       heals = document.querySelector('#playerStatsHeals')
-      heals.textContent = `Heals: ${this.player.heals}`
+      heals.textContent = `Health Packs: ${this.player.heals}`
     }
-    // if (content == "trap"){
-    //   this.player.hp -=
-    // }
+    if (content == "trap"){
+      PubSub.subscribe('GameEvent:trap-ready',(evt)=>{
+        const trapDamage = evt.detail.damage;
+        this.player.hp -= trapDamage;
+        health = document.querySelector('#playerStatsHp')
+        health.textContent = `Hp: ${this.player.hp}`
+      });
+    };
   });
-
 };
+
 
 module.exports = PlayerView

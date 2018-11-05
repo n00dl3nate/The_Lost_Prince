@@ -14,6 +14,7 @@ UnfortunateCircumstance.prototype.bindEvents = function(){
   ];
 
   PubSub.subscribe('GameEvent:trap-triggered',(evt)=>{
+    // A trap has been triggered
     // What type of trap?
     const trapDescription = trapType[Math.floor(Math.random())*trapType.length];
     // How much damage?
@@ -23,7 +24,9 @@ UnfortunateCircumstance.prototype.bindEvents = function(){
       damage: trapDamage
     }
 
-    PubSub.publish('GameEvent:trap-ready',trapReturn);
+    var counter = 0
+    PubSub.publish(`GameEvent:trap-ready`,trapReturn);
+    counter += 1
   });
 };
 
