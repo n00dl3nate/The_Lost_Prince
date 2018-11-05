@@ -34,15 +34,18 @@ PlayerView.prototype.roomContent = function () {
   PubSub.subscribe('TextView:room-content',(event) => {
     content = event.detail;
     console.log(content,"this is your content Player view")
+
+    attack = document.querySelector('#playerStatsAttack')
+    heals = document.querySelector('#playerStatsHeals')
+    health = document.querySelector('#playerStatsHp')
+
     if (content == "upgrade") {
       this.player.attack += 1
-      attack = document.querySelector('#playerStatsAttack')
       attack.textContent = `Attack: ${this.player.attack}`
       // this.container.appendChild(attack)
     }
     if (content == "health"){
       this.player.heals += 1
-      heals = document.querySelector('#playerStatsHeals')
       heals.textContent = `Health Packs: ${this.player.heals}`
     }
     if (content == "trap"){
@@ -50,8 +53,16 @@ PlayerView.prototype.roomContent = function () {
         x += 1
         const trapDamage = evt.detail;
         this.player.hp -= trapDamage;
-        health = document.querySelector('#playerStatsHp')
-        health.textContent = `Hp: ${this.player.hp}`
+        if (this.player.hp <= 0){
+          // player is dead
+          health.textContent = 'R.I.P.';
+          attack.textContent = 'Attack: Not any more';
+          heals.textContent =  'Health Packs: Bit late for that'
+        } else {
+          health.textContent = `Hp: ${this.player.hp}`
+        }
+
+
       });
     };
     if (content == "monster"){
