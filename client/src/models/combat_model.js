@@ -50,7 +50,24 @@ FightGood.prototype.attack = function(enemy){
   } else {
     attackResult = `You attacked the ${enemyName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. You failed to hurt it.`
   }
+  var playerRoll = this.roll() + playerAtk;
+  var enemyRoll = this.roll() + enemyAtk;
+
+  var revengeResult = '';
+  var fightDamage = 0;
+
+  if (enemyRoll == playerRoll){
+    revengeResult = `The ${enemyName} attacked you, but you parried!`;
+  } else if (enemyRoll > playerRoll){
+    fightDamage = enemyRoll - playerRoll;
+    revengeResult = `The ${enemyName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
+    // Update player HP
+
+  } else {
+    revengeResult = `The ${enemyName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. It failed to hurt you physically, but emotionally you are devastated.`
+  }
   PubSub.publish('Fight:fight-result',attackResult);
+  PubSub.publish('Fight:enemy-result',revengeResult)
 
 }
 
@@ -59,11 +76,21 @@ FightGood.prototype.defend = function(enemy){
 }
 
 FightGood.prototype.run = function(enemy){
-  console.log('Running from: ',enemy);
-}
+  const enemyName = enemy.name;
+  var enemyHp = enemy.hp;
+  const enemyAtk = enemy.attack;
+  var runResult = '';
+
+  if (this.roll()%2 == 0){
+    runResult = `You run away from the ${enemyName}. It tries to hit you but misses.`;
+  } else {
+    var runAway = Math.ceil(this.roll()/2);
+    runResult = `You ran away from the ${enemyName}. It manages to hit you for [${runAway}] as you bravely run away.`;
+  }
+  PubSub.publish('Fight:escape',runResult);
+};
 
 FightGood.prototype.roll = function(){
-  return Math.floor(Math.random()*6)+1;
+  return Math.floor(Math.random()*10)+1;
 }
-
 module.exports = FightGood;
