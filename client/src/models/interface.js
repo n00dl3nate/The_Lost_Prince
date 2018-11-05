@@ -19,8 +19,6 @@ Interface.prototype.bindEvents = function(){
   const forwardButton = document.getElementById('nav-forward-btn').addEventListener('click',()=>{
     PubSub.publish('DirectionButton:direction-clicked',forwardButton);
   });
-
-
 };
 
 
