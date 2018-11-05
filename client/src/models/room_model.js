@@ -7,10 +7,10 @@ RoomGenerator.prototype.bindEvents = function(){
   // Listen for a direction button to be clicked. Makes no difference, really
   PubSub.subscribe('DirectionButton:direction-clicked',(evt)=>{
     // Randomise what the room contains
-    
+
     var content_select_random = Math.floor(Math.random()*4);
     // console.log('Contents: ',content_select_random);
-    
+
     var content_select = '';
 
     switch (content_select_random){
@@ -43,7 +43,7 @@ RoomGenerator.prototype.bindEvents = function(){
     const textBox = new TextView(textBoxContainer);
     textBox.bindEvents();
 
-    PubSub.publish(`RoomGenerated:room-created${counter}`,room);
+    PubSub.publish(`RoomGenerated:room-created`,room);
     counter += 1
     console.log(counter,'ROOM');
   });
