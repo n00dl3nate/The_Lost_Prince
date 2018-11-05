@@ -19,9 +19,36 @@ TextView.prototype.bindEvents = function(){
     const content = evt.detail.content;
     // Organise the exits into a fancy style
     var exits = 'Exits: ';
-    if (exitLeft == 1){exits += 'LEFT '};
-    if (exitRight == 1){exits += 'RIGHT '};
-    if (exitForward == 1){exits += 'FORWARD '};
+    const leftNavButton = document.getElementById('nav-left-btn');
+    const rightNavButton = document.getElementById('nav-right-btn');
+    const forwardNavButton = document.getElementById('nav-forward-btn');
+
+
+    if (exitLeft == 1){
+      exits += 'LEFT ';
+      leftNavButton.disabled=false;
+      leftNavButton.setAttribute('class','navigate btn btn-lg');
+    } else {
+      leftNavButton.disabled=true;
+      leftNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
+    };
+    if (exitRight == 1){
+      exits += 'RIGHT ';
+      rightNavButton.disabled=false;
+      rightNavButton.setAttribute('class','navigate btn btn-lg');
+    } else {
+      rightNavButton.disabled=true;
+      rightNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
+    };
+    if (exitForward == 1){
+      exits += 'FORWARD ';
+      forwardNavButton.disabled=false;
+      forwardNavButton.setAttribute('class','navigate btn btn-lg');
+    } else {
+      forwardNavButton.disabled=true;
+      forwardNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
+    };
+
     // Describe the room
     var room_details = '+ Room Description Placeholder +';
 
