@@ -26,6 +26,7 @@ UnfortunateCircumstance.prototype.bindEvents = function(){
 
     var counter = 0
     PubSub.publish(`GameEvent:trap-ready`,trapReturn);
+    console.log(counter,"@@@@@@@@");
     counter += 1
   });
 };
