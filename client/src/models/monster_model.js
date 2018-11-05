@@ -18,7 +18,7 @@ Monster.prototype.bindEvents = function() {
 
     console.log(choice);
     this.getMonster(choice);
-  // })
+   })
 }
 
 Monster.prototype.getMonster = function (choice) {
