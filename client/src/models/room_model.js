@@ -45,7 +45,6 @@ RoomGenerator.prototype.bindEvents = function(){
 
     PubSub.publish(`RoomGenerated:room-created${counter}`,room);
     counter += 1
-    console.log(counter,'ROOM');
   });
 
 };

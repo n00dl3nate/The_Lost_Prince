@@ -15,7 +15,6 @@ player = new PlayerView;
 TextView.prototype.bindEvents = function(){
   PubSub.subscribe(`RoomGenerated:room-created${counter}`,(evt)=>{
     counter += 1
-    console.log(counter,'textView');
     this.container.innerHTML = "";
 
     // Assign Variables for the room
