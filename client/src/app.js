@@ -1,11 +1,9 @@
 const PubSub = require('./helpers/pub_sub.js');
 const Monster = require('./models/monster_model.js');
-
 const RoomGenerator = require('./models/room_model.js');
 const InterfaceStuff = require('./models/interface.js');
 const PlayerView = require('./views/player_view.js');
 const TextView = require('./views/text_view.js');
-// const UnfortunateCircumstance = require('./models/traps.js');
 
 
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -15,7 +13,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   const monster = new Monster();
   monster.bindEvents()
-
 
   const interfaceButtons = new InterfaceStuff();
   interfaceButtons.bindEvents();
@@ -32,6 +29,5 @@ document.addEventListener('DOMContentLoaded', ()=>{
   //   healButton.disabled = true
   //   healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
   // };
-
 
 });
