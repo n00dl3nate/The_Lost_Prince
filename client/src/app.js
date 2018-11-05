@@ -1,14 +1,37 @@
-const Monster = require('./models/monster_model.js');
 const PubSub = require('./helpers/pub_sub.js');
+const Monster = require('./models/monster_model.js');
+
 const RoomGenerator = require('./models/room_model.js');
+const InterfaceStuff = require('./models/interface.js');
+const PlayerView = require('./views/player_view.js');
+const TextView = require('./views/text_view.js');
+// const UnfortunateCircumstance = require('./models/traps.js');
+
 
 document.addEventListener('DOMContentLoaded', ()=>{
   console.log("DOMContentLoaded");
   // const choice = 1
   // PubSub.publish('Monster:monster-choice',choice);
-  const monster = new Monster;
+
+  const monster = new Monster();
   monster.bindEvents()
 
-  const roomCreate = new RoomGenerator();
-  roomCreate.bindEvents();
+
+  const interfaceButtons = new InterfaceStuff();
+  interfaceButtons.bindEvents();
+
+  const playerstats = document.querySelector("div#stats");
+  const playerView = new PlayerView(playerstats);
+  playerView.showstats();
+  playerView.roomContent();
+  // if (playerView.CheckingHeals() === true){
+    playerView.heal();
+  //   }
+  // else  {
+  //   const healButton = document.getElementById("nav-heal-btn")
+  //   healButton.disabled = true
+  //   healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
+  // };
+
+
 });

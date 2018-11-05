@@ -1,0 +1,16 @@
+.btn{
+  border: 2px solid white;
+  border-radius: 0px;
+  background: black;
+  color: white;
+  cursor: pointer;
+}
+
+.btn:active {
+  background: white;
+  color: black;
+}
+
+.btn-disabled {
+  cursor:not-allowed;
+}
