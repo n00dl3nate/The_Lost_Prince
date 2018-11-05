@@ -42,6 +42,7 @@ body {
 }
 
 #image-display {
+
   position: relative;
   height: 600px;
 }

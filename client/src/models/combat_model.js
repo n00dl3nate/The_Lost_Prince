@@ -31,7 +31,8 @@ FightGood.prototype.attack = function(enemy){
   var enemyHp = enemy.hp;
   const enemyAtk = enemy.attack;
 
-  const playerAtk = 5;
+  const player = document.querySelector("#playerStatsAttack")
+  const playerAtk = player.value
 
   var playerRoll = this.roll() + playerAtk;
   var enemyRoll = this.roll() + enemyAtk;
