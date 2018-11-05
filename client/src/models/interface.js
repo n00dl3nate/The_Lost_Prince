@@ -6,6 +6,10 @@ const Interface = function(){};
 
 Interface.prototype.bindEvents = function(){
 
+  const newRoom = new RoomGenerator
+  newRoom.bindEvents();
+
+
   const leftButton = document.getElementById('nav-left-btn').addEventListener('click',()=>{
     PubSub.publish('DirectionButton:direction-clicked',leftButton);
   });
@@ -14,8 +18,8 @@ Interface.prototype.bindEvents = function(){
   });
   const forwardButton = document.getElementById('nav-forward-btn').addEventListener('click',()=>{
     PubSub.publish('DirectionButton:direction-clicked',forwardButton);
-
   });
+
 
 };
 
