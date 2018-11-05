@@ -18,18 +18,25 @@ PlayerView.prototype.bindEvents = function(){
 };
 
 PlayerView.prototype.showstats = function () {
+
   const health = document.createElement('h4');
   health.textContent = `Hp: ${this.player.hp}`;
-  health.id = "playerStatsHp"
-  this.container.appendChild(health)
+  health.id = "playerStatsHp";
+  health.value = this.player.hp;
+  this.container.appendChild(health);
+
   const attack = document.createElement('h4');
   attack.textContent = `Attack: ${this.player.attack}`;
-  attack.id = "playerStatsAttack"
-  this.container.appendChild(attack)
+  attack.id = "playerStatsAttack";
+  attack.value = this.player.attack;
+  this.container.appendChild(attack);
+
   const heals = document.createElement('h4');
   heals.textContent = `Health Packs: ${this.player.heals}`;
-  heals.id = "playerStatsHeals"
+  heals.id = "playerStatsHeals";
+  heals.value = this.player.heals;
   this.container.appendChild(heals)
+  
 };
 
 PlayerView.prototype.roomContent = function () {
