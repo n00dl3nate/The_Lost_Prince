@@ -157,7 +157,7 @@ TextView.prototype.bindEvents = function(){
 
             attackButton.disabled = false;
             attackButton.setAttribute('class','btn-block navigate btn btn-lg');
-            defendButton.disabled = false;
+            defendButton.disabled = true;
             defendButton.setAttribute('class','btn-block navigate btn btn-lg');
             runButton.disabled = false;
             runButton.setAttribute('class','btn-block navigate btn btn-lg');
@@ -176,8 +176,6 @@ TextView.prototype.bindEvents = function(){
             PubSub.subscribe('Fight:enemy-result',(evt)=>{
               console.log('SUBBED: ',evt.detail);
               var revengeResult = evt.detail;
-              console.log('RR: ',revengeResult)
-              console.log('Fight Result: ',revengeResult);
 
               var revengeDescription = document.createElement('p');
               revengeDescription.textContent = revengeResult;
@@ -187,8 +185,7 @@ TextView.prototype.bindEvents = function(){
               var escapeDescription = document.createElement('p');
               escapeDescription.textContent = evt.detail;
               this.container.appendChild(escapeDescription);
-
-              fight = false;
+              // break;
             });
           };
         });

@@ -13,7 +13,11 @@ body {
 .text_box {
   background: black;
   color: white;
+  height: 200px;
+  overflow-y:scroll;
 }
+
+
 
 .stats {
   background: black;

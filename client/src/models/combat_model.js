@@ -4,6 +4,8 @@ const Player = require('./player_model.js');
 const FightGood = function(){
 
 };
+const playerstats = document.querySelector("div#stats");
+player = new Player();
 
 FightGood.prototype.bindEvents = function(){
   PubSub.subscribe('Fight:fight-started',(evt)=>{
@@ -27,12 +29,12 @@ FightGood.prototype.bindEvents = function(){
 }
 
 FightGood.prototype.attack = function(enemy){
+  console.log(enemy);
   const enemyName = enemy.name;
   var enemyHp = enemy.hp;
   const enemyAtk = enemy.attack;
 
-  const player = document.querySelector("#playerStatsAttack")
-  const playerAtk = player.value
+  const playerAtk = player.getAttackHtml()
 
   var playerRoll = this.roll() + playerAtk;
   var enemyRoll = this.roll() + enemyAtk;
@@ -44,7 +46,14 @@ FightGood.prototype.attack = function(enemy){
     attackResult = `You attacked the ${enemyName}. It parried!`;
   } else if (playerRoll > enemyRoll){
     fightDamage = playerRoll - enemyRoll;
-    attackResult = `You attacked the ${enemyName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${fightDamage} Damage!`;
+    enemyHp -= fightDamage
+    if (enemyHp <= 0){
+      attackResult = `You attacked the ${enemyName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${fightDamage} Damage! The Monster Is Dead!`;
+    }
+    else {
+      attackResult = `You attacked the ${enemyName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${fightDamage} Damage! Monster Hp:${enemyHp}`;
+    }
+
     // Update enemy HP
 
   } else {
@@ -61,6 +70,11 @@ FightGood.prototype.attack = function(enemy){
   } else if (enemyRoll > playerRoll){
     fightDamage = enemyRoll - playerRoll;
     revengeResult = `The ${enemyName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
+
+    let playerhp = (player.getHpHtml() - fightDamage);
+    console.log(player.getHpHtml(),"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    player.updateHp(playerhp)
+
     // Update player HP
 
   } else {
