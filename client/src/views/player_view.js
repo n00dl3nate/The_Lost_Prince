@@ -96,18 +96,12 @@ PlayerView.prototype.roomContent = function () {
           health.textContent = 'R.I.P.';
           attack.textContent = 'Attack: Not any more';
           heals.textContent =  'Health Packs: Bit late for that'
-        } else {
-
-          // var healthBar = document.getElementById('HP-bar');
-          // healthBar.textContent = `${this.player.hp} HP`;
-          // healthBar.setAttribute('style',this.player.hp);
-          // healthBar.setAttribute('style',`width:${this.player.hp}%`);
-          health.textContent = `Hp: ${this.player.hp}`
-
+        } 
+        else
+        {
           this.player.updateHp(this.player.hp)
+          health.textContent = `Hp: ${this.player.hp}`
         }
-
-
       });
     };
     if (content == "monster"){
@@ -128,21 +122,9 @@ PlayerView.prototype.CheckingHeals = function () {
 PlayerView.prototype.heal = function () {
   PubSub.subscribe(`PlayerButton:Heal`, (evt) => {
     if (evt.detail == 'heal'){
-
-      this.player.useHealthPack()
-
-      // var healthBar = document.getElementById('HP-bar');
-      // healthBar.textContent = `${this.player.hp} HP`;
-      // healthBar.setAttribute('style',`width:${this.player.hp}%`);
-
-      health = document.querySelector('#playerStatsHp')
-      health.textContent = `Hp: ${this.player.hp}`
-      heals = document.querySelector('#playerStatsHeals')
-      heals.textContent = `Health Packs: ${this.player.heals}`
-
-      // this.player.updateHeals(this.player.heals += 1)
-
-      if ((this.CheckingHeals() === false) || (this.player.hp > 99)){
+      this.player.updateHeals(this.player.heals += 1)
+      this.player.updateHp(this.player.hp += 25)
+      if ((this.CheckingHeals()==false)||(this.player.hp > 99)){
         const healButton = document.getElementById("nav-heal-btn")
         healButton.disabled = true
         healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
