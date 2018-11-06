@@ -54,12 +54,11 @@ Interface.prototype.bindEvents = function(){
 
 
 Interface.prototype.createButtons = function () {
-
   this.container.innerHTML = "";
-
   this.directionButtons();
   this.healButton();
 };
+
 
 Interface.prototype.directionButtons = function () {
   const leftButton = document.createElement("button");
