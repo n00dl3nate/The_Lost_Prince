@@ -2,6 +2,10 @@ body {
   background-color: black;
 }
 
+.container-fluid {
+  margin: 0 auto;
+}
+
 /* .img-center {
   text-align: center;
 } */
@@ -51,6 +55,7 @@ body {
 #image-display {
   position: relative;
   height: 600px;
+  overflow:hidden;
 }
 
 #enemy-image,
@@ -71,4 +76,8 @@ body {
 
 #background-img {
   z-index: 5;
+}
+
+.progress-enemy {
+  width: 300px;
 }
