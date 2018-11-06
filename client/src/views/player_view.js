@@ -19,11 +19,15 @@ PlayerView.prototype.bindEvents = function(){
 
 PlayerView.prototype.showstats = function () {
 
-  const health = document.createElement('h4');
-  health.textContent = `Hp: ${this.player.hp}`;
-  health.id = "playerStatsHp";
-  health.value = this.player.hp;
-  this.player.healthStats.appendChild(health);
+  var healthBar = document.getElementById('HP-bar');
+  healthBar.textContent = `${this.player.hp} HP`;
+  healthBar.setAttribute('style',`width:${this.player.hp}%`);
+
+  // const health = document.createElement('h4');
+  // health.textContent = `Hp: ${this.player.hp}`;
+  // health.id = "playerStatsHp";
+  // health.value = this.player.hp;
+  // this.player.healthStats.appendChild(health);
 
   const attack = document.createElement('h4');
   attack.textContent = `Attack: ${this.player.attack}`;
@@ -93,7 +97,14 @@ PlayerView.prototype.roomContent = function () {
           attack.textContent = 'Attack: Not any more';
           heals.textContent =  'Health Packs: Bit late for that'
         } else {
-          this.player.updateHp(this.player.hp)
+
+          var healthBar = document.getElementById('HP-bar');
+          healthBar.textContent = `${this.player.hp} HP`;
+          healthBar.setAttribute('style',this.player.hp);
+          healthBar.setAttribute('style',`width:${this.player.hp}%`);
+          // health.textContent = `Hp: ${this.player.hp}`
+
+          // this.player.updateHp(this.player.hp)
         }
 
 
@@ -117,7 +128,20 @@ PlayerView.prototype.CheckingHeals = function () {
 PlayerView.prototype.heal = function () {
   PubSub.subscribe(`PlayerButton:Heal`, (evt) => {
     if (evt.detail == 'heal'){
-      this.player.updateHeals(this.player.heals += 1)
+
+      this.player.useHealthPack()
+
+      var healthBar = document.getElementById('HP-bar');
+      healthBar.textContent = `${this.player.hp} HP`;
+      healthBar.setAttribute('style',`width:${this.player.hp}%`);
+
+      // health = document.querySelector('#playerStatsHp')
+      // health.textContent = `Hp: ${this.player.hp}`
+      heals = document.querySelector('#playerStatsHeals')
+      heals.textContent = `Health Packs: ${this.player.heals}`
+
+      // this.player.updateHeals(this.player.heals += 1)
+
       if ((this.CheckingHeals() === false) || (this.player.hp > 99)){
         const healButton = document.getElementById("nav-heal-btn")
         healButton.disabled = true
