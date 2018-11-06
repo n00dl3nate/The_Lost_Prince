@@ -28,7 +28,6 @@ Interface.prototype.bindEvents = function(){
     PubSub.publish('DirectionButton:direction-clicked',leftButton);
     });
     const rightButton = document.getElementById('nav-right-btn').addEventListener('click',()=>{
-    });
     PubSub.publish('DirectionButton:direction-clicked',rightButton);
     });
     const forwardButton = document.getElementById('nav-forward-btn').addEventListener('click',()=>{
@@ -55,12 +54,11 @@ Interface.prototype.bindEvents = function(){
 
 
 Interface.prototype.createButtons = function () {
-
   this.container.innerHTML = "";
-
   this.directionButtons();
   this.healButton();
 };
+
 
 Interface.prototype.directionButtons = function () {
   const leftButton = document.createElement("button");
