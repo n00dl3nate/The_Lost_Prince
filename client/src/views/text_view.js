@@ -2,7 +2,7 @@ const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('./player_view.js')
 const UnfortunateCircumstance = require('../models/traps.js');
 const RoomDetails = require('../models/room_details.js');
-const monbsterImage = frequire('../helpers/monster_image.js');
+const monbsterImage = require('../helpers/monster_image.js');
 
 const TextView = function(container){
   this.container = container;
