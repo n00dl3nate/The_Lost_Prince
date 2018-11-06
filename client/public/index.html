@@ -11,8 +11,8 @@
   </head>
   <body>
 
-    <audio autoplay loop>
-      <source src="./music/Prologue.mp3">
+    <audio autoplay=false loop >
+      <source src="./music/Prologue.mp3" type="audio/mp3">
     </audio>
 
     <div class="container-fluid">
@@ -43,22 +43,33 @@
         <div id="stats" class="col-sm-4 offset-sm-1 stats">
           <h2>Stats</h2>
           <hr>
+
           <div class="progress" style="height:30px;">
             <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" id="HP-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
             </div>
           </div>
+
+          <div id="statsHealth"></div>
+          <div id="statsAttack"></div>
+          <div id="statsHeals"></div>
+
+
         </div>
+
         <div class="col-sm-2 pad10">
           <button type="button" name="button" id="nav-attack-btn" class="btn-block btn-disabled navigate btn btn-lg" disabled>Attack!</button>
           <button type="button" name="button" id="nav-defend-btn" class="btn-block btn-disabled navigate btn btn-lg" disabled>Defend</button>
           <button type="button" name="button" id="nav-run-btn" class="btn-block btn-disabled navigate btn btn-lg" disabled>Cheese it!</button>
         </div>
+
         <div class="col-sm-4 options">
           <button type="button" name="button" id="nav-left-btn" class="navigate btn btn-lg">Left</button>
+
           <button type="button" name="button" id="nav-forward-btn" class="navigate btn btn-lg">Forward</button>
+
           <button type="button" name="button" id="nav-right-btn" class="navigate btn btn-lg">Right</button>
 
-          <button type="button" name="button" id="nav-heal-btn" class='btn-disabled navigate btn btn-lg' disabled='true'  >Use Health Pack</button>
+          <button type="button" name="button" id="nav-heal-btn" class='btn-disabled navigate btn btn-lg' disabled='true'>Use Health Pack</button>
 
 
         </div>

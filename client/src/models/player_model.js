@@ -2,10 +2,14 @@ const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('../views/player_view.js');
 
 const Player = function () {
+  this.healthStats = document.querySelector("div#statsHealth");
+  this.attackStats = document.querySelector("div#statsAttack");
+  this.healsStats = document.querySelector("div#statsHeals");
   this.hp = 100
-  this.attack = 1
+  this.attack = 3
   this.heals = 0
 }
+
 
 Player.prototype.bindEvents = function(){
   PubSub.subscribe('GameEvent:weapon-upgrade',(evt)=>{
@@ -15,11 +19,11 @@ Player.prototype.bindEvents = function(){
 };
 
 Player.prototype.removeHealth = function (amount) {
-  // this.hp -= amount;
+   this.hp -= amount;
 };
 
 Player.prototype.upgradeAttack = function () {
-  // this.attack += 1;
+   this.attack += 1;
 };
 
 Player.prototype.useHealthPack = function () {
@@ -33,5 +37,46 @@ Player.prototype.useHealthPack = function () {
   this.heals -= 1;
   };
 };
+
+Player.prototype.getHpHtml = function (){
+  const hpDocument = document.querySelector("#playerStatsHp");
+  return hpDocument.value
+  }
+
+Player.prototype.getAttackHtml = function (){
+  const attackDocument = document.querySelector("#playerStatsAttack");
+  return attackDocument.value
+  }
+Player.prototype.getHealsHtml = function (){
+  const healsDocument = document.querySelector("#playerStatsHeals");
+  return healsDocument.value
+  }
+
+Player.prototype.updateHp = function(value){
+  const health = document.querySelector("#playerStatsHp");
+  health.textContent = `Hp: ${value}`;
+  health.id = "playerStatsHp";
+  health.value = value;
+}
+
+Player.prototype.updateAttack = function(value){
+  const attack = document.querySelector('#playerStatsAttack')
+  attack.textContent = `Attack: ${value}`;
+  attack.id = "playerStatsAttack";
+  attack.value = value;
+}
+
+Player.prototype.updateHeals = function(value){
+  const heals = document.querySelector('#playerStatsHeals')
+  heals.textContent = `Health Packs: ${value}`;
+  heals.id = "playerStatsHeals";
+  heals.value = value;
+}
+
+Player.prototype.refresh = function(){
+  this.updateHp((this.hp));
+  this.updateAttack((this.attack));
+  this.updateHeals((this.heals));
+}
 
 module.exports = Player

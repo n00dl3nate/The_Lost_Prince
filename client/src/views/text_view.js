@@ -192,9 +192,6 @@ TextView.prototype.bindEvents = function(){
         break;
     }
 
-    // console.log('container: ',this.container);
-
-    // console.log('Room Display: ',evt.detail)
   });
 };
 

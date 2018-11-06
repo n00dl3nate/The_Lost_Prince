@@ -32,7 +32,6 @@ Monster.prototype.getMonster = function (choice) {
 Monster.prototype.createMonster = function (data) {
   const monster =
   {
-
     name: data.name,
     attack: data.strength,
     hp: data.hit_points,
