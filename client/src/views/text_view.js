@@ -166,6 +166,7 @@ TextView.prototype.pageContent = function(content,room_details,exitSetup){
         // healthBar.setAttribute('aria-valuenow',evt.detail.hp);
         // healthBar.setAttribute('aria-valuemax',evt.detail.hp);
         monster = evt.detail
+
         const monsterhtml = document.querySelector('#monsterHp')
         monsterhtml.textContent = `monsterHp`
         monsterhtml.value = monster.hp

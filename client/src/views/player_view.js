@@ -49,7 +49,7 @@ PlayerView.prototype.roomContent = function () {
     if ((this.CheckingHeals() == true) && (this.player.hp < 100)){
       const healButton = document.getElementById("nav-heal-btn")
       healButton.disabled = false
-      healButton.setAttribute('class','navigate btn btn-lg btn-block')
+      healButton.setAttribute('class','navigate btn btn-lg')
     };
 
 
@@ -123,11 +123,11 @@ PlayerView.prototype.heal = function () {
   PubSub.subscribe(`PlayerButton:Heal`, (evt) => {
     if (evt.detail == 'heal'){
       this.player.updateHeals(this.player.heals += 1)
-      this.player.updateHp(this.player.hp += 25)
+      this.player.useHealthPack()
       if ((this.CheckingHeals()==false)||(this.player.hp > 99)){
         const healButton = document.getElementById("nav-heal-btn")
         healButton.disabled = true
-        healButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block')
+        healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
       };
     };
   });
