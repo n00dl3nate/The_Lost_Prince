@@ -34,7 +34,7 @@ PointsTracker.prototype.monsterLevel = function () {
 
 //Reach end point:
 PointsTracker.prototype.reachEndPoint = function () {
-  if (this.roomPoints = 10) {
+  if (this.roomPoints === 2) {
    PubSub.publish('PointsTracker:end-point-reached');
   };
 };
