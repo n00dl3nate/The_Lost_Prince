@@ -19,15 +19,15 @@ PlayerView.prototype.bindEvents = function(){
 
 PlayerView.prototype.showstats = function () {
 
-  var healthBar = document.getElementById('HP-bar');
-  healthBar.textContent = `${this.player.hp} HP`;
-  healthBar.setAttribute('style',`width:${this.player.hp}%`);
+  // var healthBar = document.getElementById('HP-bar');
+  // healthBar.textContent = `${this.player.hp} HP`;
+  // healthBar.setAttribute('style',`width:${this.player.hp}%`);
 
-  // const health = document.createElement('h4');
-  // health.textContent = `Hp: ${this.player.hp}`;
-  // health.id = "playerStatsHp";
-  // health.value = this.player.hp;
-  // this.player.healthStats.appendChild(health);
+  const health = document.createElement('h4');
+  health.textContent = `Hp: ${this.player.hp}`;
+  health.id = "playerStatsHp";
+  health.value = this.player.hp;
+  this.player.healthStats.appendChild(health);
 
   const attack = document.createElement('h4');
   attack.textContent = `Attack: ${this.player.attack}`;
@@ -98,13 +98,13 @@ PlayerView.prototype.roomContent = function () {
           heals.textContent =  'Health Packs: Bit late for that'
         } else {
 
-          var healthBar = document.getElementById('HP-bar');
-          healthBar.textContent = `${this.player.hp} HP`;
-          healthBar.setAttribute('style',this.player.hp);
-          healthBar.setAttribute('style',`width:${this.player.hp}%`);
-          // health.textContent = `Hp: ${this.player.hp}`
+          // var healthBar = document.getElementById('HP-bar');
+          // healthBar.textContent = `${this.player.hp} HP`;
+          // healthBar.setAttribute('style',this.player.hp);
+          // healthBar.setAttribute('style',`width:${this.player.hp}%`);
+          health.textContent = `Hp: ${this.player.hp}`
 
-          // this.player.updateHp(this.player.hp)
+          this.player.updateHp(this.player.hp)
         }
 
 
@@ -131,12 +131,12 @@ PlayerView.prototype.heal = function () {
 
       this.player.useHealthPack()
 
-      var healthBar = document.getElementById('HP-bar');
-      healthBar.textContent = `${this.player.hp} HP`;
-      healthBar.setAttribute('style',`width:${this.player.hp}%`);
+      // var healthBar = document.getElementById('HP-bar');
+      // healthBar.textContent = `${this.player.hp} HP`;
+      // healthBar.setAttribute('style',`width:${this.player.hp}%`);
 
-      // health = document.querySelector('#playerStatsHp')
-      // health.textContent = `Hp: ${this.player.hp}`
+      health = document.querySelector('#playerStatsHp')
+      health.textContent = `Hp: ${this.player.hp}`
       heals = document.querySelector('#playerStatsHeals')
       heals.textContent = `Health Packs: ${this.player.heals}`
 

@@ -4,8 +4,6 @@ const Player = require('./player_model.js');
 const FightGood = function(){
 
 };
-const playerstats = document.querySelector("div#stats");
-player = new Player();
 
 FightGood.prototype.bindEvents = function(){
   PubSub.subscribe('Fight:fight-started',(evt)=>{
@@ -25,16 +23,46 @@ FightGood.prototype.bindEvents = function(){
     PubSub.subscribe('Fight:run-clicked',(baddie)=>{
       this.run(evt.detail);
     });
+
+    PubSub.subscribe('Fight:fight-result',(evt)=>{
+      // var fightResult = evt.detail;
+      // console.log('Fight Result: ',fightResult);
+      //
+      // this.container.innerHTML = "";
+      // attackDescription = document.createElement('p');
+      // attackDescription.textContent = fightResult;
+      // this.container.appendChild(attackDescription);
+      // fight = false;
+      console.log('Attack Result');
+    });
+
+    PubSub.subscribe('Fight:enemy-result',(evt)=>{
+      // console.log('SUBBED: ',evt.detail);
+      // var revengeResult = evt.detail;
+      //
+      // var revengeDescription = document.createElement('p');
+      // revengeDescription.textContent = revengeResult;
+      // this.container.appendChild(revengeDescription);
+      // fight = false;
+      console.log('Attacked Result');
+    });
+    PubSub.subscribe('Fight:escape',(evt)=>{
+      // var escapeDescription = document.createElement('p');
+      // escapeDescription.textContent = evt.detail;
+      // this.container.appendChild(escapeDescription);
+      // fight = false;
+      // break;
+      console.log('Escape Result');
+    });
   })
 }
 
 FightGood.prototype.attack = function(enemy){
-  console.log(enemy);
   const enemyName = enemy.name;
   var enemyHp = enemy.hp;
   const enemyAtk = enemy.attack;
 
-  const playerAtk = player.getAttackHtml()
+  const playerAtk = 5;
 
   var playerRoll = this.roll() + playerAtk;
   var enemyRoll = this.roll() + enemyAtk;
@@ -46,14 +74,7 @@ FightGood.prototype.attack = function(enemy){
     attackResult = `You attacked the ${enemyName}. It parried!`;
   } else if (playerRoll > enemyRoll){
     fightDamage = playerRoll - enemyRoll;
-    enemyHp -= fightDamage
-    if (enemyHp <= 0){
-      attackResult = `You attacked the ${enemyName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${fightDamage} Damage! The Monster Is Dead!`;
-    }
-    else {
-      attackResult = `You attacked the ${enemyName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${fightDamage} Damage! Monster Hp:${enemyHp}`;
-    }
-
+    attackResult = `You attacked the ${enemyName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${fightDamage} Damage!`;
     // Update enemy HP
 
   } else {
@@ -70,11 +91,6 @@ FightGood.prototype.attack = function(enemy){
   } else if (enemyRoll > playerRoll){
     fightDamage = enemyRoll - playerRoll;
     revengeResult = `The ${enemyName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
-
-    let playerhp = (player.getHpHtml() - fightDamage);
-    console.log(player.getHpHtml(),"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-    player.updateHp(playerhp)
-
     // Update player HP
 
   } else {
