@@ -10,15 +10,20 @@ StartView.prototype.bindEvents = function () {
 
   this.createButtons();
 
+  //const background = document.getElementById("background-img");
+
   const forestButton = document.getElementById("nav-forest-btn").addEventListener('click', (event) => {
+    //background.setAttribute("src", "./images/...");
     PubSub.publish('StartView:choice-button-clicked', "forest")
   });
 
   const lakeButton = document.getElementById("nav-lake-btn").addEventListener('click', (event) => {
+    //background.setAttribute("src", "./images/....");
     PubSub.publish('StartView:choice-button-clicked', "lake")
   });
 
   const mansionButton = document.getElementById("nav-mansion-btn").addEventListener('click', (event) => {
+    //background.setAttribute("src", "./images/....");
     PubSub.publish('StartView:choice-button-clicked', "mansion")
   });
 
