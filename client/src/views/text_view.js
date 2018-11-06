@@ -119,13 +119,11 @@ TextView.prototype.bindEvents = function(){
           const size = evt.detail.size;
           const type = evt.detail.type;
 
-          for(const monster in monsterImage)  {
-
-            if (name == monster) {
-              // return monster.value
-              console.log(monster);
+          for(const monster of monsterImage)  {
+            if (monster.name == name) {
+              console.log(monster.url);
             }
-          }
+          };
 
 
 
