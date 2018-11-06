@@ -55,6 +55,8 @@ Player.prototype.updateHp = function(value){
   health.textContent = `Hp: ${value}`;
   health.id = "playerStatsHp";
   health.value = value;
+
+  this.updatePlayerBar(value);
 }
 
 Player.prototype.updateAttack = function(value){
@@ -75,6 +77,12 @@ Player.prototype.refresh = function(){
   this.updateHp((this.hp));
   this.updateAttack((this.attack));
   this.updateHeals((this.heals));
+}
+
+Player.prototype.updatePlayerBar = function(hp){
+  var healthBar = document.getElementById('player-hp-bar');
+  healthBar.textContent = `${hp} HP`;
+  healthBar.setAttribute('style',`width:${hp}%`);
 }
 
 module.exports = Player
