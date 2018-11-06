@@ -14,3 +14,7 @@
 .btn-disabled {
   cursor:not-allowed;
 }
+
+button {
+  z-index:99;
+}

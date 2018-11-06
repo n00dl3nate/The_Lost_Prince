@@ -10,6 +10,10 @@ body {
   background: black;
 }
 
+.topbox {
+  z-index:99;
+}
+
 .text_box {
   background: black;
   color: white;
@@ -62,6 +66,7 @@ body {
   top: 260px;
   left: 70%;
   z-index: 10;
+  height: 300px;
 }
 
 #background-img {

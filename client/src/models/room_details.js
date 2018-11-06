@@ -25,20 +25,22 @@ const mansionRooms = [
 
 RoomDetails.prototype.bindEvents = function () {
 
-  PubSub.subscribe('StartView:choice-button-clicked', (event) => {
+  // PubSub.subscribe('StartView:choice-button-clicked', (event) => {
+  //
+  //   if (event.detail == "forest") {
+  //     var roomDetails = forestRooms;
+  //   } else if (event.detail == "lake") {
+  //     var roomDetails = lakeRooms;
+  //   } else if (event.detail == "mansion") {
+  //     var roomDetails = mansionRooms;
+  //   }
 
-    if (event.detail == "forest") {
-      var roomDetails = forestRooms;
-    } else if (event.detail == "lake") {
-      var roomDetails = lakeRooms;
-    } else if (event.detail == "mansion") {
-      var roomDetails = mansionRooms;
-    }
+    const roomDetails = forestRooms;
 
     const description = roomDetails[Math.floor(Math.random()*roomDetails.length)];
 
     return description;
-  });
+  //});
 };
 
 
