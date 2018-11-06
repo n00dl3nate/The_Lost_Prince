@@ -1,0 +1,52 @@
+const PubSub = require('../helpers/pub_sub.js');
+const RoomGenerator = require('../models/room_model.js');
+
+const StartView = function (container) {
+  this.container = container;
+};
+
+
+StartView.prototype.bindEvents = function () {
+
+  this.createButtons();
+
+  const forestButton = document.getElementById("nav-forest-btn").addEventListener('click', (event) => {
+    PubSub.publish('StartView:choice-button-clicked', "forest")
+  });
+
+  const lakeButton = document.getElementById("nav-lake-btn").addEventListener('click', (event) => {
+    PubSub.publish('StartView:choice-button-clicked', "lake")
+  });
+
+  const mansionButton = document.getElementById("nav-mansion-btn").addEventListener('click', (event) => {
+    PubSub.publish('StartView:choice-button-clicked', "mansion")
+  });
+
+  
+};
+
+
+StartView.prototype.createButtons = function () {
+  this.container.innerHTML = "";
+
+  const forest = document.createElement("button");
+  forest.textContent = "Move further into the forest";
+  forest.classList.add("btn");
+  forest.id = "nav-forest-btn";
+  this.container.appendChild(forest);
+
+  const lake = document.createElement("button");
+  lake.textContent = "Walk towards the lake";
+  lake.classList.add("btn");
+  lake.id = "nav-lake-btn";
+  this.container.appendChild(lake);
+
+  const mansion = document.createElement("button");
+  mansion.textContent = "Head over to the mansion";
+  mansion.classList.add("btn");
+  mansion.id = "nav-mansion-btn";
+  this.container.appendChild(mansion);
+};
+
+
+module.exports = StartView;
