@@ -5,17 +5,23 @@ const InterfaceStuff = require('./models/interface.js');
 const PlayerView = require('./views/player_view.js');
 const TextView = require('./views/text_view.js');
 const FightGood = require('./models/combat_model.js');
+const StartView = require('./views/start_view.js');
 // const UnfortunateCircumstance = require('./models/traps.js');
 
 document.addEventListener('DOMContentLoaded', ()=>{
-  console.log("DOMContentLoaded");
+  console.log("Hey! Hey you! Have a nice day! x DOMContentLoaded");
   // const choice = 1
   // PubSub.publish('Monster:monster-choice',choice);
+
+  const startContainer = document.querySelector("div#options");
+  const startView = new StartView(startContainer);
+  startView.bindEvents();
 
   const monster = new Monster();
   monster.bindEvents()
 
-  const interfaceButtons = new InterfaceStuff();
+  const interfaceContainer = document.querySelector("div#options");
+  const interfaceButtons = new InterfaceStuff(interfaceContainer);
   interfaceButtons.bindEvents();
 
   const playerstats = document.querySelector("div#stats");

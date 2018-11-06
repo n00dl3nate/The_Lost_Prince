@@ -77,12 +77,12 @@ PlayerView.prototype.roomContent = function () {
       if (this.player.hp >= 100){
         const healButton = document.getElementById("nav-heal-btn")
         healButton.disabled = true
-        healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
+        healButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block')
       }
       else{
         const healButton = document.getElementById("nav-heal-btn")
         healButton.disabled = false
-        healButton.setAttribute('class','navigate btn btn-lg')
+        healButton.setAttribute("class","btn btn-block navigate btn-lg");
         }
     }
 
@@ -96,7 +96,7 @@ PlayerView.prototype.roomContent = function () {
           health.textContent = 'R.I.P.';
           attack.textContent = 'Attack: Not any more';
           heals.textContent =  'Health Packs: Bit late for that'
-        }
+        } 
         else
         {
           this.player.updateHp(this.player.hp)
@@ -122,10 +122,8 @@ PlayerView.prototype.CheckingHeals = function () {
 PlayerView.prototype.heal = function () {
   PubSub.subscribe(`PlayerButton:Heal`, (evt) => {
     if (evt.detail == 'heal'){
-
-      this.player.useHealthPack()
       this.player.updateHeals(this.player.heals += 1)
-
+      this.player.updateHp(this.player.hp += 25)
       if ((this.CheckingHeals()==false)||(this.player.hp > 99)){
         const healButton = document.getElementById("nav-heal-btn")
         healButton.disabled = true
