@@ -23,18 +23,21 @@ Fight.prototype.playerAttack = function (monster){
   const enemyRoll = this.roll() + monsterAttack;
   //Damage for monster
   let monsterDamage = playerRoll - enemyRoll;
-  let monsterHp = (monster.hp - monsterDamage)
+  this.updateMonsterHp(this.getMonsteHp() - monsterDamage);
   //Result declaration
   let yourResult = '';
   //Deciding attack outCome Player Attack
   if (playerRoll == enemyRoll){
     yourResult = `You attacked the ${monsterName}. It parried!`;
   }
+  if (playerRoll < enemyRoll){
+    yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. You failed to hurt it.`
+  }
   if (monsterHp <= 0){
     yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! The Monster Is Dead!`;
   }
   else {
-    yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${monsterHp}`;
+    yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
   };
 
 
@@ -50,9 +53,10 @@ Fight.prototype.playerAttack = function (monster){
 
 Fight.prototype.monsterAttack = function (monster) {
   //monster declaration
+
   const monsterName = monster.name;
   const monsterAttack = monster.attack;
-  var monsterHp = monster.hp;
+
   //Dice Roll Values Per Attack
   const playerAtk = this.player.getAttackHtml();
   const playerRoll = this.roll() + playerAtk;
@@ -157,5 +161,18 @@ Fight.prototype.updateMonsterBar = function(hp){
   healthBar.textContent = `${hp} HP`;
   healthBar.setAttribute('style',`width:${hp}%`);
 }
+
+Fight.prototype.updateMonsterHp = function(amount){
+  const monsterhtml = document.querySelector('#monsterHp')
+  monsterhtml.value = amount
+}
+
+Fight.prototype.getMonsteHp = function(){
+  const monsterhtml = document.querySelector('#monsterHp')
+  return monsterhtml.value
+}
+
+
+
 
 module.exports = Fight
