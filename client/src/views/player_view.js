@@ -106,9 +106,6 @@ PlayerView.prototype.roomContent = function () {
       PubSub.publish(`PointsTracker:monster-level`,monsters)
     }
 
-    points.roomPoints += 1;
-    console.log(points.roomPoints);
-    points.reachEndPoint();
   });
 };
 

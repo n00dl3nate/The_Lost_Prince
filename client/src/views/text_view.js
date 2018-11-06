@@ -2,11 +2,13 @@ const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('./player_view.js')
 const UnfortunateCircumstance = require('../models/traps.js');
 const RoomDetails = require('../models/room_details.js');
-// const PointsTracker = require('../models/points_model.js');
+const PointsTracker = require('../models/points_model.js');
 
 const TextView = function(container){
   this.container = container;
 };
+
+const points = new PointsTracker();
 
 var counter = 0;
 var x = 0;
@@ -15,7 +17,6 @@ player = new PlayerView;
 
 TextView.prototype.bindEvents = function(){
   PubSub.subscribe(`RoomGenerated:room-created${counter}`,(evt)=>{
-
     counter += 1;
 
     var setupRoom = this.setupRoomDetails(evt);
@@ -33,14 +34,16 @@ TextView.prototype.bindEvents = function(){
     roomDescription.textContent = roomContent;
     this.container.appendChild(roomDescription);
 
-    // const points = new PointsTracker();
-    // points.roomPoints += 1;
-    // console.log("HERE", points.roomPoints);
-    // points.reachEndPoint();
+    points.reachEndPoint();
+
   });
 };
 
 TextView.prototype.setupRoomDetails = function(evt){
+
+  points.roomPoints += 1;
+  console.log("RoomPoints", points.roomPoints);
+
   this.container.innerHTML = "";
 
   // Assign Variables for the room
