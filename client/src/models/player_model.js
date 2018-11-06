@@ -50,6 +50,7 @@ Player.prototype.getHealsHtml = function (){
   return healsDocument.value
   }
 
+
 Player.prototype.updateHp = function(value){
   const health = document.querySelector("#playerStatsHp");
   health.textContent = `Hp: ${value}`;

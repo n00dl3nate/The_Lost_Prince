@@ -2,10 +2,13 @@ const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('./player_view.js')
 const UnfortunateCircumstance = require('../models/traps.js');
 const RoomDetails = require('../models/room_details.js');
+const Fight = require('../models/fight_model.js');
 const monsterImage = require('../helpers/monster_image.js');
+
 
 const TextView = function(container){
   this.container = container;
+  this.fight = new Fight;
 };
 
 var counter = 0;
@@ -69,9 +72,10 @@ TextView.prototype.bindEvents = function(){
         PubSub.subscribe('Monster:monster-ready',(evt)=>{
           this.container.innerHTML = "";
           // console.log('MONSTER: ',evt.detail.name);
+          const monster = evt.detail
           const name = evt.detail.name;
           const attack = evt.detail.attack;
-          var monsterHP = evt.detail.hp;
+          var monsterHp = evt.detail.hp;
           const rating = evt.detail.rating;
           const size = evt.detail.size;
           const type = evt.detail.type;
@@ -89,9 +93,9 @@ TextView.prototype.bindEvents = function(){
 
           // Display your chances of beating the monster
           var fight_chance = '';
-          if (monsterHP > 20){
+          if (monsterHp > 20){
             fight_chance = `The ${name} looks very tough...`;
-          } else if (monsterHP < 8){
+          } else if (monsterHp < 8){
             fight_chance = `The ${name} looks weak...`;
           } else {
             fight_chance = `The ${name} looks like you could take it...`;
@@ -104,7 +108,6 @@ TextView.prototype.bindEvents = function(){
           roomDescription = document.createElement('p');
           roomDescription.textContent = `${room_details} ${content_result} ${exits}.`;
           this.container.appendChild(roomDescription);
-
         });
         break;
     }
@@ -116,6 +119,7 @@ TextView.prototype.bindEvents = function(){
     roomDescription.textContent = roomContent;
     this.container.appendChild(roomDescription);
   });
+
 };
 
 TextView.prototype.setupRoomDetails = function(evt){
