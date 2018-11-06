@@ -77,12 +77,12 @@ PlayerView.prototype.roomContent = function () {
       if (this.player.hp >= 100){
         const healButton = document.getElementById("nav-heal-btn")
         healButton.disabled = true
-        healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
+        healButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block')
       }
       else{
         const healButton = document.getElementById("nav-heal-btn")
         healButton.disabled = false
-        healButton.setAttribute('class','navigate btn btn-lg')
+        healButton.setAttribute("class","btn btn-block navigate btn-lg");
         }
     }
 

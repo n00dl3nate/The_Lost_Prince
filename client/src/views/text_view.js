@@ -70,26 +70,26 @@ TextView.prototype.setupExits = function(setupRoom){
   if (setupRoom[0].exitLeft == 1){
     exits += 'LEFT ';
     leftNavButton.disabled=false;
-    leftNavButton.setAttribute('class','navigate btn btn-lg');
+    leftNavButton.setAttribute('class','navigate btn btn-lg btn-block');
   } else {
     leftNavButton.disabled=true;
-    leftNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
+    leftNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
   };
   if (setupRoom[0].exitRight == 1){
     exits += 'RIGHT ';
     rightNavButton.disabled=false;
-    rightNavButton.setAttribute('class','navigate btn btn-lg');
+    rightNavButton.setAttribute('class','navigate btn btn-lg btn-block');
   } else {
     rightNavButton.disabled=true;
-    rightNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
+    rightNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
   };
   if (setupRoom[0].exitForward == 1){
     exits += 'FORWARD ';
     forwardNavButton.disabled=false;
-    forwardNavButton.setAttribute('class','navigate btn btn-lg');
+    forwardNavButton.setAttribute('class','navigate btn btn-lg btn-block');
   } else {
     forwardNavButton.disabled=true;
-    forwardNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
+    forwardNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
   };
   console.log(exits)
   return exits;
@@ -101,11 +101,11 @@ TextView.prototype.disableNavigation = function(){
   const forwardNavButton = document.getElementById('nav-forward-btn');
 
   leftNavButton.disabled = true;
-  leftNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
+  leftNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
   rightNavButton.disabled = true;
-  rightNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
+  rightNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
   forwardNavButton.disabled = true;
-  forwardNavButton.setAttribute('class','btn-disabled navigate btn btn-lg');
+  forwardNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
 };
 
 TextView.prototype.pageContent = function(content,room_details,exitSetup){

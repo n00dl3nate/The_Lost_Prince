@@ -22,7 +22,7 @@ StartView.prototype.bindEvents = function () {
     PubSub.publish('StartView:choice-button-clicked', "mansion")
   });
 
-  
+
 };
 
 
@@ -31,19 +31,19 @@ StartView.prototype.createButtons = function () {
 
   const forest = document.createElement("button");
   forest.textContent = "Move further into the forest";
-  forest.classList.add("btn");
+  forest.setAttribute("class","btn btn-block navigate btn-lg");
   forest.id = "nav-forest-btn";
   this.container.appendChild(forest);
 
   const lake = document.createElement("button");
   lake.textContent = "Walk towards the lake";
-  lake.classList.add("btn");
+  lake.setAttribute("class","btn btn-block navigate btn-lg");
   lake.id = "nav-lake-btn";
   this.container.appendChild(lake);
 
   const mansion = document.createElement("button");
   mansion.textContent = "Head over to the mansion";
-  mansion.classList.add("btn");
+  mansion.setAttribute("class","btn btn-block navigate btn-lg");
   mansion.id = "nav-mansion-btn";
   this.container.appendChild(mansion);
 };
