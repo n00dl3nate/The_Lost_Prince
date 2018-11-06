@@ -14,6 +14,16 @@ Interface.prototype.bindEvents = function(){
 
     this.createButtons();
 
+    const text = document.getElementById("text-display");
+    if (event.detail == "forest") {
+      text.textContent = "You make your way deeper into the forest until you reach a fork in the path. Do you head Left, Forward, or Right?";
+    } else if (event.detail == "lake") {
+      text.textContent = "You make your way towards a large lake until you reach a fork in the path. Do you head Left, Forward, or Right?";
+    } else if (event.detail == "mansion") {
+      text.textContent = "You make your way towards a towering mansion until you reach a fork in the path. Do you head Left, Forward, or Right?";
+    };
+
+
     const leftButton = document.getElementById('nav-left-btn').addEventListener('click',()=>{
     PubSub.publish('DirectionButton:direction-clicked',leftButton);
     });
