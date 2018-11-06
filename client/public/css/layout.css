@@ -2,6 +2,10 @@ body {
   background-color: black;
 }
 
+.container-fluid {
+  margin: 0 auto;
+}
+
 /* .img-center {
   text-align: center;
 } */
@@ -10,10 +14,18 @@ body {
   background: black;
 }
 
+.topbox {
+  z-index:99;
+}
+
 .text_box {
   background: black;
   color: white;
+  height: 200px;
+  overflow-y:scroll;
 }
+
+
 
 .stats {
   background: black;
@@ -34,12 +46,16 @@ body {
 
 .border {
   border: 1px solid black;
+}
 
+.pad10 {
+  padding:10px;
 }
 
 #image-display {
   position: relative;
   height: 600px;
+  overflow:hidden;
 }
 
 
@@ -56,8 +72,13 @@ body {
   top: 260px;
   left: 70%;
   z-index: 10;
+  height: 300px;
 }
 
 #background-img {
   z-index: 5;
+}
+
+.progress-enemy {
+  width: 300px;
 }
