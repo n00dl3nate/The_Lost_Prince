@@ -17,8 +17,6 @@ Fight.prototype.playerAttack = function (monster){
   //monster declaration
   const monsterName = monster.name;
   const monsterAttack = monster.attack;
-  let monsterHp = monster.hp;
-  let yourResult = '';
 
   //Dice Roll Values Per Attack
   const playerAtk = this.player.getAttackHtml();
@@ -26,8 +24,7 @@ Fight.prototype.playerAttack = function (monster){
   const enemyRoll = this.roll() + monsterAttack;
 
   //Damage for monster
-  let monsterDamage = playerRoll - enemyRoll;
-  this.updateMonsterHp(this.getMonsteHp() - monsterDamage);
+
   //Result declaration
   let yourResult = '';
   //Deciding attack outCome Player Attack
@@ -37,8 +34,17 @@ Fight.prototype.playerAttack = function (monster){
   } else if (playerRoll < enemyRoll){
     yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. You failed to hurt it.`
   } else {
-    var fightDamage = playerRoll - enemyRoll;
-    monsterHp -= fightDamage;
+    let monsterDamage = playerRoll - enemyRoll;
+    if (monsterDamage < 0){
+      monsterDamage = 0;
+    }
+    this.updateMonsterHp(this.getMonsteHp() - monsterDamage);
+    this.updateMonsterBar(this.getMonsteHp());
+
+    if (this.getMonsteHp() < 0){
+      this.updateMonsterHp(0);
+    }
+
     yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
   };
 
@@ -72,6 +78,9 @@ Fight.prototype.monsterAttack = function (monster) {
     revengeResult = `The ${monsterName} attacked you, but you parried!`;
   } else if (enemyRoll > playerRoll){
     fightDamage = enemyRoll - playerRoll;
+    if (fightDamage < 0){
+      fightDamage = 0;
+    }
     revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
     // Update player HP
     var newPlayerHp = this.player.getHpHtml() - fightDamage;
@@ -81,13 +90,13 @@ Fight.prototype.monsterAttack = function (monster) {
     revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. It failed to hurt you physically, but emotionally you are devastated.`
   }
   //
-  // if (monsterHp <= 0){
-  //   var additional = `The ${monsterName} is dead.`;
-  //   this.enableNavigation();
-  //   return `${theirResult} ${additional}`;
-  // } else {
-  //   return theirResult;
-  // }
+  if (this.getMonsteHp() <= 0){
+    var additional = `The ${monsterName} is dead.`;
+    this.enableNavigation();
+    return `${revengeResult} ${additional}`;
+  } else {
+    return revengeResult;
+  }
   return revengeResult;
 }
 
@@ -103,6 +112,23 @@ Fight.prototype.startFight = function (monster) {
 
 }
 
+Fight.prototype.run = function(enemy){
+  const enemyName = enemy.name;
+  var enemyHp = enemy.hp;
+  const enemyAtk = enemy.attack;
+  var runResult = '';
+
+  if (this.roll()%2 == 0){
+    runResult = `You run away from the ${enemyName}. It tries to hit you but misses.`;
+  } else {
+    var runDamage = Math.ceil(this.roll()/2);
+    runResult = `You ran away from the ${enemyName}. It manages to hit you for [${runDamage}] as you bravely run away.`;
+    var newPlayerHp = this.player.getHpHtml() - runDamage;
+    this.player.updateHp(newPlayerHp);
+  }
+  return runResult;
+};
+
 Fight.prototype.sendMonster = function(monsterInfo){
   PubSub.subscribe('Fight:attack-clicked',(baddie)=>{
 
@@ -114,8 +140,9 @@ Fight.prototype.sendMonster = function(monsterInfo){
 
   // set up run function
   PubSub.subscribe('Fight:run-clicked',(baddie)=>{
-    // console.log('RUNNING AWAY FROM: ',monsterInfo.name);
-    // this.run(evt.detail);
+    var runAway = this.run(monsterInfo);
+    this.printStuff(runAway);
+    this.enableNavigation();
   });
 };
 
@@ -156,9 +183,9 @@ Fight.prototype.enableNavigation = function(){
 };
 
 Fight.prototype.updateMonsterBar = function(hp){
-  var healthBar = document.getElementById('monster-hp-bar');
-  healthBar.textContent = `${hp} HP`;
-  healthBar.setAttribute('style',`width:${hp}%`);
+  // var healthBar = document.getElementById('monster-hp-bar');
+  // healthBar.textContent = ` HP`;
+  // healthBar.setAttribute('style',`width:${hp}%`);
 }
 
 Fight.prototype.updateMonsterHp = function(amount){
