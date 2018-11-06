@@ -30,12 +30,10 @@ Player.prototype.useHealthPack = function () {
   if (this.hp >= 75){
     let heal = 100 - this.hp
     this.hp += heal
-    this.heals -= 1;
-  }
-  else{
-  this.hp += 25;
-  this.heals -= 1;
+  } else {
+    this.hp += 25;
   };
+  this.heals -= 1;
 };
 
 Player.prototype.getHpHtml = function (){
@@ -52,11 +50,14 @@ Player.prototype.getHealsHtml = function (){
   return healsDocument.value
   }
 
+
 Player.prototype.updateHp = function(value){
   const health = document.querySelector("#playerStatsHp");
   health.textContent = `Hp: ${value}`;
   health.id = "playerStatsHp";
   health.value = value;
+
+  this.updatePlayerBar(value);
 }
 
 Player.prototype.updateAttack = function(value){
@@ -77,6 +78,12 @@ Player.prototype.refresh = function(){
   this.updateHp((this.hp));
   this.updateAttack((this.attack));
   this.updateHeals((this.heals));
+}
+
+Player.prototype.updatePlayerBar = function(hp){
+  var healthBar = document.getElementById('player-hp-bar');
+  healthBar.textContent = `${hp} HP`;
+  healthBar.setAttribute('style',`width:${hp}%`);
 }
 
 module.exports = Player

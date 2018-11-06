@@ -80,7 +80,6 @@ Interface.prototype.directionButtons = function () {
   rightButton.id = "nav-right-btn";
   this.container.appendChild(rightButton);
 };
-// <button type="button" name="button" id="nav-forward-btn" class="navigate btn btn-lg">Forward</button>
 
 
 Interface.prototype.healButton = function () {

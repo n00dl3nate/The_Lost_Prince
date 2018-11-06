@@ -9,7 +9,7 @@ const StartView = require('./views/start_view.js');
 // const UnfortunateCircumstance = require('./models/traps.js');
 
 document.addEventListener('DOMContentLoaded', ()=>{
-  console.log("DOMContentLoaded");
+  console.log("Hey! Hey you! Have a nice day! x DOMContentLoaded");
   // const choice = 1
   // PubSub.publish('Monster:monster-choice',choice);
 
