@@ -1,11 +1,8 @@
 const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('./player_view.js')
 const UnfortunateCircumstance = require('../models/traps.js');
-<<<<<<< HEAD
-const monsterImage = require('../helpers/monster_image.js');
-=======
 const RoomDetails = require('../models/room_details.js');
->>>>>>> 17ce1e140faa466e64cdbb6ff908b66e32e8df9b
+const monbsterImage = frequire('../helpers/monster_image.js');
 
 const TextView = function(container){
   this.container = container;
@@ -24,7 +21,6 @@ TextView.prototype.bindEvents = function(){
     var exitSetup = this.setupExits(setupRoom);
 
     // Describe the room
-<<<<<<< HEAD
     var room_details = '+ Room Description Placeholder +';
 
     // Fancy up the room contents
@@ -112,11 +108,6 @@ TextView.prototype.bindEvents = function(){
         });
         break;
     }
-=======
-    const details = new RoomDetails();
-    const room_description = details.bindEvents();
-    var room_details = `${room_description}`;
->>>>>>> 17ce1e140faa466e64cdbb6ff908b66e32e8df9b
 
     var roomContent = this.pageContent(content,room_details,exitSetup);
     console.log('Page Content: ',roomContent);
