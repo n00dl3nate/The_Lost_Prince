@@ -2,6 +2,7 @@ const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('./player_view.js')
 const UnfortunateCircumstance = require('../models/traps.js');
 const RoomDetails = require('../models/room_details.js');
+const monsterImage = require('../helpers/monster_image.js');
 
 const TextView = function(container){
   this.container = container;
@@ -20,9 +21,93 @@ TextView.prototype.bindEvents = function(){
     var exitSetup = this.setupExits(setupRoom);
 
     // Describe the room
-    const details = new RoomDetails();
-    const room_description = details.bindEvents();
-    var room_details = `${room_description}`;
+    var room_details = '+ Room Description Placeholder +';
+
+    // Fancy up the room contents
+    var content_result = '';
+    var roomDescription = '';
+    switch(content){
+      case 'health':
+        content_result = 'You have found a Health Pack!';
+        // Run function to add 1 to health packs
+        roomDescription = document.createElement('p');
+        roomDescription.textContent = `${room_details} ${content_result} ${exits}.`;
+        this.container.appendChild(roomDescription);
+        break;
+
+      case 'upgrade':
+        content_result = 'You have found a Weapon Upgrade! (Attack + 1)';
+        // run function to increase attack
+        PubSub.publish('GameEvent:weapon-upgrade');
+
+        roomDescription = document.createElement('p');
+        roomDescription.textContent = `${room_details} ${content_result} ${exits}.`;
+        this.container.appendChild(roomDescription);
+        break;
+
+      case 'trap':
+        console.log('Trap Room');
+        const unfortunateCircumstance = new UnfortunateCircumstance();
+        const circumstance = unfortunateCircumstance.bindEvents();
+
+          this.container.innerHTML = "";
+          const trap = circumstance.trap;
+          const trapDamage = circumstance.damage;
+
+
+          PubSub.publish(`Trap:trap-damage${x}`,trapDamage);
+          x += 1
+          roomDescription = document.createElement('p');
+          roomDescription.textContent = `${room_details} ${trap} It hurts you for ${trapDamage}HP! ${exits}.`;
+          this.container.appendChild(roomDescription);
+        break;
+
+      case 'monster':
+        // generate a monster!
+        // console.log('YOU ARE HERE');
+
+        PubSub.subscribe('Monster:monster-ready',(evt)=>{
+          this.container.innerHTML = "";
+          // console.log('MONSTER: ',evt.detail.name);
+          const name = evt.detail.name;
+          const attack = evt.detail.attack;
+          var monsterHP = evt.detail.hp;
+          const rating = evt.detail.rating;
+          const size = evt.detail.size;
+          const type = evt.detail.type;
+
+          for(const monster of monsterImage)  {
+            if (monster.name == name) {
+              console.log(monster.url);
+            }
+          };
+
+
+
+
+
+
+          // Display your chances of beating the monster
+          var fight_chance = '';
+          if (monsterHP > 20){
+            fight_chance = `The ${name} looks very tough...`;
+          } else if (monsterHP < 8){
+            fight_chance = `The ${name} looks weak...`;
+          } else {
+            fight_chance = `The ${name} looks like you could take it...`;
+          };
+
+
+
+          content_result = `You have stumbled upon a monster... The ${name} is a ${size} ${type}. ${fight_chance}`
+          // console.log(`You have stumbled upon a monster... The ${name} is a ${size} ${type}. ${fight_chance}`);
+          roomDescription = document.createElement('p');
+          roomDescription.textContent = `${room_details} ${content_result} ${exits}.`;
+          this.container.appendChild(roomDescription);
+
+        });
+        break;
+    }
 
     var roomContent = this.pageContent(content,room_details,exitSetup);
     console.log('Page Content: ',roomContent);
