@@ -18,10 +18,15 @@ PlayerView.prototype.bindEvents = function(){
 };
 
 PlayerView.prototype.showstats = function () {
-  const health = document.createElement('h4');
-  health.textContent = `Hp: ${this.player.hp}`;
-  health.id = "playerStatsHp"
-  this.container.appendChild(health)
+  var healthBar = document.getElementById('HP-bar');
+  healthBar.textContent = `${this.player.hp} HP`;
+  healthBar.setAttribute('style',`width:${this.player.hp}%`);
+
+
+  // const health = document.createElement('h4');
+  // health.textContent = `Hp: ${this.player.hp}`;
+  // health.id = "playerStatsHp"
+  // this.container.appendChild(health)
   const attack = document.createElement('h4');
   attack.textContent = `Attack: ${this.player.attack}`;
   attack.id = "playerStatsAttack"
@@ -87,7 +92,11 @@ PlayerView.prototype.roomContent = function () {
           attack.textContent = 'Attack: Not any more';
           heals.textContent =  'Health Packs: Bit late for that'
         } else {
-          health.textContent = `Hp: ${this.player.hp}`
+          var healthBar = document.getElementById('HP-bar');
+          healthBar.textContent = `${this.player.hp} HP`;
+          healthBar.setAttribute('style',this.player.hp);
+          healthBar.setAttribute('style',`width:${this.player.hp}%`);
+          // health.textContent = `Hp: ${this.player.hp}`
         }
 
 
@@ -112,8 +121,13 @@ PlayerView.prototype.heal = function () {
   PubSub.subscribe(`PlayerButton:Heal`, (evt) => {
     if (evt.detail == 'heal'){
       this.player.useHealthPack()
-      health = document.querySelector('#playerStatsHp')
-      health.textContent = `Hp: ${this.player.hp}`
+
+      var healthBar = document.getElementById('HP-bar');
+      healthBar.textContent = `${this.player.hp} HP`;
+      healthBar.setAttribute('style',`width:${this.player.hp}%`);
+
+      // health = document.querySelector('#playerStatsHp')
+      // health.textContent = `Hp: ${this.player.hp}`
       heals = document.querySelector('#playerStatsHeals')
       heals.textContent = `Health Packs: ${this.player.heals}`
       if ((this.CheckingHeals() === false) || (this.player.hp > 99)){
