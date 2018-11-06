@@ -19,9 +19,18 @@
       <div class="row">
         <div class="col-sm-12 image border" id="image-display">
           <img src="./images/Background2.gif" class="img-responsive" id="background-img" alt="No image buddy">
+
+          <div id="player-image"/>
+            <div class="progress progress-player" style="height:10px;">
+              <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" id="HP-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+              </div>
+            </div>
+            <img src="./images/GiantWeasel.gif" class="" alt="No image buddy">
+          </div>
+
           <div id="enemy-image"/>
-          <div class="progress progress-enemy" style="height:10px;">
-            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" id="HP-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress progress-enemy" style="height:10px;">
+              <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" id="HP-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
               </div>
             </div>
             <img src="./images/WarhorseSkeleton.gif" class="" alt="No image buddy">
@@ -76,9 +85,6 @@
 
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-12 items border">Item section for items that you get.</div>
-      </div>
     </div>
 
     <!-- <div class="dice"></div>
@@ -91,8 +97,16 @@
 
     <div class="items">items</div>
      -->
-
-    <footer></footer>
-
+    <footer>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6 offset-sm-3 footer-stuff">
+            Thought of, planned, created, ruined, fixed, broke harder and finally completed by a bunch of people. &copy 2018.
+            </br>
+            Made in Codeclan, even if they don't want to admit it.
+          </div>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
