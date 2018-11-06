@@ -19,15 +19,15 @@ PlayerView.prototype.bindEvents = function(){
 
 PlayerView.prototype.showstats = function () {
 
-  var healthBar = document.getElementById('HP-bar');
-  healthBar.textContent = `${this.player.hp} HP`;
-  healthBar.setAttribute('style',`width:${this.player.hp}%`);
+  // var healthBar = document.getElementById('HP-bar');
+  // healthBar.textContent = `${this.player.hp} HP`;
+  // healthBar.setAttribute('style',`width:${this.player.hp}%`);
 
-  // const health = document.createElement('h4');
-  // health.textContent = `Hp: ${this.player.hp}`;
-  // health.id = "playerStatsHp";
-  // health.value = this.player.hp;
-  // this.player.healthStats.appendChild(health);
+  const health = document.createElement('h4');
+  health.textContent = `Hp: ${this.player.hp}`;
+  health.id = "playerStatsHp";
+  health.value = this.player.hp;
+  this.player.healthStats.appendChild(health);
 
   const attack = document.createElement('h4');
   attack.textContent = `Attack: ${this.player.attack}`;
@@ -96,18 +96,12 @@ PlayerView.prototype.roomContent = function () {
           health.textContent = 'R.I.P.';
           attack.textContent = 'Attack: Not any more';
           heals.textContent =  'Health Packs: Bit late for that'
-        } else {
-
-          var healthBar = document.getElementById('HP-bar');
-          healthBar.textContent = `${this.player.hp} HP`;
-          healthBar.setAttribute('style',this.player.hp);
-          healthBar.setAttribute('style',`width:${this.player.hp}%`);
-          // health.textContent = `Hp: ${this.player.hp}`
-
-          // this.player.updateHp(this.player.hp)
         }
-
-
+        else
+        {
+          this.player.updateHp(this.player.hp)
+          health.textContent = `Hp: ${this.player.hp}`
+        }
       });
     };
     if (content == "monster"){
@@ -130,19 +124,9 @@ PlayerView.prototype.heal = function () {
     if (evt.detail == 'heal'){
 
       this.player.useHealthPack()
+      this.player.updateHeals(this.player.heals += 1)
 
-      var healthBar = document.getElementById('HP-bar');
-      healthBar.textContent = `${this.player.hp} HP`;
-      healthBar.setAttribute('style',`width:${this.player.hp}%`);
-
-      // health = document.querySelector('#playerStatsHp')
-      // health.textContent = `Hp: ${this.player.hp}`
-      heals = document.querySelector('#playerStatsHeals')
-      heals.textContent = `Health Packs: ${this.player.heals}`
-
-      // this.player.updateHeals(this.player.heals += 1)
-
-      if ((this.CheckingHeals() === false) || (this.player.hp > 99)){
+      if ((this.CheckingHeals()==false)||(this.player.hp > 99)){
         const healButton = document.getElementById("nav-heal-btn")
         healButton.disabled = true
         healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
