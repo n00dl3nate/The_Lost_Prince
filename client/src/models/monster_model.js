@@ -1,9 +1,10 @@
 const PubSub = require('../helpers/pub_sub.js');
-const RequestHelper = require('../helpers/request_helper');
+const RequestHelper = require('../helpers/request_helper.js');
 
 const Monster = function () {
   this.data = null;
 }
+
 
 Monster.prototype.bindEvents = function() {
 
@@ -40,8 +41,7 @@ Monster.prototype.createMonster = function (data) {
     hp: data.hit_points,
     type: data.type,
     size: data.size,
-    rating: data.challenge_rating
-
+    rating: data.challenge_rating,
   };
 
   PubSub.publish('Monster:monster-ready', monster);

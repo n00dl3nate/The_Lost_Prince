@@ -1,6 +1,7 @@
 const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('./player_view.js')
 const UnfortunateCircumstance = require('../models/traps.js');
+const monsterImage = require('../helpers/monster_image.js');
 
 const TextView = function(container){
   this.container = container;
@@ -117,6 +118,19 @@ TextView.prototype.bindEvents = function(){
           const rating = evt.detail.rating;
           const size = evt.detail.size;
           const type = evt.detail.type;
+
+          for(const monster in monsterImage)  {
+
+            if (name == monster) {
+              // return monster.value
+              console.log(monster);
+            }
+          }
+
+
+
+
+
 
           // Display your chances of beating the monster
           var fight_chance = '';

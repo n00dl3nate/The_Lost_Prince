@@ -42,6 +42,7 @@ body {
   height: 600px;
 }
 
+
 #enemy-image,
 #background-img{
   position: absolute;
@@ -50,9 +51,10 @@ body {
   top: 0;
   left: 0;
 }
+
 #enemy-image {
-  top: 350px;
-  left: 80%;
+  top: 260px;
+  left: 70%;
   z-index: 10;
 }
 
