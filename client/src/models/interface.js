@@ -12,7 +12,7 @@ Interface.prototype.bindEvents = function(){
   const leftButton = document.getElementById('nav-left-btn').addEventListener('click',()=>{
     PubSub.publish('DirectionButton:direction-clicked',leftButton);
   });
-  const rightButton = document.getElementById('nav-right-btn').addEventListener('click',()=>{
+  const rightButton = document.getElementById("nav-right-btn").addEventListener('click',()=>{
     PubSub.publish('DirectionButton:direction-clicked',rightButton);
   });
   const forwardButton = document.getElementById('nav-forward-btn').addEventListener('click',()=>{
@@ -28,7 +28,7 @@ Interface.prototype.bindEvents = function(){
   const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
     PubSub.publish('Fight:run-clicked');
   });
-  
+
   const healButton = document.getElementById("nav-heal-btn").addEventListener('click',()=> {
     const playerstats = document.querySelector("div#stats");
     PubSub.publish(`PlayerButton:Heal`,'heal');

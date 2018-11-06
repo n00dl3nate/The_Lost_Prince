@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   playerView.showstats();
   playerView.roomContent();
   playerView.heal();
-  
+
   const fightTime = new FightGood();
   fightTime.bindEvents();
 
