@@ -1,9 +1,10 @@
 const PubSub = require('../helpers/pub_sub.js');
-const RequestHelper = require('../helpers/request_helper');
+const RequestHelper = require('../helpers/request_helper.js');
 
 const Monster = function () {
   this.data = null;
 }
+
 
 Monster.prototype.bindEvents = function() {
 
@@ -16,9 +17,7 @@ Monster.prototype.bindEvents = function() {
     // ];
     const choice = choices[Math.floor(Math.random()*choices.length)];
 
-    console.log(event.detail);
     this.getMonster(choice);
-    console.log(choice)
    })
 }
 
@@ -34,18 +33,15 @@ Monster.prototype.getMonster = function (choice) {
 Monster.prototype.createMonster = function (data) {
   const monster =
   {
-
     name: data.name,
     attack: data.strength,
     hp: data.hit_points,
     type: data.type,
     size: data.size,
-    rating: data.challenge_rating
-
+    rating: data.challenge_rating,
   };
 
   PubSub.publish('Monster:monster-ready', monster);
-  console.log(monster);
   };
 
 module.exports = Monster;

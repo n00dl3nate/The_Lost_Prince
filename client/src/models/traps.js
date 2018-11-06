@@ -62,7 +62,7 @@ UnfortunateCircumstance.prototype.bindEvents = function(){
     console.log('Trap: ',trapType[trapNo])
     const damageModifier = trapType[trapNo]['damageModifier']
     // How much damage?
-    const trapDamage = (Math.floor(Math.random()*5)+1)*damageModifier;
+    const trapDamage = (Math.floor(Math.random()*8)+1)*damageModifier;
     const trapReturn = {
       trap: trapDescription,
       damage: trapDamage
