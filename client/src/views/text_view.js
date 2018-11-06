@@ -197,4 +197,6 @@ TextView.prototype.pageContent = function(content,room_details,exitSetup){
 
 }
 
+// do this thing to update page
+
 module.exports = TextView;
