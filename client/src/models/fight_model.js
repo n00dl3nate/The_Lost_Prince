@@ -25,6 +25,13 @@ Fight.prototype.playerAttack = function (monster){
   const playerRoll = this.roll() + playerAtk;
   const enemyRoll = this.roll() + monsterAttack;
 
+  //Damage for monster
+  let monsterDamage = playerRoll - enemyRoll;
+  this.updateMonsterHp(this.getMonsteHp() - monsterDamage);
+  //Result declaration
+  let yourResult = '';
+  //Deciding attack outCome Player Attack
+
   if (playerRoll == enemyRoll){
     yourResult = `You attacked the ${monsterName}. It parried!`;
   } else if (playerRoll < enemyRoll){
@@ -32,8 +39,8 @@ Fight.prototype.playerAttack = function (monster){
   } else {
     var fightDamage = playerRoll - enemyRoll;
     monsterHp -= fightDamage;
-    yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${fightDamage} Damage! It has ${monsterHp} HP left.`;
-  }
+    yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
+  };
 
   const newMonster = {
     name: monster.name,
@@ -47,8 +54,12 @@ Fight.prototype.playerAttack = function (monster){
 
 Fight.prototype.monsterAttack = function (monster) {
   //monster declaration
+
   const monsterName = monster.name;
   const monsterAttack = monster.attack;
+
+  //Dice Roll Values Per Attack
+
   const playerAtk = this.player.getAttackHtml();
   var playerRoll = this.roll() + playerAtk;
   var enemyRoll = this.roll() + monsterAttack;
@@ -149,5 +160,18 @@ Fight.prototype.updateMonsterBar = function(hp){
   healthBar.textContent = `${hp} HP`;
   healthBar.setAttribute('style',`width:${hp}%`);
 }
+
+Fight.prototype.updateMonsterHp = function(amount){
+  const monsterhtml = document.querySelector('#monsterHp')
+  monsterhtml.value = amount
+}
+
+Fight.prototype.getMonsteHp = function(){
+  const monsterhtml = document.querySelector('#monsterHp')
+  return monsterhtml.value
+}
+
+
+
 
 module.exports = Fight
