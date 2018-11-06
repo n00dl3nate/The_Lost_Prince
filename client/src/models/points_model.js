@@ -39,4 +39,6 @@ PointsTracker.prototype.reachEndPoint = function () {
   };
 };
 
+//
+
 module.exports = PointsTracker;

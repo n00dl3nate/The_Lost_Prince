@@ -56,7 +56,6 @@ Player.prototype.updateHp = function(value){
   health.textContent = `Hp: ${value}`;
   health.id = "playerStatsHp";
   health.value = value;
-
   this.updatePlayerBar(value);
 }
 

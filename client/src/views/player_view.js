@@ -121,7 +121,7 @@ PlayerView.prototype.heal = function () {
   PubSub.subscribe(`PlayerButton:Heal`, (evt) => {
     if (evt.detail == 'heal'){
       this.player.updateHeals(this.player.heals += 1)
-      this.player.updateHp(this.player.hp += 25)
+      this.player.useHealthPack()
       if ((this.CheckingHeals()==false)||(this.player.hp > 99)){
         const healButton = document.getElementById("nav-heal-btn")
         healButton.disabled = true
