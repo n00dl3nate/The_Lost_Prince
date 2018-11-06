@@ -30,12 +30,10 @@ Player.prototype.useHealthPack = function () {
   if (this.hp >= 75){
     let heal = 100 - this.hp
     this.hp += heal
-    this.heals -= 1;
-  }
-  else{
-  this.hp += 25;
-  this.heals -= 1;
+  } else {
+    this.hp += 25;
   };
+  this.heals -= 1;
 };
 
 Player.prototype.getHpHtml = function (){
