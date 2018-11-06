@@ -61,7 +61,7 @@ FightGood.prototype.attack = function(enemy){
 
 
   this.fight.playerAttack(enemy);
-  
+
   this.fight.monsterAttack(enemy);
 
 //   const enemyName = enemy.name;

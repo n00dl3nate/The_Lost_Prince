@@ -96,7 +96,7 @@ PlayerView.prototype.roomContent = function () {
           health.textContent = 'R.I.P.';
           attack.textContent = 'Attack: Not any more';
           heals.textContent =  'Health Packs: Bit late for that'
-        } 
+        }
         else
         {
           this.player.updateHp(this.player.hp)
