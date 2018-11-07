@@ -6,10 +6,8 @@ const Fight = function () {
   this.player = new Player;
 };
 
-
-
 Fight.prototype.roll = function(){
-  return Math.floor(Math.random()*10)+1;
+  return Math.floor(Math.random()*20)+1;
 }
 
 
@@ -22,6 +20,8 @@ Fight.prototype.playerAttack = function (monster){
   const playerAtk = this.player.getAttackHtml();
   const playerRoll = this.roll() + playerAtk;
   const enemyRoll = this.roll() + monsterAttack;
+  const diceUpdate = [playerRoll,enemyRoll];
+  PubSub.publish('Dice:input',diceUpdate);
 
   //Damage for monster
 
@@ -30,9 +30,9 @@ Fight.prototype.playerAttack = function (monster){
   //Deciding attack outCome Player Attack
 
   if (playerRoll == enemyRoll){
-    yourResult = `You attacked the ${monsterName}. It parried!`;
+    yourResult = `You attacked the ${monsterName} (${this.getMonsteHp()} HP). It parried!`;
   } else if (playerRoll < enemyRoll){
-    yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. You failed to hurt it.`
+    yourResult = `You attacked the ${monsterName} (${this.getMonsteHp()} HP). You rolled [${playerRoll}] and it rolled [${enemyRoll}]. You failed to hurt it.`
   } else {
     let monsterDamage = playerRoll - enemyRoll;
     if (monsterDamage < 0){
@@ -69,35 +69,34 @@ Fight.prototype.monsterAttack = function (monster) {
   const playerAtk = this.player.getAttackHtml();
   var playerRoll = this.roll() + playerAtk;
   var enemyRoll = this.roll() + monsterAttack;
-
+  const diceUpdate = [playerRoll,enemyRoll];
+  setTimeout(function(){
+    PubSub.publish('Dice:input',diceUpdate);
+  },2000)
 
   var revengeResult = '';
   var fightDamage = 0;
 
-  if (enemyRoll == playerRoll){
-    revengeResult = `The ${monsterName} attacked you, but you parried!`;
-  } else if (enemyRoll > playerRoll){
-    fightDamage = enemyRoll - playerRoll;
-    if (fightDamage < 0){
-      fightDamage = 0;
-    }
-    revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
-    // Update player HP
-    var newPlayerHp = this.player.getHpHtml() - fightDamage;
-    this.player.updateHp(newPlayerHp);
+  if (this.getMonsteHp() == 0){
+    revengeResult = `The ${monsterName} has been brutally slain. You realise it didn't actually attack you until you hit it first. You could be the real monster in here...`;
+  } else {
+    if (enemyRoll == playerRoll){
+      revengeResult = `The ${monsterName} (${this.getMonsteHp()} HP) attacked you, but you parried!`;
+    } else if (enemyRoll > playerRoll){
+      fightDamage = enemyRoll - playerRoll;
+      if (fightDamage < 0){
+        fightDamage = 0;
+      }
+      revengeResult = `The ${monsterName} (${this.getMonsteHp()} HP) attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
+      // Update player HP
+      var newPlayerHp = this.player.getHpHtml() - fightDamage;
+      this.player.updateHp(newPlayerHp);
 
-  } else {
-    revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. It failed to hurt you physically, but emotionally you are devastated.`
-  }
-  //
-  if (this.getMonsteHp() <= 0){
-    var additional = `The ${monsterName} is dead.`;
-    this.enableNavigation();
-    return `${revengeResult} ${additional}`;
-  } else {
+    } else {
+      revengeResult = `The ${monsterName} (${this.getMonsteHp()} HP) attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. It failed to hurt you physically, but emotionally you are devastated.`
+    }
     return revengeResult;
   }
-  return revengeResult;
 }
 
 Fight.prototype.startFight = function (monster) {
@@ -133,9 +132,14 @@ Fight.prototype.sendMonster = function(monsterInfo){
   PubSub.subscribe('Fight:attack-clicked',(baddie)=>{
 
     var yourAttack = this.playerAttack(monsterInfo);
+
     var theirAttack = this.monsterAttack(monsterInfo);
 
     this.printStuff(yourAttack,theirAttack);
+
+    if (this.getMonsteHp() == 0){
+      this.enableNavigation();
+    }
   });
 
   // set up run function
@@ -153,11 +157,45 @@ Fight.prototype.printStuff = function(yourInput,theirInput){
   yourAttack = document.createElement('p');
   yourAttack.textContent = yourInput;
   target.appendChild(yourAttack);
+  // this.disableFight();
 
-  theirAttack = document.createElement('p');
-  theirAttack.textContent = theirInput;
-  target.appendChild(theirAttack);
-}
+  setTimeout(function(){
+    theirAttack = document.createElement('p');
+    theirAttack.textContent = theirInput;
+    target.appendChild(theirAttack);
+    // this.restartFight();
+  },2000);
+};
+
+Fight.prototype.restartFight = function(){
+  // Enable the fight buttons again
+  console.log('Fight Restarted');
+  const attackButton = document.getElementById('nav-attack-btn');
+  const defendButton = document.getElementById('nav-defend-btn');
+  const runButton = document.getElementById('nav-run-btn');
+
+  attackButton.disabled = false;
+  attackButton.setAttribute('class','btn-block navigate btn btn-lg');
+  defendButton.disabled = false;
+  defendButton.setAttribute('class','btn-block navigate btn btn-lg');
+  runButton.disabled = false;
+  runButton.setAttribute('class','btn-block navigate btn btn-lg');
+};
+
+Fight.prototype.disableFight = function(){
+  // Disable the fight buttons
+  console.log('Fight Stopped');
+  const attackButton = document.getElementById('nav-attack-btn');
+  const defendButton = document.getElementById('nav-defend-btn');
+  const runButton = document.getElementById('nav-run-btn');
+
+  attackButton.disabled = true;
+  attackButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
+  defendButton.disabled = true;
+  defendButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
+  runButton.disabled = true;
+  runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
+};
 
 Fight.prototype.enableNavigation = function(){
   const leftNavButton = document.getElementById('nav-left-btn');
@@ -180,6 +218,10 @@ Fight.prototype.enableNavigation = function(){
   defendButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
   runButton.disabled = true;
   runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
+  var diceReset = ['...','...'];
+  setTimeout(function(){
+    PubSub.publish('Dice:input',diceReset);
+  },2000)
 };
 
 Fight.prototype.updateMonsterBar = function(hp){
