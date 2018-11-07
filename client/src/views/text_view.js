@@ -191,6 +191,11 @@ TextView.prototype.pageContent = function(content,room_details,exitSetup){
         roomContent = `${room_details} ${content_result} ${exitSetup}.`;
         this.printStuff(roomContent);
         this.setMonster(monster.url);
+
+        var monsterHealthBar = document.getElementById('enemy-hp-bar');
+        monsterHealthBar.textContent = `${monster.hp} HP`;
+        monsterHealthBar.setAttribute('style',`width:${monster.hp}%`);
+
         y += 1;
         this.fight.sendMonster(monster);
       });
@@ -261,4 +266,3 @@ TextView.prototype.showDice = function(playerDice,enemyDice){
 
 
 module.exports = TextView;
-

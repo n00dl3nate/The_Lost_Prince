@@ -32,9 +32,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
   playerView.roomContent();
   playerView.heal();
 
-  const fightTime = new FightGood();
-  fightTime.bindEvents();
-
   const endContainer = document.querySelector("div#text-display");
   const endView = new EndView(endContainer);
   endView.bindEvents();

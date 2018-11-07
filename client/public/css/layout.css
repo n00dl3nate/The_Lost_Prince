@@ -73,7 +73,7 @@ body {
   top: 260px;
   left: 70%;
   z-index: 10;
-  height: 300px;
+  max-height: 300px;
 
   animation-name: enemy-move;
   animation-duration: 4s;
@@ -84,7 +84,7 @@ body {
   top:200px;
   left:5%;
   z-index:10;
-  height: 300px;
+  max-height: 300px;
 
   animation-name: player-move;
   animation-duration: 4s;
