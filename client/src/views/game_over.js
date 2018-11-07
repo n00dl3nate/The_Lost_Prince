@@ -19,8 +19,6 @@ GameOver.prototype.playerDied = function () {
 
   const end = new EndView(this.container);
   end.disableButtons();
-
-  console.log("@@@@@@@@@@@@@");
 };
 
 module.exports = GameOver;

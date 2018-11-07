@@ -24,9 +24,14 @@ PointsTracker.prototype.monsterLevel = function () {
 };
 
 
+PointsTracker.prototype.addPlayerPoints = function () {
+  this.playerPoints += 10;
+};
+
+
 //Reach end point:
 PointsTracker.prototype.reachEndPoint = function () {
-  if (this.roomPoints === 20) {
+  if (this.roomPoints >= 20) {
     PubSub.publish('PointsTracker:end-point-reached');
   };
 };
