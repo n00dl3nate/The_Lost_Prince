@@ -62,7 +62,7 @@ PlayerView.prototype.roomContent = function () {
 
     };
     if (content == "health"){
-      this.player.updateHeals((this.player.heals +1))
+      this.player.updateHeals((this.player.getHealsHtml()+1))
       if (this.player.getHpHtml() >= 100){
         this.disableHeal();
       }
@@ -117,7 +117,7 @@ PlayerView.prototype.heal = function () {
 PlayerView.prototype.disableHeal = function () {
   const healButton = document.getElementById("nav-heal-btn")
   healButton.disabled = true
-  healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
+  healButton.setAttribute('class','btn-block btn-disabled navigate btn btn-lg')
 }
 
 PlayerView.prototype.enableHeal = function () {
