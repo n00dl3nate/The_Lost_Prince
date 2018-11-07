@@ -3,11 +3,14 @@ const PlayerView = require('./player_view.js')
 const UnfortunateCircumstance = require('../models/traps.js');
 const RoomDetails = require('../models/room_details.js');
 const Fight = require('../models/fight_model.js');
+const PointsTracker = require('../models/points_model.js');
 
 const TextView = function(container){
   this.container = container;
   this.fight = new Fight;
 };
+
+const points = new PointsTracker();
 
 var counter = 0;
 var x = 0;
@@ -32,6 +35,9 @@ TextView.prototype.bindEvents = function(){
     roomDescription = document.createElement('p');
     roomDescription.textContent = roomContent;
     this.container.appendChild(roomDescription);
+
+    points.reachEndPoint();
+
   });
 
   PubSub.subscribe('Dice:input',(evt)=>{
@@ -44,6 +50,10 @@ TextView.prototype.bindEvents = function(){
 };
 
 TextView.prototype.setupRoomDetails = function(evt){
+
+  points.roomPoints += 1;
+  console.log("RoomPoints", points.roomPoints);
+
   this.container.innerHTML = "";
 
   // Assign Variables for the room
@@ -53,6 +63,7 @@ TextView.prototype.setupRoomDetails = function(evt){
   const content = evt.detail.content;
 
   PubSub.publish('TextView:room-content',content);
+
 
   return [
     {

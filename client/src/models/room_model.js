@@ -1,5 +1,6 @@
 const PubSub = require('../helpers/pub_sub.js');
 const TextView = require('../views/text_view.js');
+const PointsTracker = require('../models/points_model.js');
 const RoomGenerator = function(){};
 
 RoomGenerator.prototype.bindEvents = function(){
@@ -45,6 +46,9 @@ RoomGenerator.prototype.bindEvents = function(){
 
     PubSub.publish(`RoomGenerated:room-created${counter}`,room);
     counter += 1
+
+    // const points = new PointsTracker();
+    // points.reachEndPoint();
   });
 
 };

@@ -32,11 +32,13 @@ PointsTracker.prototype.monsterLevel = function () {
 // };
 
 
-//Reach story room (based on room points):
-// PointsTracker.prototype.reachStoryRoom = function () {
-//   if (this.roomPoints > 5) {
-//    PubSub.publish('PointsTracker:story-room-reached');
-//   };
-// };
+//Reach end point:
+PointsTracker.prototype.reachEndPoint = function () {
+  if (this.roomPoints === 10) {
+    PubSub.publish('PointsTracker:end-point-reached');
+  };
+};
+
+//
 
 module.exports = PointsTracker;
