@@ -151,10 +151,12 @@ Fight.prototype.run = function(enemy){
     this.player.updateHp((this.player.getHpHtml() - runDamage));
   }
 
+
   this.enableNavigation()
   this.clearMonster();
   return runResult;
 };
+
 
 Fight.prototype.sendMonster = function(monsterInfo){
   PubSub.subscribe('Fight:attack-clicked',(baddie)=>{
@@ -173,6 +175,7 @@ Fight.prototype.sendMonster = function(monsterInfo){
     if (this.player.getHpHtml() <= 0) {
       const gameOver = new GameOver();
       gameOver.playerDied();
+      this.disableUI();
     }
 
   });
@@ -183,6 +186,31 @@ Fight.prototype.sendMonster = function(monsterInfo){
     this.printStuff(runAway);
   });
 };
+
+Fight.prototype.disableUI = function(){
+  TextView.prototype.disableNavigation = function(){
+    const leftNavButton = document.getElementById('nav-left-btn');
+    const rightNavButton = document.getElementById('nav-right-btn');
+    const forwardNavButton = document.getElementById('nav-forward-btn');
+    const attackButton = document.getElementById('nav-attack-btn');
+    const defendButton = document.getElementById('nav-defend-btn');
+    const runButton = document.getElementById('nav-run-btn');
+
+    leftNavButton.disabled = true;
+    leftNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
+    rightNavButton.disabled = true;
+    rightNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
+    forwardNavButton.disabled = true;
+    forwardNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
+
+    attackButton.disabled = true;
+    attackButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
+    defendButton.disabled = true;
+    defendButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
+    runButton.disabled = true;
+    runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
+  };
+}
 
 Fight.prototype.printStuff = function(yourInput,theirInput){
   const target = document.querySelector('div#text-display');
@@ -202,9 +230,9 @@ Fight.prototype.printStuff = function(yourInput,theirInput){
         this.restartFight();
       }
     },2000);
-  } else if (theirInput == false && this.getMonsteHp() > 0){
-    // this.enableNavigation();
-    this.restartFight();
+  } else if (theirInput == '' && this.getMonsteHp() > 0){
+    this.enableNavigation();
+    // this.restartFight();
   } else {
     this.enableNavigation();
     var diceReset = ['...','...'];

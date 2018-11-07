@@ -20,6 +20,9 @@ Player.prototype.bindEvents = function(){
 
 Player.prototype.removeHealth = function (amount) {
    this.hp -= amount;
+   if (this.hp <0){
+     this.hp = 0;
+   }
 };
 
 Player.prototype.upgradeAttack = function () {
@@ -53,6 +56,11 @@ Player.prototype.getHealsHtml = function (){
 
 Player.prototype.updateHp = function(value){
   const health = document.querySelector("#playerStatsHp");
+  if(health.value < 0 ){
+    health.value = 0;
+    value = 0;
+    this.hp = 0;
+  };
   health.textContent = `HP: ${value}`;
   health.id = "playerStatsHp";
   health.value = value;
