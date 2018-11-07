@@ -152,23 +152,31 @@ Fight.prototype.run = function(enemy){
 };
 
 Fight.prototype.sendMonster = function(monsterInfo){
-  PubSub.subscribe('Fight:attack-clicked',(baddie)=>{
+  // PubSub.subscribe('Fight:attack-clicked',(baddie)=>{
+    const attackButton = document.getElementById('nav-attack-btn').addEventListener('click',()=>{
+      var yourAttack = this.playerAttack(monsterInfo);
 
-    var yourAttack = this.playerAttack(monsterInfo);
+      var theirAttack = this.monsterAttack(monsterInfo);
 
-    var theirAttack = this.monsterAttack(monsterInfo);
+      this.printStuff(yourAttack,theirAttack);
 
-    this.printStuff(yourAttack,theirAttack);
-
-    if (this.getMonsteHp() == 0){
-      this.enableNavigation();
-    }
-  });
+      if (this.getMonsteHp() == 0){
+        this.enableNavigation();
+        this.removeMonsterBar();
+      }
+    });
+  // });
 
   // set up run function
-  PubSub.subscribe('Fight:run-clicked',(baddie)=>{
+  // PubSub.subscribe('Fight:run-clicked',(baddie)=>{
+  //   var runAway = this.run(monsterInfo);
+  //   this.printStuff(runAway);
+  // });
+  const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
     var runAway = this.run(monsterInfo);
     this.printStuff(runAway);
+    this.enableNavigation();
+    this.removeMonsterBar();
   });
 };
 
@@ -264,6 +272,13 @@ Fight.prototype.updateMonsterBar = function(){
   healthBar.textContent = `${hp} HP`;
   healthBar.setAttribute('style',`width:${hp}%`);
 }
+
+Fight.prototype.removeMonsterBar = function(){
+  var monsterBarContainer = document.getElementById('enemybar');
+  monsterBarContainer.setAttribute('class','');
+  monsterBarContainer.innerHTML = "";
+  // <div id="enemybar" class=""></div>
+};
 
 Fight.prototype.updateMonsterHp = function(amount){
   const monsterhtml = document.querySelector('#monsterHp')

@@ -2,12 +2,14 @@ const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('./player_view.js')
 const UnfortunateCircumstance = require('../models/traps.js');
 const RoomDetails = require('../models/room_details.js');
+const Monster = require('../models/monster_model.js');
 const Fight = require('../models/fight_model.js');
 const PointsTracker = require('../models/points_model.js');
 
 const TextView = function(container){
   this.container = container;
   this.fight = new Fight;
+  this.monster = new Monster;
 };
 
 const points = new PointsTracker();
@@ -16,11 +18,20 @@ var counter = 0;
 var x = 0;
 var y = 0;
 
+var choice = "";
+
 player = new PlayerView;
 
 TextView.prototype.bindEvents = function(){
   PubSub.subscribe(`RoomGenerated:room-created${counter}`,(evt)=>{
     counter += 1;
+
+    PubSub.subscribe('PointsTracker:monster-level',(event) =>{
+      const choices = event.detail;
+      choice = choices[Math.floor(Math.random()*choices.length)];
+      // console.log('CHOICE: ',choice)
+      // this.monster.getMonster(choice);
+    })
 
     var setupRoom = this.setupRoomDetails(evt);
     var exitSetup = this.setupExits(setupRoom);
@@ -41,6 +52,8 @@ TextView.prototype.bindEvents = function(){
     // points.reachEndPoint();
 
   });
+
+
 
   PubSub.subscribe('Dice:input',(evt)=>{
     showDice = evt.detail;
@@ -178,31 +191,53 @@ TextView.prototype.pageContent = function(content,room_details,exitSetup){
       break;
 
     case 'monster':
+      var text = "You meet a monster, but you can't be bothered with him right now."
+      this.printStuff(text);
       // generate a monster!
-      this.disableNavigation();
-      PubSub.subscribe(`Monster:monster-ready${y}`,(evt)=>{
+      // this.disableNavigation();
+      // // monster = this.monster.createMonster()
+      // console.log('CHOICE: ',choice)
+      // console.log('MONSTER: ',this.monster)
+      //
+      //
+      //   const monsterhtml = document.querySelector('#monsterHp')
+      //   monsterhtml.textContent = `monsterHp`
+      //   monsterhtml.value = monster.hp
+      //   content_result = this.displayDetails(monster)
+      //   roomContent = `${room_details} ${content_result} ${exitSetup}.`;
+      //   this.printStuff(roomContent);
+      //   this.setMonster(monster.url);
+      //
+      //
+      //   y += 1;
+      //   this.fight.sendMonster(monster);
+      //   console.log('Monster: ',monster);
+      //
 
-        monster = evt.detail
 
-        const monsterhtml = document.querySelector('#monsterHp')
-        monsterhtml.textContent = `monsterHp`
-        monsterhtml.value = monster.hp
-        content_result = this.displayDetails(monster)
-        roomContent = `${room_details} ${content_result} ${exitSetup}.`;
-        this.printStuff(roomContent);
-        this.setMonster(monster.url);
 
-        var monsterHealthBar = document.getElementById('enemy-hp-bar');
-        monsterHealthBar.textContent = `${monster.hp} HP`;
-        monsterHealthBar.setAttribute('style',`width:${monster.hp}%`);
 
-        y += 1;
-        this.fight.sendMonster(monster);
-      });
+      // });
       break;
   };
 
-}
+};
+
+TextView.prototype.createMonsterBar = function(monster){
+  var monsterBarContainer = document.getElementById('enemybar');
+  monsterBarContainer.setAttribute('class','progress progress-enemy');
+  monsterBarContainer.setAttribute('style','height:20px;');
+  var monsterBar = document.createElement('div');
+  monsterBar.setAttribute('class','progress-bar bg-success progress-bar-striped progress-bar-animated');
+  monsterBar.setAttribute('id','enemy-hp-bar');
+  monsterBar.setAttribute('role','progressbar');
+  monsterBar.setAttribute('style','width:100%');
+  monsterBar.setAttribute('aria-valuenow',monster.hp);
+  monsterBar.setAttribute('aria-valuemin','0');
+  monsterBar.setAttribute('aria-valuemax',monster.hp);
+  monsterBar.textContent = `${monster.hp} HP`;
+  monsterBarContainer.appendChild(monsterBar);
+};
 
 TextView.prototype.displayDetails = function (monster){
   var fight_chance = '';
@@ -229,28 +264,7 @@ TextView.prototype.setMonster = function (monsterurl){
   monsterImg.src = monsterurl;
   console.log(monsterImg,"This Is monster Image");
   // this.createHealthBar(monster)
-  }
-
-TextView.prototype.createHealthBar = function (monster){
-  const div1 = document.createElement('div')
-  div1.className = "progress progress-player"
-  div1.setAttribute('style', "height:20px;")
-
-  const div2 = document.createElement('div')
-  div2.className = "progress-bar bg-success progress-bar-striped progress-bar-animated";
-  div2.id = "player-hp-bar"
-  div2.setAttribute('role', "progressbar")
-  div2.setAttribute('style', "width: 100%;" )
-  div2.setAttribute('aria-valuenow', "100" )
-  div2.setAttribute('aria-valuemin', "0" )
-  div2.setAttribute('aria-valuemax', "100" )
-  div2.textContent = "100 HP"
-
-  div1.appendChild(div2)
-
-  const monsterHealthBar = document.querySelector("div#enemy-image")
-  monsterHealthBar.appendChild(div1);
-  }
+}
 
 
 

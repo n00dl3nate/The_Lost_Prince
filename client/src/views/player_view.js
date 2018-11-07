@@ -90,6 +90,7 @@ PlayerView.prototype.roomContent = function () {
     if (content == "monster"){
       const monsters = points.monsterLevel();
       PubSub.publish(`PointsTracker:monster-level`,monsters)
+      
     }
 
   });
