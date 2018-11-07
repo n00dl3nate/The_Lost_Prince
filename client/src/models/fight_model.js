@@ -149,9 +149,11 @@ Fight.prototype.run = function(enemy){
     runResult = `You ran away from the ${enemyName}. It manages to hit you for [${runDamage}] as you bravely run away.`;
     this.player.updateHp((this.player.getHpHtml() - runDamage));
   }
-  return runResult;
+  this.enableNavigation();
   this.clearMonster();
-};
+  return runResult;
+
+}
 
 Fight.prototype.sendMonster = function(monsterInfo){
   PubSub.subscribe('Fight:attack-clicked',(baddie)=>{
@@ -199,9 +201,9 @@ Fight.prototype.printStuff = function(yourInput,theirInput){
         this.restartFight();
       }
     },2000);
-  } else if (theirInput == false && this.getMonsteHp() > 0){
-    // this.enableNavigation();
-    this.restartFight();
+  } else if (theirInput == '' && this.getMonsteHp() > 0){
+    this.enableNavigation();
+    // this.restartFight();
   } else {
     this.enableNavigation();
     var diceReset = ['...','...'];
