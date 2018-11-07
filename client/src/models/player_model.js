@@ -53,7 +53,7 @@ Player.prototype.getHealsHtml = function (){
 
 Player.prototype.updateHp = function(value){
   const health = document.querySelector("#playerStatsHp");
-  health.textContent = `Hp: ${value}`;
+  health.textContent = `HP: ${value}`;
   health.id = "playerStatsHp";
   health.value = value;
   this.updatePlayerBar(value);

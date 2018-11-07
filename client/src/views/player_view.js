@@ -1,6 +1,7 @@
 const PubSub = require('../helpers/pub_sub.js');
 const Player = require('../models/player_model.js');
 const PointsTracker = require('../models/points_model.js');
+const GameOver = require('./game_over.js');
 
 const PlayerView = function(container){
   this.container = container;
@@ -77,9 +78,8 @@ PlayerView.prototype.roomContent = function () {
         this.player.hp -= trapDamage;
         if (this.player.hp <= 0){
           // player is dead
-          health.textContent = 'R.I.P.';
-          attack.textContent = 'Attack: Not any more';
-          heals.textContent =  'Health Packs: Bit late for that'
+          const gameOver = new GameOver();
+          gameOver.playerDied();
         }
         else
         {

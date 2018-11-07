@@ -1,6 +1,8 @@
 const PubSub = require('../helpers/pub_sub.js');
 const Player = require('./player_model.js');
 const TextView = require('../views/text_view.js');
+const GameOver = require('../views/game_over.js');
+const PointsTracker = require('./points_model.js');
 
 const Fight = function () {
   this.player = new Player;
@@ -160,12 +162,28 @@ Fight.prototype.sendMonster = function(monsterInfo){
 
       this.printStuff(yourAttack,theirAttack);
 
+
       if (this.getMonsteHp() == 0){
         this.enableNavigation();
         this.removeMonsterBar();
       }
     });
   // });
+
+    this.printStuff(yourAttack,theirAttack);
+
+    if (this.getMonsteHp() == 0){
+      this.enableNavigation();
+    }
+
+    const player = new Player();
+    if (this.player.getHpHtml() <= 0) {
+      const gameOver = new GameOver();
+      gameOver.playerDied();
+    }
+
+  });
+
 
   // set up run function
   // PubSub.subscribe('Fight:run-clicked',(baddie)=>{
