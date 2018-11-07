@@ -53,6 +53,8 @@ EndView.prototype.disableButtons = function () {
   attackButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
   defendButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
   runButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
+
+  const player = document.querySelector('#player-image')
 };
 
 
