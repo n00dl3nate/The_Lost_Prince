@@ -4,6 +4,8 @@ const UnfortunateCircumstance = require('../models/traps.js');
 const RoomDetails = require('../models/room_details.js');
 const Fight = require('../models/fight_model.js');
 const PointsTracker = require('../models/points_model.js');
+const Player = require('../models/player_model.js');
+const GameOver = require('./game_over.js');
 
 const TextView = function(container){
   this.container = container;
@@ -37,18 +39,26 @@ TextView.prototype.bindEvents = function(){
     roomDescription.textContent = roomContent;
     this.container.appendChild(roomDescription);
 
-
-    // points.reachEndPoint();
+    points.reachEndPoint();
 
   });
 
   PubSub.subscribe('Dice:input',(evt)=>{
+
+    const player = new Player();
+    if (player.getHpHtml() <= 0) {
+      const gameOver = new GameOver();
+      gameOver.playerDied();
+    }
+
     showDice = evt.detail;
     playerDice = showDice[0];
     enemyDice = showDice[1];
 
     this.showDice(playerDice,enemyDice);
   })
+
+
 };
 
 TextView.prototype.setupRoomDetails = function(evt){
@@ -261,4 +271,3 @@ TextView.prototype.showDice = function(playerDice,enemyDice){
 
 
 module.exports = TextView;
-

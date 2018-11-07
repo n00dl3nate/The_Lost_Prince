@@ -5,7 +5,7 @@ const Player = function () {
   this.healthStats = document.querySelector("div#statsHealth");
   this.attackStats = document.querySelector("div#statsAttack");
   this.healsStats = document.querySelector("div#statsHeals");
-  this.hp = 100
+  this.hp = 20
   this.attack = 3
   this.heals = 0
 }
@@ -53,7 +53,7 @@ Player.prototype.getHealsHtml = function (){
 
 Player.prototype.updateHp = function(value){
   const health = document.querySelector("#playerStatsHp");
-  health.textContent = `Hp: ${value}`;
+  health.textContent = `HP: ${value}`;
   health.id = "playerStatsHp";
   health.value = value;
   this.updatePlayerBar(value);

@@ -1,5 +1,5 @@
 const PubSub = require('../helpers/pub_sub.js');
-const TextView = require('./text_view.js');
+// const TextView = require('./text_view.js');
 
 const EndView = function (container) {
   this.container = container;
@@ -15,6 +15,9 @@ EndView.prototype.bindEvents = function () {
     end.textContent = "Congratulations! You made it through and have finally reached the end of your journey!";
     this.container.appendChild(end);
 
+    const background = document.getElementById("background-img");
+    background.setAttribute("src", "./images/fire.png");
+
     this.disableButtons();
   });
 
@@ -23,19 +26,28 @@ EndView.prototype.bindEvents = function () {
 
 EndView.prototype.disableButtons = function () {
 
-  const textView = new TextView(this.container);
-  textView.disableNavigation();
+  // const textView = new TextView(this.container);
+  // textView.disableNavigation();
 
+  const leftButton = document.getElementById('nav-left-btn');
+  const rightButton = document.getElementById('nav-right-btn');
+  const forwardButton = document.getElementById('nav-forward-btn');
   const healButton = document.getElementById('nav-heal-btn');
   const attackButton = document.getElementById('nav-attack-btn');
   const defendButton = document.getElementById('nav-defend-btn');
   const runButton = document.getElementById('nav-run-btn');
 
+  leftButton.disabled = true;
+  rightButton.disabled = true;
+  forwardButton.disabled = true;
   healButton.disabled = true;
   attackButton.disabled = true;
   defendButton.disabled = true;
   runButton.disabled = true;
 
+  leftButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
+  rightButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
+  forwardButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
   healButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
   attackButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
   defendButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
