@@ -97,6 +97,10 @@ Fight.prototype.monsterAttack = function (monster) {
     var additional = `The ${monsterName} is dead.`;
     this.enableNavigation();
     this.clearMonster();
+    var diceReset = ['...','...'];
+    setTimeout(function(){
+      PubSub.publish('Dice:input',diceReset);
+    },2000)
     return `${revengeResult} ${additional}`;
   } else {
     if (enemyRoll == playerRoll){
@@ -118,17 +122,17 @@ Fight.prototype.monsterAttack = function (monster) {
   }
 }
 
-Fight.prototype.startFight = function (monster) {
-
-  let newMonster = Fight.playerAttack(monster);
-
-  if (newMonster.hp > 0){
-     Fight.monsterAttack(monster)
-  };
-
-  return newMonster;
-
-}
+// Fight.prototype.startFight = function (monster) {
+//
+//   let newMonster = Fight.playerAttack(monster);
+//
+//   if (newMonster.hp > 0){
+//      Fight.monsterAttack(monster)
+//   };
+//
+//   return newMonster;
+//
+// }
 
 Fight.prototype.run = function(enemy){
   const enemyName = enemy.name;
@@ -139,7 +143,7 @@ Fight.prototype.run = function(enemy){
   if (this.roll()%2 == 0){
     runResult = `You run away from the ${enemyName}. It tries to hit you but misses.`;
   } else {
-    var runDamage = Math.ceil(this.roll()/2);
+    var runDamage = Math.ceil(this.roll());
     runResult = `You ran away from the ${enemyName}. It manages to hit you for [${runDamage}] as you bravely run away.`;
     this.player.updateHp((this.player.getHpHtml() - runDamage));
   }
@@ -165,7 +169,6 @@ Fight.prototype.sendMonster = function(monsterInfo){
   PubSub.subscribe('Fight:run-clicked',(baddie)=>{
     var runAway = this.run(monsterInfo);
     this.printStuff(runAway);
-    this.enableNavigation();
   });
 };
 
@@ -176,14 +179,27 @@ Fight.prototype.printStuff = function(yourInput,theirInput){
   yourAttack = document.createElement('p');
   yourAttack.textContent = yourInput;
   target.appendChild(yourAttack);
-  // this.disableFight();
+  this.disableFight();
 
-  setTimeout(function(){
-    theirAttack = document.createElement('p');
-    theirAttack.textContent = theirInput;
-    target.appendChild(theirAttack);
-    // this.restartFight();
-  },2000);
+  if (theirInput != ''){
+    setTimeout(()=>{
+      theirAttack = document.createElement('p');
+      theirAttack.textContent = theirInput;
+      target.appendChild(theirAttack);
+      if (this.getMonsteHp() > 0){
+        this.restartFight();
+      }
+    },2000);
+  } else if (theirInput == false && this.getMonsteHp() > 0){
+    // this.enableNavigation();
+    this.restartFight();
+  } else {
+    this.enableNavigation();
+    var diceReset = ['...','...'];
+    setTimeout(function(){
+      PubSub.publish('Dice:input',diceReset);
+    },2000)
+  }
 };
 
 Fight.prototype.restartFight = function(){
@@ -237,16 +253,16 @@ Fight.prototype.enableNavigation = function(){
   defendButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
   runButton.disabled = true;
   runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
-  var diceReset = ['...','...'];
-  setTimeout(function(){
-    PubSub.publish('Dice:input',diceReset);
-  },2000)
 };
 
-Fight.prototype.updateMonsterBar = function(hp){
-  // var healthBar = document.getElementById('monster-hp-bar');
-  // healthBar.textContent = ` HP`;
-  // healthBar.setAttribute('style',`width:${hp}%`);
+Fight.prototype.updateMonsterBar = function(){
+  var healthBar = document.getElementById('enemy-hp-bar');
+  var hp = this.getMonsteHp();
+  if (hp < 0){
+    hp = 0;
+  }
+  healthBar.textContent = `${hp} HP`;
+  healthBar.setAttribute('style',`width:${hp}%`);
 }
 
 Fight.prototype.updateMonsterHp = function(amount){
