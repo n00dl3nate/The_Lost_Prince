@@ -34,15 +34,15 @@ Interface.prototype.bindEvents = function(){
       PubSub.publish('DirectionButton:direction-clicked',forwardButton);
     });
 
-    const attackButton = document.getElementById('nav-attack-btn').addEventListener('click',()=>{
-      PubSub.publish('Fight:attack-clicked');
-    });
-    const defendButton = document.getElementById('nav-defend-btn').addEventListener('click',()=>{
-      PubSub.publish('Fight:defend-clicked');
-    });
-    const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
-      PubSub.publish('Fight:run-clicked');
-    });
+    // const attackButton = document.getElementById('nav-attack-btn').addEventListener('click',()=>{
+    //   PubSub.publish('Fight:attack-clicked');
+    // });
+    // const defendButton = document.getElementById('nav-defend-btn').addEventListener('click',()=>{
+    //   PubSub.publish('Fight:defend-clicked');
+    // });
+    // const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
+    //   PubSub.publish('Fight:run-clicked');
+    // });
 
     const healButton = document.getElementById("nav-heal-btn").addEventListener('click',()=> {
       const playerstats = document.querySelector("div#stats");
