@@ -2,6 +2,7 @@ const PubSub = require('../helpers/pub_sub.js');
 const Player = require('./player_model.js');
 const TextView = require('../views/text_view.js');
 const GameOver = require('../views/game_over.js');
+const PointsTracker = require('./points_model.js');
 
 const Fight = function () {
   this.player = new Player;

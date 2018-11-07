@@ -37,6 +37,7 @@ TextView.prototype.bindEvents = function(){
     roomDescription.textContent = roomContent;
     this.container.appendChild(roomDescription);
 
+    points.reachHalfWay();
     points.reachEndPoint();
 
   });
@@ -227,6 +228,7 @@ TextView.prototype.printStuff = function(input){
 
 
 TextView.prototype.setMonster = function (monsterurl){
+  points.reachEndPoint();
   monsterImg = document.querySelector("#monsterPlacement")
   monsterImg.src = monsterurl;
   console.log(monsterImg,"This Is monster Image");

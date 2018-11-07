@@ -29,6 +29,14 @@ PointsTracker.prototype.addPlayerPoints = function () {
 };
 
 
+PointsTracker.prototype.reachHalfWay = function () {
+  if (this.roomPoints >= 10) {
+    const playerImage = document.querySelector("img.player");
+    playerImage.setAttribute("src", "./images/Player2-sm.gif");
+  };
+};
+
+
 //Reach end point:
 PointsTracker.prototype.reachEndPoint = function () {
   if (this.roomPoints >= 20) {
