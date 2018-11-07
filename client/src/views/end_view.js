@@ -12,11 +12,11 @@ EndView.prototype.bindEvents = function () {
     this.container.innerHTML = "";
 
     const end = document.createElement("h2");
-    end.textContent = "Congratulations! You made it through and have finally reached the end of your journey!";
+    end.textContent = "Congratulations! You have found your Sweet Prince! He has offered to send you home!";
     this.container.appendChild(end);
 
     const background = document.getElementById("background-img");
-    background.setAttribute("src", "./images/fire.png");
+    background.setAttribute("src", "./images/End.gif");
 
     this.disableButtons();
   });
