@@ -17,46 +17,42 @@ Fight.prototype.roll = function(){
 
 Fight.prototype.playerAttack = function (monster){
   //monster declaration
-  const monsterName = monster.name;
-  const monsterAttack = monster.attack;
+  if (monster != null){
+    const monsterName = monster.name;
+    const monsterAttack = monster.attack;
 
-  //Dice Roll Values Per Attack
-  const playerAtk = this.player.getAttackHtml();
-  const playerRoll = this.roll() + playerAtk;
-  const enemyRoll = this.roll() + monsterAttack;
-  const diceUpdate = [playerRoll,enemyRoll];
-  PubSub.publish('Dice:input',diceUpdate);
+    //Dice Roll Values Per Attack
+    const playerAtk = this.player.getAttackHtml();
+    const playerRoll = this.roll() + playerAtk;
+    const enemyRoll = this.roll() + monsterAttack;
+    const diceUpdate = [playerRoll,enemyRoll];
+    PubSub.publish('Dice:input',diceUpdate);
 
-  //Damage for monster
+    //Damage for monster
 
-  //Result declaration
-  let yourResult = '';
-  //Deciding attack outCome Player Attack
+    //Result declaration
+    let yourResult = '';
+    //Deciding attack outCome Player Attack
 
-  if (playerRoll == enemyRoll){
-    yourResult = `You attacked the ${monsterName} (${this.getMonsteHp()} HP). It parried!`;
-  } else if (playerRoll < enemyRoll){
-    yourResult = `You attacked the ${monsterName} (${this.getMonsteHp()} HP). You rolled [${playerRoll}] and it rolled [${enemyRoll}]. You failed to hurt it.`
-  } else {
-    let monsterDamage = playerRoll - enemyRoll;
-    if (monsterDamage < 0){
-      monsterDamage = 0;
-    }
-    this.updateMonsterHp(this.getMonsteHp() - monsterDamage);
-    this.updateMonsterBar(this.getMonsteHp());
+    if (playerRoll == enemyRoll){
+      yourResult = `You attacked the ${monsterName} (${this.getMonsteHp()} HP). It parried!`;
+    } else if (playerRoll < enemyRoll){
+      yourResult = `You attacked the ${monsterName} (${this.getMonsteHp()} HP). You rolled [${playerRoll}] and it rolled [${enemyRoll}]. You failed to hurt it.`
+    } else {
+      let monsterDamage = playerRoll - enemyRoll;
+      if (monsterDamage < 0){
+        monsterDamage = 0;
+      }
+      this.updateMonsterHp(this.getMonsteHp() - monsterDamage);
+      this.updateMonsterBar(this.getMonsteHp());
 
-    if (this.getMonsteHp() < 0){
-      this.updateMonsterHp(0);
-    }
+      if (this.getMonsteHp() < 0){
+        this.updateMonsterHp(0);
+      }
 
-    yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
-  };
+      yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
+    };
 
-  const newMonster = {
-    name: monster.name,
-    attack: monster.attack,
-    hp: monster.hp
-  }
 
   return yourResult;
 };
@@ -64,78 +60,69 @@ Fight.prototype.playerAttack = function (monster){
 Fight.prototype.monsterAttack = function (monster) {
   //monster declaration
 
-  const monsterName = monster.name;
-  const monsterAttack = monster.attack;
+
 
   //Dice Roll Values Per Attack
-
-  const playerAtk = this.player.getAttackHtml();
-  var playerRoll = this.roll() + playerAtk;
-  var enemyRoll = this.roll() + monsterAttack;
-  const diceUpdate = [playerRoll,enemyRoll];
-  setTimeout(function(){
-    PubSub.publish('Dice:input',diceUpdate);
-  },2000)
-
-  var revengeResult = '';
-  var fightDamage = 0;
-
-  if (enemyRoll == playerRoll){
-    revengeResult = `The ${monsterName} attacked you, but you parried!`;
-  } else if (enemyRoll > playerRoll){
-    fightDamage = enemyRoll - playerRoll;
-    if (fightDamage < 0){
-      fightDamage = 0;
-    }
-    revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
-    // Update player HP
-    var newPlayerHp = this.player.getHpHtml() - fightDamage;
-    this.player.updateHp(newPlayerHp);
-
-  } else {
-    revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. It failed to hurt you physically, but emotionally you are devastated.`
-  }
-  //
-  if (this.getMonsteHp() <= 0){
-    var additional = `The ${monsterName} is dead.`;
-    this.enableNavigation();
-    this.clearMonster();
-    var diceReset = ['...','...'];
+  if (monster != null){
+    const monsterName = monster.name;
+    const monsterAttack = monster.attack;
+    const playerAtk = this.player.getAttackHtml();
+    var playerRoll = this.roll() + playerAtk;
+    var enemyRoll = this.roll() + monsterAttack;
+    const diceUpdate = [playerRoll,enemyRoll];
     setTimeout(function(){
-      PubSub.publish('Dice:input',diceReset);
+      PubSub.publish('Dice:input',diceUpdate);
     },2000)
-    return `${revengeResult} ${additional}`;
-  } else {
+
+    var revengeResult = '';
+    var fightDamage = 0;
+
     if (enemyRoll == playerRoll){
-      revengeResult = `The ${monsterName} (${this.getMonsteHp()} HP) attacked you, but you parried!`;
+      revengeResult = `The ${monsterName} attacked you, but you parried!`;
     } else if (enemyRoll > playerRoll){
       fightDamage = enemyRoll - playerRoll;
       if (fightDamage < 0){
         fightDamage = 0;
       }
-      revengeResult = `The ${monsterName} (${this.getMonsteHp()} HP) attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
+      revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
       // Update player HP
       var newPlayerHp = this.player.getHpHtml() - fightDamage;
       this.player.updateHp(newPlayerHp);
 
     } else {
-      revengeResult = `The ${monsterName} (${this.getMonsteHp()} HP) attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. It failed to hurt you physically, but emotionally you are devastated.`
+      revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. It failed to hurt you physically, but emotionally you are devastated.`
     }
-    return revengeResult;
+    //
+
+    if (this.getMonsteHp() <= 0){
+      var additional = `The ${monsterName} is dead.`;
+      this.enableNavigation();
+      this.clearMonster();
+      var diceReset = ['...','...'];
+      setTimeout(function(){
+        PubSub.publish('Dice:input',diceReset);
+      },2000)
+      return `${revengeResult} ${additional}`;
+    } else {
+      if (enemyRoll == playerRoll){
+        revengeResult = `The ${monsterName} (${this.getMonsteHp()} HP) attacked you, but you parried!`;
+      } else if (enemyRoll > playerRoll){
+        fightDamage = enemyRoll - playerRoll;
+        if (fightDamage < 0){
+          fightDamage = 0;
+        }
+        revengeResult = `The ${monsterName} (${this.getMonsteHp()} HP) attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
+        // Update player HP
+        var newPlayerHp = this.player.getHpHtml() - fightDamage;
+        this.player.updateHp(newPlayerHp);
+
+      } else {
+        revengeResult = `The ${monsterName} (${this.getMonsteHp()} HP) attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. It failed to hurt you physically, but emotionally you are devastated.`
+      }
+      return revengeResult;
+    }
   }
 }
-
-// Fight.prototype.startFight = function (monster) {
-//
-//   let newMonster = Fight.playerAttack(monster);
-//
-//   if (newMonster.hp > 0){
-//      Fight.monsterAttack(monster)
-//   };
-//
-//   return newMonster;
-//
-// }
 
 Fight.prototype.run = function(enemy){
   const enemyName = enemy.name;
@@ -159,8 +146,7 @@ Fight.prototype.run = function(enemy){
 
 
 Fight.prototype.sendMonster = function(monsterInfo){
-  PubSub.subscribe('Fight:attack-clicked',(baddie)=>{
-
+  const attackButton = document.getElementById('nav-attack-btn').addEventListener('click',()=>{
     var yourAttack = this.playerAttack(monsterInfo);
 
     var theirAttack = this.monsterAttack(monsterInfo);
@@ -168,6 +154,7 @@ Fight.prototype.sendMonster = function(monsterInfo){
     this.printStuff(yourAttack,theirAttack);
 
     if (this.getMonsteHp() == 0){
+      monsterInfo = null;
       this.enableNavigation();
     }
 
@@ -177,11 +164,10 @@ Fight.prototype.sendMonster = function(monsterInfo){
       gameOver.playerDied();
       this.disableUI();
     }
-
   });
 
   // set up run function
-  PubSub.subscribe('Fight:run-clicked',(baddie)=>{
+const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
     var runAway = this.run(monsterInfo);
     this.printStuff(runAway);
   });
