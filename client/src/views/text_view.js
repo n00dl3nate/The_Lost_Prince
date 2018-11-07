@@ -2,13 +2,19 @@ const PubSub = require('../helpers/pub_sub.js');
 const PlayerView = require('./player_view.js')
 const UnfortunateCircumstance = require('../models/traps.js');
 const RoomDetails = require('../models/room_details.js');
+const Fight = require('../models/fight_model.js');
+const PointsTracker = require('../models/points_model.js');
 
 const TextView = function(container){
   this.container = container;
+  this.fight = new Fight;
 };
+
+const points = new PointsTracker();
 
 var counter = 0;
 var x = 0;
+var y = 0;
 
 player = new PlayerView;
 
@@ -30,10 +36,26 @@ TextView.prototype.bindEvents = function(){
     roomDescription = document.createElement('p');
     roomDescription.textContent = roomContent;
     this.container.appendChild(roomDescription);
+
+
+    // points.reachEndPoint();
+
   });
+
+  PubSub.subscribe('Dice:input',(evt)=>{
+    showDice = evt.detail;
+    playerDice = showDice[0];
+    enemyDice = showDice[1];
+
+    this.showDice(playerDice,enemyDice);
+  })
 };
 
 TextView.prototype.setupRoomDetails = function(evt){
+
+  points.roomPoints += 1;
+  console.log("RoomPoints", points.roomPoints);
+
   this.container.innerHTML = "";
 
   // Assign Variables for the room
@@ -43,6 +65,7 @@ TextView.prototype.setupRoomDetails = function(evt){
   const content = evt.detail.content;
 
   PubSub.publish('TextView:room-content',content);
+
 
   return [
     {
@@ -99,6 +122,9 @@ TextView.prototype.disableNavigation = function(){
   const leftNavButton = document.getElementById('nav-left-btn');
   const rightNavButton = document.getElementById('nav-right-btn');
   const forwardNavButton = document.getElementById('nav-forward-btn');
+  const attackButton = document.getElementById('nav-attack-btn');
+  const defendButton = document.getElementById('nav-defend-btn');
+  const runButton = document.getElementById('nav-run-btn');
 
   leftNavButton.disabled = true;
   leftNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
@@ -106,6 +132,13 @@ TextView.prototype.disableNavigation = function(){
   rightNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
   forwardNavButton.disabled = true;
   forwardNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
+
+  attackButton.disabled = false;
+  attackButton.setAttribute('class','btn-block navigate btn btn-lg');
+  defendButton.disabled = true;
+  defendButton.setAttribute('class','btn-block navigate btn btn-lg');
+  runButton.disabled = false;
+  runButton.setAttribute('class','btn-block navigate btn btn-lg');
 };
 
 TextView.prototype.pageContent = function(content,room_details,exitSetup){
@@ -146,58 +179,86 @@ TextView.prototype.pageContent = function(content,room_details,exitSetup){
 
     case 'monster':
       // generate a monster!
+      this.disableNavigation();
+      PubSub.subscribe(`Monster:monster-ready${y}`,(evt)=>{
 
-      // PubSub.subscribe('Monster:monster-ready',(evt)=>{
-      //   // console.log('MONSTER: ',evt.detail.name);
-      //   const name = evt.detail.name;
-      //   const attack = evt.detail.attack;
-      //   var monsterHP = evt.detail.hp;
-      //   const rating = evt.detail.rating;
-      //   const size = evt.detail.size;
-      //   const type = evt.detail.type;
-      //
-      //   // Display your chances of beating the monster
-      //   var fight_chance = '';
-      //   if (monsterHP > 20){
-      //     fight_chance = `The ${name} looks very tough...`;
-      //   } else if (monsterHP < 8){
-      //     fight_chance = `The ${name} looks weak...`;
-      //   } else {
-      //     fight_chance = `The ${name} looks like you could take it...`;
-      //   };
+        monster = evt.detail
 
-
-        // content_result = `You have stumbled upon a monster... The ${name} is a ${size} ${type}. ${fight_chance}`
-        content_result = "Shit the bed, it's a fucking monster!";
-
-        roomDescription = `${room_details} ${content_result} ${exitSetup}.`;
-        return roomDescription;
-        // Run fight logic
-        // this.disableNavigation();
-        //
-        // var fight = true;
-        //
-        // if (fight == true){
-        //
-        //   attackButton.disabled = false;
-        //   attackButton.setAttribute('class','btn-block navigate btn btn-lg');
-        //   defendButton.disabled = true;
-        //   defendButton.setAttribute('class','btn-block navigate btn btn-lg');
-        //   runButton.disabled = false;
-        //   runButton.setAttribute('class','btn-block navigate btn btn-lg');
-        //
-        //   PubSub.publish('Fight:fight-started',evt.detail);
-        //   PubSub.publish('Fight:enemy-attack',evt.detail);
-        //
-        //   console.log('Fight Status: ',fight)
-        // };
-      // });
+        const monsterhtml = document.querySelector('#monsterHp')
+        monsterhtml.textContent = `monsterHp`
+        monsterhtml.value = monster.hp
+        content_result = this.displayDetails(monster)
+        roomContent = `${room_details} ${content_result} ${exitSetup}.`;
+        this.printStuff(roomContent);
+        this.setMonster(monster.url);
+        y += 1;
+        this.fight.sendMonster(monster);
+      });
       break;
   };
 
 }
 
-// lksdjfnbl;shdnkjsbnskj
-// update pls
+TextView.prototype.displayDetails = function (monster){
+  var fight_chance = '';
+  if (monster.hp > 20){
+    fight_chance = `The ${monster.name} looks very tough...`;
+  } else if (monster.hp < 8){
+    fight_chance = `The ${monster.name} looks weak...`;
+  } else {
+    fight_chance = `The ${monster.name} looks like you could take it...`;
+  };
+  content_result = `You have stumbled upon a monster... The ${monster.name} is a ${monster.size} ${monster.type}. ${fight_chance}`;
+  return content_result
+}
+
+TextView.prototype.printStuff = function(input){
+  roomDescription = document.createElement('p');
+  roomDescription.textContent = input;
+  this.container.appendChild(roomDescription);
+}
+
+
+TextView.prototype.setMonster = function (monsterurl){
+  monsterImg = document.querySelector("#monsterPlacement")
+  monsterImg.src = monsterurl;
+  console.log(monsterImg,"This Is monster Image");
+  // this.createHealthBar(monster)
+  }
+
+TextView.prototype.createHealthBar = function (monster){
+  const div1 = document.createElement('div')
+  div1.className = "progress progress-player"
+  div1.setAttribute('style', "height:20px;")
+
+  const div2 = document.createElement('div')
+  div2.className = "progress-bar bg-success progress-bar-striped progress-bar-animated";
+  div2.id = "player-hp-bar"
+  div2.setAttribute('role', "progressbar")
+  div2.setAttribute('style', "width: 100%;" )
+  div2.setAttribute('aria-valuenow', "100" )
+  div2.setAttribute('aria-valuemin', "0" )
+  div2.setAttribute('aria-valuemax', "100" )
+  div2.textContent = "100 HP"
+
+  div1.appendChild(div2)
+
+  const monsterHealthBar = document.querySelector("div#enemy-image")
+  monsterHealthBar.appendChild(div1);
+  }
+
+
+
+TextView.prototype.showDice = function(playerDice,enemyDice){
+  // console.log('Player Dice: ',playerDice);
+  // console.log('Enemy Dice: ',enemyDice);
+  playerDiceBox = document.getElementById('player-dicebox');
+  playerDiceBox.textContent = playerDice;
+  enemyDiceBox = document.getElementById('enemy-dicebox');
+  enemyDiceBox.textContent = enemyDice;
+  // this.container.appendChild(roomDescription);
+}
+
 
 module.exports = TextView;
+

@@ -26,11 +26,11 @@ const monsterImage =
   },
   {
     name:"Goblin",
-    url:"..public/images/Goblin.gif"
+    url:"../public/images/Goblin.gif"
   },
   {
     name:"Imp",
-    url:"..piblic/images/Imp.gif"
+    url:"../public/images/Imp.gif"
   },
   {
     name:"Jackal",
