@@ -33,6 +33,14 @@ TextView.prototype.bindEvents = function(){
     roomDescription.textContent = roomContent;
     this.container.appendChild(roomDescription);
   });
+
+  PubSub.subscribe('Dice:input',(evt)=>{
+    showDice = evt.detail;
+    playerDice = showDice[0];
+    enemyDice = showDice[1];
+
+    this.showDice(playerDice,enemyDice);
+  })
 };
 
 TextView.prototype.setupRoomDetails = function(evt){
@@ -198,6 +206,16 @@ TextView.prototype.printStuff = function(input){
   roomDescription = document.createElement('p');
   roomDescription.textContent = input;
   this.container.appendChild(roomDescription);
+}
+
+TextView.prototype.showDice = function(playerDice,enemyDice){
+  // console.log('Player Dice: ',playerDice);
+  // console.log('Enemy Dice: ',enemyDice);
+  playerDiceBox = document.getElementById('player-dicebox');
+  playerDiceBox.textContent = playerDice;
+  enemyDiceBox = document.getElementById('enemy-dicebox');
+  enemyDiceBox.textContent = enemyDice;
+  // this.container.appendChild(roomDescription);
 }
 
 
