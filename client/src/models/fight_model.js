@@ -161,10 +161,11 @@ Fight.prototype.sendMonster = function(monsterInfo){
       this.enableNavigation();
     }
 
-    // if (this.player.getHpHtml() <= 0) {
-    //   const gameOver = new GameOver();
-    //   gameOver.playerDied();
-    // }
+    const player = new Player();
+    if (this.player.getHpHtml() <= 0) {
+      const gameOver = new GameOver();
+      gameOver.playerDied();
+    }
 
   });
 

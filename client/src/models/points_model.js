@@ -24,14 +24,6 @@ PointsTracker.prototype.monsterLevel = function () {
 };
 
 
-//Increase player points by monster HP:
-// PointsTracker.prototype.killMonster = function (monster) {
-//   PubSub.subscribe('GameEvent:monster-killed', (event) => {
-//     this.playerPoints += monster.hit_points;
-//   });
-// };
-
-
 //Reach end point:
 PointsTracker.prototype.reachEndPoint = function () {
   if (this.roomPoints === 20) {
