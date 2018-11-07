@@ -19,7 +19,7 @@ StartView.prototype.bindEvents = function () {
   });
 
   const lakeButton = document.getElementById("nav-lake-btn").addEventListener('click', (event) => {
-    //background.setAttribute("src", "./images/....");
+    background.setAttribute("src", "./images/lake-bg.gif");
     background.setAttribute("name", "lake");
     PubSub.publish('StartView:choice-button-clicked', "lake");
   });
