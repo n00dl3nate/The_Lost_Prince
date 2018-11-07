@@ -15,7 +15,7 @@ GameOver.prototype.playerDied = function () {
   this.container.appendChild(gameOver);
 
   const background = document.getElementById("background-img");
-  background.setAttribute("src", "./images/fire.png");
+  background.setAttribute("src", "./images/Death.gif");
 
   const end = new EndView(this.container);
   end.disableButtons();
