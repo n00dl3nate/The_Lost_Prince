@@ -37,18 +37,20 @@ TextView.prototype.bindEvents = function(){
     roomDescription.textContent = roomContent;
     this.container.appendChild(roomDescription);
 
-
-    // points.reachEndPoint();
+    points.reachEndPoint();
 
   });
 
   PubSub.subscribe('Dice:input',(evt)=>{
+
     showDice = evt.detail;
     playerDice = showDice[0];
     enemyDice = showDice[1];
 
     this.showDice(playerDice,enemyDice);
   })
+
+
 };
 
 TextView.prototype.setupRoomDetails = function(evt){

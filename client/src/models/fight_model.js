@@ -1,6 +1,7 @@
 const PubSub = require('../helpers/pub_sub.js');
 const Player = require('./player_model.js');
 const TextView = require('../views/text_view.js');
+const GameOver = require('../views/game_over.js');
 
 const Fight = function () {
   this.player = new Player;
@@ -163,6 +164,13 @@ Fight.prototype.sendMonster = function(monsterInfo){
     if (this.getMonsteHp() == 0){
       this.enableNavigation();
     }
+
+    const player = new Player();
+    if (this.player.getHpHtml() <= 0) {
+      const gameOver = new GameOver();
+      gameOver.playerDied();
+    }
+
   });
 
   // set up run function
