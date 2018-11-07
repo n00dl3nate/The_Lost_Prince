@@ -77,8 +77,27 @@ Fight.prototype.monsterAttack = function (monster) {
   var revengeResult = '';
   var fightDamage = 0;
 
-  if (this.getMonsteHp() == 0){
-    revengeResult = `The ${monsterName} has been brutally slain. You realise it didn't actually attack you until you hit it first. You could be the real monster in here...`;
+  if (enemyRoll == playerRoll){
+    revengeResult = `The ${monsterName} attacked you, but you parried!`;
+  } else if (enemyRoll > playerRoll){
+    fightDamage = enemyRoll - playerRoll;
+    if (fightDamage < 0){
+      fightDamage = 0;
+    }
+    revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
+    // Update player HP
+    var newPlayerHp = this.player.getHpHtml() - fightDamage;
+    this.player.updateHp(newPlayerHp);
+
+  } else {
+    revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. It failed to hurt you physically, but emotionally you are devastated.`
+  }
+  //
+  if (this.getMonsteHp() <= 0){
+    var additional = `The ${monsterName} is dead.`;
+    this.enableNavigation();
+    this.clearMonster();
+    return `${revengeResult} ${additional}`;
   } else {
     if (enemyRoll == playerRoll){
       revengeResult = `The ${monsterName} (${this.getMonsteHp()} HP) attacked you, but you parried!`;
@@ -122,10 +141,10 @@ Fight.prototype.run = function(enemy){
   } else {
     var runDamage = Math.ceil(this.roll()/2);
     runResult = `You ran away from the ${enemyName}. It manages to hit you for [${runDamage}] as you bravely run away.`;
-    var newPlayerHp = this.player.getHpHtml() - runDamage;
-    this.player.updateHp(newPlayerHp);
+    this.player.updateHp((this.player.getHpHtml() - runDamage));
   }
   return runResult;
+  this.clearMonster();
 };
 
 Fight.prototype.sendMonster = function(monsterInfo){
@@ -240,6 +259,10 @@ Fight.prototype.getMonsteHp = function(){
   return monsterhtml.value
 }
 
+Fight.prototype.clearMonster = function(){
+  monsterImg = document.querySelector("#monsterPlacement")
+  monsterImg.src = ""
+}
 
 
 

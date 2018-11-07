@@ -1,10 +1,11 @@
 const PubSub = require('../helpers/pub_sub.js');
 const RequestHelper = require('../helpers/request_helper.js');
+const monsterImage = require('../helpers/monster_image.js')
 
 const Monster = function () {
   this.data = null;
 }
-
+var y = 0;
 
 Monster.prototype.bindEvents = function() {
 
@@ -31,6 +32,15 @@ Monster.prototype.getMonster = function (choice) {
 };
 
 Monster.prototype.createMonster = function (data) {
+
+  var monsterURL = ""
+
+  monsterImage.forEach((monster) =>{
+    if (monster.name == data.name){
+      monsterURL = monster.url
+    };
+  });
+
   const monster =
   {
     name: data.name,
@@ -39,9 +49,11 @@ Monster.prototype.createMonster = function (data) {
     type: data.type,
     size: data.size,
     rating: data.challenge_rating,
+    url: monsterURL
   };
 
-  PubSub.publish('Monster:monster-ready', monster);
+  PubSub.publish(`Monster:monster-ready${y}`, monster);
+  y +=1;
   };
 
 module.exports = Monster;
