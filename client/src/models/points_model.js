@@ -4,6 +4,7 @@ const PointsTracker = function () {
   this.easyMonsters = [35, 264, 180, 150];
   this.mediumMonsters = [177, 143, 133, 199];
   this.hardMonsters = [79, 298, 118, 148];
+  this.allMonsters = [35, 264, 180, 150, 177, 143, 133, 199, 79, 298, 118, 148];
   this.playerPoints = 0;
   this.roomPoints = 0;
 };
@@ -11,33 +12,40 @@ const PointsTracker = function () {
 
 // Reach medium/hard monsters (based on player points):
 PointsTracker.prototype.monsterLevel = function () {
-  var monsters = null;
-  if (this.playerPoints < 30) {
-    monsters = this.easyMonsters;
-  } else if (this.playerPoints > 30 && this.playerPoints < 60) {
-    monsters = this.mediumMonsters;
-  } else if (this.playerPoints > 60) {
-    monsters = this.hardMonsters;
-  };
+  // var monsters = null;
+  // if (this.playerPoints <= 30) {
+  //   monsters = this.easyMonsters;
+  // } else if (this.playerPoints >= 31 && this.playerPoints < 60) {
+  //   monsters = this.mediumMonsters;
+  // } else if (this.playerPoints >= 60) {
+  //   monsters = this.hardMonsters;
+  // };
+
+  const monsters = this.allMonsters;
 
   return monsters
 };
 
 
-//Increase player points by monster HP:
-// PointsTracker.prototype.killMonster = function (monster) {
-//   PubSub.subscribe('GameEvent:monster-killed', (event) => {
-//     this.playerPoints += monster.hit_points;
-//   });
+// PointsTracker.prototype.addPlayerPoints = function () {
+//   this.playerPoints += 10;
 // };
 
 
-//Reach story room (based on room points):
-// PointsTracker.prototype.reachStoryRoom = function () {
-//   if (this.roomPoints > 5) {
-//    PubSub.publish('PointsTracker:story-room-reached');
-//   };
-// };
+PointsTracker.prototype.reachHalfWay = function () {
+  if (this.roomPoints >= 15) {
+    const playerImage = document.querySelector("img.player");
+    playerImage.setAttribute("src", "./images/Player2-sm.gif");
+  };
+};
+
+
+//Reach end point:
+PointsTracker.prototype.reachEndPoint = function () {
+  if (this.roomPoints >= 30) {
+    PubSub.publish('PointsTracker:end-point-reached');
+  };
+};
 
 //
 

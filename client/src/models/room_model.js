@@ -1,5 +1,6 @@
 const PubSub = require('../helpers/pub_sub.js');
 const TextView = require('../views/text_view.js');
+
 const RoomGenerator = function(){};
 
 RoomGenerator.prototype.bindEvents = function(){

@@ -1,6 +1,7 @@
 const PubSub = require('../helpers/pub_sub.js');
 const Player = require('../models/player_model.js');
 const PointsTracker = require('../models/points_model.js');
+const GameOver = require('./game_over.js');
 
 const PlayerView = function(container){
   this.container = container;
@@ -19,10 +20,6 @@ PlayerView.prototype.bindEvents = function(){
 
 PlayerView.prototype.showstats = function () {
 
-  // var healthBar = document.getElementById('HP-bar');
-  // healthBar.textContent = `${this.player.hp} HP`;
-  // healthBar.setAttribute('style',`width:${this.player.hp}%`);
-
   const health = document.createElement('h4');
   health.textContent = `Hp: ${this.player.hp}`;
   health.id = "playerStatsHp";
@@ -40,24 +37,18 @@ PlayerView.prototype.showstats = function () {
   heals.id = "playerStatsHeals";
   heals.value = this.player.heals;
   this.player.healsStats.appendChild(heals)
+
 };
 
 PlayerView.prototype.roomContent = function () {
   PubSub.subscribe('TextView:room-content',(event) => {
-
-
-    if ((this.CheckingHeals() == true) && (this.player.hp < 100)){
-      const healButton = document.getElementById("nav-heal-btn")
-      healButton.disabled = false
-      healButton.setAttribute('class','navigate btn btn-lg')
+    if ((this.CheckingHeals() == true) && (this.player.getHpHtml() < 100)){
+      this.enableHeal()
     };
 
 
-    points.roomPoints += 1;
-
     content = event.detail;
     console.log(content,"this is your content Player view")
-
 
 
     attack = document.querySelector('#playerStatsAttack')
@@ -71,19 +62,13 @@ PlayerView.prototype.roomContent = function () {
 
     };
     if (content == "health"){
-
-      this.player.updateHeals((this.player.heals +1))
-
-      if (this.player.hp >= 100){
-        const healButton = document.getElementById("nav-heal-btn")
-        healButton.disabled = true
-        healButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block')
+      this.player.updateHeals((this.player.getHealsHtml()+1))
+      if (this.player.getHpHtml() >= 100){
+        this.disableHeal();
       }
       else{
-        const healButton = document.getElementById("nav-heal-btn")
-        healButton.disabled = false
-        healButton.setAttribute("class","btn btn-block navigate btn-lg");
-        }
+        this.enableHeal()
+      }
     }
 
     if (content == "trap"){
@@ -93,14 +78,12 @@ PlayerView.prototype.roomContent = function () {
         this.player.hp -= trapDamage;
         if (this.player.hp <= 0){
           // player is dead
-          health.textContent = 'R.I.P.';
-          attack.textContent = 'Attack: Not any more';
-          heals.textContent =  'Health Packs: Bit late for that'
+          const gameOver = new GameOver();
+          gameOver.playerDied();
         }
         else
         {
           this.player.updateHp(this.player.hp)
-          health.textContent = `Hp: ${this.player.hp}`
         }
       });
     };
@@ -108,11 +91,12 @@ PlayerView.prototype.roomContent = function () {
       const monsters = points.monsterLevel();
       PubSub.publish(`PointsTracker:monster-level`,monsters)
     }
+
   });
 };
 
 PlayerView.prototype.CheckingHeals = function () {
-  if (this.player.heals >= 1){
+  if (this.player.getHealsHtml() >= 1){
     return true;
   }
   else
@@ -122,17 +106,24 @@ PlayerView.prototype.CheckingHeals = function () {
 PlayerView.prototype.heal = function () {
   PubSub.subscribe(`PlayerButton:Heal`, (evt) => {
     if (evt.detail == 'heal'){
-      this.player.updateHeals(this.player.heals += 1)
-      this.player.updateHp(this.player.hp += 25)
+      this.player.useHealthPack()
       if ((this.CheckingHeals()==false)||(this.player.hp > 99)){
-        const healButton = document.getElementById("nav-heal-btn")
-        healButton.disabled = true
-        healButton.setAttribute('class','btn-disabled navigate btn btn-lg')
+        this.disableHeal()
       };
     };
   });
 };
 
+PlayerView.prototype.disableHeal = function () {
+  const healButton = document.getElementById("nav-heal-btn")
+  healButton.disabled = true
+  healButton.setAttribute('class','btn-block btn-disabled navigate btn btn-lg')
+}
 
+PlayerView.prototype.enableHeal = function () {
+  const healButton = document.getElementById("nav-heal-btn")
+  healButton.disabled = false
+  healButton.setAttribute("class","btn btn-block navigate btn-lg");
+}
 
 module.exports = PlayerView

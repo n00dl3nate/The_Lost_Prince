@@ -73,7 +73,7 @@ body {
   top: 260px;
   left: 70%;
   z-index: 10;
-  height: 300px;
+  max-height: 300px;
 
   animation-name: enemy-move;
   animation-duration: 4s;
@@ -84,7 +84,7 @@ body {
   top:200px;
   left:5%;
   z-index:10;
-  height: 300px;
+  max-height: 300px;
 
   animation-name: player-move;
   animation-duration: 4s;
@@ -126,4 +126,23 @@ body {
   padding: 10px;
   border-radius: 10px;
   margin-top: 15px;
+}
+
+.dice-container {
+  /* padding:10px 10px 10px 25px; */
+}
+
+.dicebox {
+  background:#fff;;
+  margin:10px;
+  height:70%;
+  font-size: 100px;
+  text-align:center;
+}
+
+.dice-title {
+  font-size: 24px;
+  font-weight:bold;
+  text-align:center;
+  color:#fff;
 }

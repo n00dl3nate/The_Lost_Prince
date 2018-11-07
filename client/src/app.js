@@ -1,12 +1,10 @@
 const PubSub = require('./helpers/pub_sub.js');
 const Monster = require('./models/monster_model.js');
-//const RoomGenerator = require('./models/room_model.js');
 const InterfaceStuff = require('./models/interface.js');
 const PlayerView = require('./views/player_view.js');
-//const TextView = require('./views/text_view.js');
-const FightGood = require('./models/combat_model.js');
+const TextView = require('./views/text_view.js');
 const StartView = require('./views/start_view.js');
-// const UnfortunateCircumstance = require('./models/traps.js');
+const EndView = require('./views/end_view.js');
 
 document.addEventListener('DOMContentLoaded', ()=>{
   console.log("Hey! Hey you! Have a nice day! x DOMContentLoaded");
@@ -30,8 +28,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
   playerView.roomContent();
   playerView.heal();
 
-  const fightTime = new FightGood();
-  fightTime.bindEvents();
-
+  const endContainer = document.querySelector("div#text-display");
+  const endView = new EndView(endContainer);
+  endView.bindEvents();
 
 });

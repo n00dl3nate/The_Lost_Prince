@@ -1,93 +1,124 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
   <head>
-   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-   <meta charset="utf-8">
-   <title>Pro Z</title>
-   <script src="js/bundle.js"></script>
-   <link rel="stylesheet" href="css/bootstrap.css">
-   <link rel="stylesheet" href="css/layout.css">
-   <link rel="stylesheet" href="css/button.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <title>Pro Z</title>
+    <script src="js/bundle.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/button.css">
   </head>
+
   <body>
-   <audio autoplay=false loop >
-    <source src="./music/Prologue.mp3" type="audio/mp3">
-   </audio>
-   <div class="container-fluid">
-    <div class="row">
-     <div class="col-sm-12 image border" id="image-display">
-      <img src="./images/Background2.gif" class="img-responsive" id="background-img" alt="No image buddy">
-      <div id="player-image"/>
-       <div class="progress progress-player" style="height:20px;">
-        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" id="player-hp-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100 HP
-        </div>
-       </div>
-       <img src="./images/GiantWeasel.gif" class="" alt="No image buddy">
-      </div>
-      <div id="enemy-image"/>
-       <div class="progress progress-enemy" style="height:20px;">
-        <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" id="enemy-hp-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100 HP
-        </div>
-       </div>
-       <img src="./images/WarhorseSkeleton.gif" class="" alt="No image buddy">
-      </div>
-     </div>
-     <!-- <div class="col-sm-6 image border text-center" id="image"> -->
-     </div>
-    </div>
-    <div class="row">
-     <div id ="text-display" class="col-sm-8 offset-sm-2 text_box border">
-      <p>
-       After a night of partying and what looked suspiciously like a yard of Whisky, you wake up in
-       a forest, not remembering how you got there. You instantly realise this is your classic <strong>Fantasy Amnesia Scenario &copy;</strong>, so you sigh heavily and select a sword from a convenient pile of weaponry.
-      </p>
-      <p>
-       You can see three exits available to you, and going by classic fantasy tropes, you know you'll have to visit
-       them all in order to either escape, marry a princess, or win a Kingdom. Really, all you want is to find where you parked your car and go to bed, but it seems you have to play along with this psychotic break for now.
-      </p>
-     </div>
-    </div>
-    <div class="row">
-     <div id="stats" class="col-sm-4 offset-sm-1 stats topbox">
-      <h2>Stats</h2>
-      <hr>
-      <!-- <div class="progress" style="height:30px;">
-       <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" id="HP-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-       </div>
-      </div> -->
-      <div id="statsHealth"></div>
-      <div id="statsAttack"></div>
-      <div id="statsHeals"></div>
-     </div>
-     <div class="col-sm-2 pad10 topbox">
-      <button type="button" name="button" id="nav-attack-btn" class="btn-block btn-disabled navigate btn btn-lg" disabled>Attack!</button>
-      <button type="button" name="button" id="nav-defend-btn" class="btn-block btn-disabled navigate btn btn-lg" disabled>Defend</button>
-      <button type="button" name="button" id="nav-run-btn" class="btn-block btn-disabled navigate btn btn-lg" disabled>Cheese it!</button>
-     </div>
-     <div id="options" class="col-sm-4 options pad10 topbox">
-      <!-- <button type="button" name="button" id="nav-left-btn" class="navigate btn btn-lg">Left</button>
-      <button type="button" name="button" id="nav-forward-btn" class="navigate btn btn-lg">Forward</button>
-      <button type="button" name="button" id="nav-right-btn" class="navigate btn btn-lg">Right</button>
-      <button type="button" name="button" id="nav-heal-btn" class='btn-disabled navigate btn btn-lg' disabled='true' alt="heal 25 hp">Use Health Pack</button> -->
-     </div>
-    </div>
-   </div>
-   <!-- <div class="dice"></div>
-   <div class="text">text</div>
-   <div class="stats">stats</div>
-   <div class="options">options</div>
-   <div class="items">items</div>
-    -->
-   <footer>
+
+    <audio autoplay=false loop >
+      <source src="./music/Prologue.mp3" type="audio/mp3">
+    </audio>
+
     <div class="container-fluid">
-     <div class="row">
-      <div class="col-sm-6 offset-sm-3 footer-stuff">
-       Thought of, planned, created, ruined, fixed, broke harder and finally completed by a bunch of people. &copy 2018.
-       </br>
-       Made in Codeclan, even if they don't want to admit it.
+      <div class="row">
+        <div class="col-sm-12 image border" id="image-display">
+          <img src="./images/Background2.gif" class="img-responsive" id="background-img" alt="No image buddy">
+
+          <div id="player-image">
+            <div class="progress progress-player" style="height:20px;">
+              <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" id="player-hp-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100 HP
+              </div>
+            </div>
+            <img class="player" src="./images/Player-sm.gif" class="" alt="No image buddy">
+          </div>
+
+          <div id="enemy-image">
+            <div id="enemybar" class=""></div>
+            <img src="" class=""  id='monsterPlacement'>
+          </div>
+        </div>
+      <!-- <div class="col-sm-6 image border text-center" id="image"> -->
       </div>
-     </div>
     </div>
-   </footer>
+
+    <div class="row">
+      <div class="dice-container col-sm-2" id="player-dice">
+        <div class="dicebox" id="player-dicebox">
+          ...
+        </div>
+        <div class="dice-title">
+          Player
+        </div>
+      </div>
+
+      <div id ="text-display" class="col-sm-8 text_box border">
+        <p>
+           After a night of partying and what looked suspiciously like a yard of Whisky, you wake up in
+           a forest, not remembering how you got there. You instantly realise this is your classic <strong>Fantasy Amnesia Scenario &copy;</strong>, so you sigh heavily and select a sword from a convenient pile of weaponry.
+        </p>
+        <p>
+           You can see three exits available to you, and going by classic fantasy tropes, you know you'll have to visit
+           them all in order to either escape, marry a princess, or win a Kingdom. Really, all you want is to find where you parked your car and go to bed, but it seems you have to play along with this psychotic break for now.
+        </p>
+      </div>
+
+      <div class="dice-container col-sm-2" id="enemy-dice">
+        <div class="dicebox" id="enemy-dicebox">
+          ...
+        </div>
+        <div class="dice-title">
+          Enemy
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div id="stats" class="col-sm-4 offset-sm-1 stats topbox">
+        <h2>Stats</h2>
+        <hr>
+        <!-- <div class="progress" style="height:30px;">
+         <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" id="HP-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+         </div>
+        </div> -->
+        <div id="statsHealth"></div>
+        <div id="statsAttack"></div>
+        <div id="statsHeals"></div>
+      </div>
+
+      <div class="col-sm-2 pad10 topbox">
+        <button type="button" name="button" id="nav-attack-btn" class="btn-block btn-disabled navigate btn btn-lg" disabled>Attack!</button>
+        <button type="button" name="button" id="nav-defend-btn" class="btn-block btn-disabled navigate btn btn-lg" disabled>Defend</button>
+        <button type="button" name="button" id="nav-run-btn" class="btn-block btn-disabled navigate btn btn-lg" disabled>Cheese it!</button>
+      </div>
+
+      <div id="options" class="col-sm-4 options pad10 topbox">
+        <!-- <button type="button" name="button" id="nav-left-btn" class="navigate btn btn-lg">Left</button>
+        <button type="button" name="button" id="nav-forward-btn" class="navigate btn btn-lg">Forward</button>
+        <button type="button" name="button" id="nav-right-btn" class="navigate btn btn-lg">Right</button>
+        <button type="button" name="button" id="nav-heal-btn" class='btn-disabled navigate btn btn-lg' disabled='true' alt="heal 25 hp">Use Health Pack</button> -->
+      </div>
+    </div>
+
+    <!-- <div class="dice"></div>
+    <div class="text">text</div>
+    <div class="stats">stats</div>
+    <div class="options">options</div>
+    <div class="items">items</div>
+    -->
+
+    <footer>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6 offset-sm-3 footer-stuff">
+            Thought of, planned, created, ruined, fixed, broke harder and finally completed by a bunch of people. &copy 2018.
+            </br>
+            Made in Codeclan, even if they don't want to admit it.
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div id='monsterHp'></div>
+
   </body>
 </html>
