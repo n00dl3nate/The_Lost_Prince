@@ -8,6 +8,8 @@ const Fight = function () {
   this.player = new Player;
 };
 
+const pointsTracker = new PointsTracker();
+
 Fight.prototype.roll = function(){
   return Math.floor(Math.random()*20)+1;
 }
@@ -51,14 +53,8 @@ Fight.prototype.playerAttack = function (monster){
       yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
     };
 
-    const newMonster = {
-      name: monster.name,
-      attack: monster.attack,
-      hp: monster.hp
-    }
 
-    return yourResult;
-  };
+  return yourResult;
 };
 
 Fight.prototype.monsterAttack = function (monster) {
@@ -141,11 +137,13 @@ Fight.prototype.run = function(enemy){
     runResult = `You ran away from the ${enemyName}. It manages to hit you for [${runDamage}] as you bravely run away.`;
     this.player.updateHp((this.player.getHpHtml() - runDamage));
   }
-  this.enableNavigation();
+
+
+  this.enableNavigation()
   this.clearMonster();
   return runResult;
+};
 
-}
 
 Fight.prototype.sendMonster = function(monsterInfo){
   const attackButton = document.getElementById('nav-attack-btn').addEventListener('click',()=>{
@@ -316,7 +314,6 @@ Fight.prototype.clearMonster = function(){
   monsterImg = document.querySelector("#monsterPlacement")
   monsterImg.src = ""
 }
-
 
 
 module.exports = Fight
