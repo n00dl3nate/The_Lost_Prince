@@ -37,9 +37,18 @@ TextView.prototype.bindEvents = function(){
     roomDescription.textContent = roomContent;
     this.container.appendChild(roomDescription);
 
+
     // points.reachEndPoint();
 
   });
+
+  PubSub.subscribe('Dice:input',(evt)=>{
+    showDice = evt.detail;
+    playerDice = showDice[0];
+    enemyDice = showDice[1];
+
+    this.showDice(playerDice,enemyDice);
+  })
 };
 
 TextView.prototype.setupRoomDetails = function(evt){
@@ -209,6 +218,7 @@ TextView.prototype.printStuff = function(input){
   this.container.appendChild(roomDescription);
 }
 
+
 TextView.prototype.setMonster = function (monsterurl){
   monsterImg = document.querySelector("#monsterPlacement")
   monsterImg.src = monsterurl;
@@ -237,4 +247,18 @@ TextView.prototype.createHealthBar = function (monster){
   monsterHealthBar.appendChild(div1);
   }
 
-  module.exports = TextView;
+
+
+TextView.prototype.showDice = function(playerDice,enemyDice){
+  // console.log('Player Dice: ',playerDice);
+  // console.log('Enemy Dice: ',enemyDice);
+  playerDiceBox = document.getElementById('player-dicebox');
+  playerDiceBox.textContent = playerDice;
+  enemyDiceBox = document.getElementById('enemy-dicebox');
+  enemyDiceBox.textContent = enemyDice;
+  // this.container.appendChild(roomDescription);
+}
+
+
+module.exports = TextView;
+

@@ -46,11 +46,8 @@ PlayerView.prototype.roomContent = function () {
     };
 
 
-    points.roomPoints += 1;
-
     content = event.detail;
     console.log(content,"this is your content Player view")
-
 
 
     attack = document.querySelector('#playerStatsAttack')
@@ -94,6 +91,7 @@ PlayerView.prototype.roomContent = function () {
       const monsters = points.monsterLevel();
       PubSub.publish(`PointsTracker:monster-level`,monsters)
     }
+
   });
 };
 
