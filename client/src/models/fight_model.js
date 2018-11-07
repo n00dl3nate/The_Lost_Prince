@@ -93,6 +93,7 @@ Fight.prototype.monsterAttack = function (monster) {
   if (this.getMonsteHp() <= 0){
     var additional = `The ${monsterName} is dead.`;
     this.enableNavigation();
+    this.clearMonster();
     return `${revengeResult} ${additional}`;
   } else {
     return revengeResult;
@@ -123,10 +124,10 @@ Fight.prototype.run = function(enemy){
   } else {
     var runDamage = Math.ceil(this.roll()/2);
     runResult = `You ran away from the ${enemyName}. It manages to hit you for [${runDamage}] as you bravely run away.`;
-    var newPlayerHp = this.player.getHpHtml() - runDamage;
-    this.player.updateHp(newPlayerHp);
+    this.player.updateHp((this.player.getHpHtml() - runDamage));
   }
   return runResult;
+  this.clearMonster();
 };
 
 Fight.prototype.sendMonster = function(monsterInfo){
@@ -198,6 +199,10 @@ Fight.prototype.getMonsteHp = function(){
   return monsterhtml.value
 }
 
+Fight.prototype.clearMonster = function(){
+  monsterImg = document.querySelector("#monsterPlacement")
+  monsterImg.src = ""
+}
 
 
 

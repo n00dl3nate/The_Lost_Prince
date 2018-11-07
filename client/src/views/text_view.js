@@ -3,14 +3,18 @@ const PlayerView = require('./player_view.js')
 const UnfortunateCircumstance = require('../models/traps.js');
 const RoomDetails = require('../models/room_details.js');
 const Fight = require('../models/fight_model.js');
+const PointsTracker = require('../models/points_model.js');
 
 const TextView = function(container){
   this.container = container;
   this.fight = new Fight;
 };
 
+const points = new PointsTracker();
+
 var counter = 0;
 var x = 0;
+var y = 0;
 
 player = new PlayerView;
 
@@ -32,10 +36,17 @@ TextView.prototype.bindEvents = function(){
     roomDescription = document.createElement('p');
     roomDescription.textContent = roomContent;
     this.container.appendChild(roomDescription);
+
+    // points.reachEndPoint();
+
   });
 };
 
 TextView.prototype.setupRoomDetails = function(evt){
+
+  points.roomPoints += 1;
+  console.log("RoomPoints", points.roomPoints);
+
   this.container.innerHTML = "";
 
   // Assign Variables for the room
@@ -45,6 +56,7 @@ TextView.prototype.setupRoomDetails = function(evt){
   const content = evt.detail.content;
 
   PubSub.publish('TextView:room-content',content);
+
 
   return [
     {
@@ -159,12 +171,8 @@ TextView.prototype.pageContent = function(content,room_details,exitSetup){
     case 'monster':
       // generate a monster!
       this.disableNavigation();
-      PubSub.subscribe('Monster:monster-ready',(evt)=>{
-        // var healthBar = document.getElementById('player-hp-bar');
-        // healthBar.textContent = `${evt.detail.hp} HP`;
-        // healthBar.setAttribute('style',`width:100%`);
-        // healthBar.setAttribute('aria-valuenow',evt.detail.hp);
-        // healthBar.setAttribute('aria-valuemax',evt.detail.hp);
+      PubSub.subscribe(`Monster:monster-ready${y}`,(evt)=>{
+
         monster = evt.detail
 
         const monsterhtml = document.querySelector('#monsterHp')
@@ -173,7 +181,8 @@ TextView.prototype.pageContent = function(content,room_details,exitSetup){
         content_result = this.displayDetails(monster)
         roomContent = `${room_details} ${content_result} ${exitSetup}.`;
         this.printStuff(roomContent);
-
+        this.setMonster(monster.url);
+        y += 1;
         this.fight.sendMonster(monster);
       });
       break;
@@ -200,5 +209,32 @@ TextView.prototype.printStuff = function(input){
   this.container.appendChild(roomDescription);
 }
 
+TextView.prototype.setMonster = function (monsterurl){
+  monsterImg = document.querySelector("#monsterPlacement")
+  monsterImg.src = monsterurl;
+  console.log(monsterImg,"This Is monster Image");
+  // this.createHealthBar(monster)
+  }
 
-module.exports = TextView;
+TextView.prototype.createHealthBar = function (monster){
+  const div1 = document.createElement('div')
+  div1.className = "progress progress-player"
+  div1.setAttribute('style', "height:20px;")
+
+  const div2 = document.createElement('div')
+  div2.className = "progress-bar bg-success progress-bar-striped progress-bar-animated";
+  div2.id = "player-hp-bar"
+  div2.setAttribute('role', "progressbar")
+  div2.setAttribute('style', "width: 100%;" )
+  div2.setAttribute('aria-valuenow', "100" )
+  div2.setAttribute('aria-valuemin', "0" )
+  div2.setAttribute('aria-valuemax', "100" )
+  div2.textContent = "100 HP"
+
+  div1.appendChild(div2)
+
+  const monsterHealthBar = document.querySelector("div#enemy-image")
+  monsterHealthBar.appendChild(div1);
+  }
+
+  module.exports = TextView;

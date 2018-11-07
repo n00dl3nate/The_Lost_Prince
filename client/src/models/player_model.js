@@ -27,13 +27,13 @@ Player.prototype.upgradeAttack = function () {
 };
 
 Player.prototype.useHealthPack = function () {
-  if (this.hp >= 75){
-    let heal = 100 - this.hp
-    this.hp += heal
+  if (this.getHpHtml() >= 75){
+    let heal = (100 - this.getHpHtml())
+    this.updateHp(this.getHpHtml() + heal)
   } else {
-    this.hp += 25;
+    this.updateHp(this.getHpHtml()+ 25)
   };
-  this.heals -= 1;
+  this.updateHeals(this.getHealsHtml()-1)
 };
 
 Player.prototype.getHpHtml = function (){
