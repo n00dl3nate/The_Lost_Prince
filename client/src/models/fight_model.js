@@ -262,6 +262,8 @@ Fight.prototype.enableNavigation = function(){
   defendButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
   runButton.disabled = true;
   runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
+
+  this.removeMonsterBar();
 };
 
 Fight.prototype.updateMonsterBar = function(){
@@ -273,6 +275,13 @@ Fight.prototype.updateMonsterBar = function(){
   healthBar.textContent = `${hp} HP`;
   healthBar.setAttribute('style',`width:${hp}%`);
 }
+
+Fight.prototype.removeMonsterBar = function(){
+  var monsterBarContainer = document.getElementById('enemybar');
+  monsterBarContainer.setAttribute('class','');
+  monsterBarContainer.innerHTML = "";
+  // <div id="enemybar" class=""></div>
+};
 
 Fight.prototype.updateMonsterHp = function(amount){
   const monsterhtml = document.querySelector('#monsterHp')

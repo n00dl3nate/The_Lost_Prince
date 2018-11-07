@@ -194,10 +194,7 @@ TextView.prototype.pageContent = function(content,room_details,exitSetup){
         roomContent = `${room_details} ${content_result} ${exitSetup}.`;
         this.printStuff(roomContent);
         this.setMonster(monster.url);
-
-        var monsterHealthBar = document.getElementById('enemy-hp-bar');
-        monsterHealthBar.textContent = `${monster.hp} HP`;
-        monsterHealthBar.setAttribute('style',`width:${monster.hp}%`);
+        this.createMonsterBar(monster);
 
         y += 1;
         this.fight.sendMonster(monster);
@@ -206,6 +203,23 @@ TextView.prototype.pageContent = function(content,room_details,exitSetup){
   };
 
 }
+
+TextView.prototype.createMonsterBar = function(monster){
+  // console.log('Create Bar: ',monster)
+  var monsterBarContainer = document.getElementById('enemybar');
+  monsterBarContainer.setAttribute('class','progress progress-enemy');
+  monsterBarContainer.setAttribute('style','height:20px;');
+  var monsterBar = document.createElement('div');
+  monsterBar.setAttribute('class','progress-bar bg-success progress-bar-striped progress-bar-animated');
+  monsterBar.setAttribute('id','enemy-hp-bar');
+  monsterBar.setAttribute('role','progressbar');
+  monsterBar.setAttribute('style','width:100%');
+  monsterBar.setAttribute('aria-valuenow','100');
+  monsterBar.setAttribute('aria-valuemin','0');
+  monsterBar.setAttribute('aria-valuemax','100');
+  monsterBar.textContent = `${monster.name}: ${monster.hp} HP`;
+  monsterBarContainer.appendChild(monsterBar);
+};
 
 TextView.prototype.displayDetails = function (monster){
   var fight_chance = '';
