@@ -9,6 +9,7 @@ const EndView = function (container) {
 EndView.prototype.bindEvents = function () {
 
   PubSub.subscribe('PointsTracker:end-point-reached', (event)=> {
+    console.log("$$$$$$$$$$$$$$$$$");
     this.container.innerHTML = "";
 
     const end = document.createElement("h2");
