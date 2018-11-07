@@ -52,9 +52,8 @@ Fight.prototype.playerAttack = function (monster){
 
       yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
     };
-
-
-  return yourResult;
+    return yourResult;
+  };
 };
 
 Fight.prototype.monsterAttack = function (monster) {
