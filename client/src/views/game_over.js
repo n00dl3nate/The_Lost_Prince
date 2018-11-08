@@ -16,6 +16,8 @@ GameOver.prototype.playerDied = function () {
 
   const background = document.getElementById("background-img");
   background.setAttribute("src", "./images/Death.gif");
+  const playerImage = document.getElementById('kill-me');
+  playerImage.setAttribute('class','dead');
 
   const end = new EndView(this.container);
   end.disableButtons();

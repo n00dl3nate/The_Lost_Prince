@@ -188,10 +188,11 @@ Fight.prototype.sendMonster = function(monsterInfo){
     if (this.player.getHpHtml() <= 0) {
       const gameOver = new GameOver();
       gameOver.playerDied();
+      this.clearMonster();
+      this.removeMonsterBar();
+      
       setTimeout(()=>{
         this.disableUI();
-        this.clearMonster();
-        this.removeMonsterBar();
       },2050);
 
       var diceReset = ['...','...'];
