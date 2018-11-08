@@ -25,6 +25,7 @@ Fight.prototype.playerAttack = function (monster){
     const playerAtk = this.player.getAttackHtml();
     const playerRoll = this.roll() + playerAtk;
     const enemyRoll = this.roll() + monsterAttack;
+
     const diceUpdate = [playerRoll,enemyRoll];
     PubSub.publish('Dice:input',diceUpdate);
 
@@ -39,7 +40,17 @@ Fight.prototype.playerAttack = function (monster){
     } else if (playerRoll < enemyRoll){
       yourResult = `You attacked the ${monsterName} (${this.getMonsteHp()} HP). You rolled [${playerRoll}] and it rolled [${enemyRoll}]. You failed to hurt it.`
     } else {
-      let monsterDamage = playerRoll - enemyRoll;
+      var monsterDamage = 0
+      if ((playerRoll/2) >= enemyRoll){
+        console.log('CRITICAL HIT');
+        monsterDamage = (playerRoll - enemyRoll)*2;
+        yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. CRITICAL HIT! It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
+      } else {
+        console.log('NORMAL HIT');
+        monsterDamage = playerRoll - enemyRoll;
+        yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
+      }
+
       if (monsterDamage < 0){
         monsterDamage = 0;
       }
@@ -49,8 +60,6 @@ Fight.prototype.playerAttack = function (monster){
       if (this.getMonsteHp() < 0){
         this.updateMonsterHp(0);
       }
-
-      yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
     };
     return yourResult;
   };
@@ -83,7 +92,18 @@ Fight.prototype.monsterAttack = function (monster) {
       if (fightDamage < 0){
         fightDamage = 0;
       }
-      revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
+
+      if ((enemyRoll/2) >= playerRoll){
+        console.log('CRITICAL HIT');
+        fightDamage = (enemyRoll - playerRoll)*2;
+        revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
+      } else {
+        console.log('NORMAL HIT');
+        fightDamage = enemyRoll - playerRoll;
+        revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. CRITICAL HIT! You take ${fightDamage} Damage!`;
+      }
+
+
       // Update player HP
       var newPlayerHp = this.player.getHpHtml() - fightDamage;
       this.player.updateHp(newPlayerHp);
