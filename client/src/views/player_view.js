@@ -77,7 +77,7 @@ PlayerView.prototype.roomContent = function () {
         const trapDamage = evt.detail;
         let playerhp = this.player.getHpHtml()
         this.player.updateHp(playerhp - trapDamage)
-        if (this.getHpHtml() <= 0){
+        if (this.player.getHpHtml() <= 0){
           // player is dead
           const gameOver = new GameOver();
           gameOver.playerDied();
