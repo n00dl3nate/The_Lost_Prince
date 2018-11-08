@@ -127,10 +127,21 @@ Fight.prototype.monsterAttack = function (monster) {
         revengeResult = `The ${monsterName} (${this.getMonsteHp()} HP) attacked you, but you parried!`;
       } else if (enemyRoll > playerRoll){
         fightDamage = enemyRoll - playerRoll;
+
         if (fightDamage < 0){
           fightDamage = 0;
         }
-        revengeResult = `The ${monsterName} (${this.getMonsteHp()} HP) attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
+
+        if ((enemyRoll/2) >= playerRoll){
+          console.log('CRITICAL HIT');
+          fightDamage = (enemyRoll - playerRoll)*2;
+          revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
+        } else {
+          console.log('NORMAL HIT');
+          fightDamage = enemyRoll - playerRoll;
+          revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. CRITICAL HIT! You take ${fightDamage} Damage!`;
+        }
+
         // Update player HP
         var newPlayerHp = this.player.getHpHtml() - fightDamage;
         this.player.updateHp(newPlayerHp);
