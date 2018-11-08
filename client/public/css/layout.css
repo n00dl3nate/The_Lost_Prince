@@ -23,7 +23,11 @@ body {
   color: white;
   height: 200px;
   overflow-y:scroll;
+<<<<<<< HEAD
+  font-size: 18px;
+=======
   font-size: 20px;
+>>>>>>> 4e11bb58ba00cf9dce15c602e75cdbe19ad506e2
 }
 
 
