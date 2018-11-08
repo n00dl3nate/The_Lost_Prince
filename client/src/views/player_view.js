@@ -75,15 +75,12 @@ PlayerView.prototype.roomContent = function () {
       PubSub.subscribe(`Trap:trap-damage${x}`,(evt)=>{
         x += 1
         const trapDamage = evt.detail;
-        this.player.hp -= trapDamage;
-        if (this.player.hp <= 0){
+        let playerhp = this.player.getHpHtml()
+        this.player.updateHp(playerhp - trapDamage)
+        if (this.getHpHtml() <= 0){
           // player is dead
           const gameOver = new GameOver();
           gameOver.playerDied();
-        }
-        else
-        {
-          this.player.updateHp(this.player.hp)
         }
       });
     };
@@ -107,8 +104,11 @@ PlayerView.prototype.heal = function () {
   PubSub.subscribe(`PlayerButton:Heal`, (evt) => {
     if (evt.detail == 'heal'){
       this.player.useHealthPack()
-      if ((this.CheckingHeals()==false)||(this.player.hp > 99)){
+      if ((this.CheckingHeals()==false)||(this.player.getHpHtml() > 99)){
         this.disableHeal()
+      };
+      if ((this.CheckingHeals()==true)&&(this.player.getHpHtml() < 100)){
+        this.enableHeal()
       };
     };
   });
