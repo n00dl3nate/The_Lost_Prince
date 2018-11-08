@@ -25,6 +25,7 @@ Fight.prototype.playerAttack = function (monster){
     const playerAtk = this.player.getAttackHtml();
     const playerRoll = this.roll() + playerAtk;
     const enemyRoll = this.roll() + monsterAttack;
+
     const diceUpdate = [playerRoll,enemyRoll];
     PubSub.publish('Dice:input',diceUpdate);
 
@@ -39,7 +40,17 @@ Fight.prototype.playerAttack = function (monster){
     } else if (playerRoll < enemyRoll){
       yourResult = `You attacked the ${monsterName} (${this.getMonsteHp()} HP). You rolled [${playerRoll}] and it rolled [${enemyRoll}]. You failed to hurt it.`
     } else {
-      let monsterDamage = playerRoll - enemyRoll;
+      var monsterDamage = 0
+      if ((playerRoll/2) >= enemyRoll){
+        console.log('CRITICAL HIT');
+        monsterDamage = (playerRoll - enemyRoll)*2;
+        yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. CRITICAL HIT! It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
+      } else {
+        console.log('NORMAL HIT');
+        monsterDamage = playerRoll - enemyRoll;
+        yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
+      }
+
       if (monsterDamage < 0){
         monsterDamage = 0;
       }
@@ -49,8 +60,6 @@ Fight.prototype.playerAttack = function (monster){
       if (this.getMonsteHp() < 0){
         this.updateMonsterHp(0);
       }
-
-      yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
     };
     return yourResult;
   };
@@ -83,7 +92,18 @@ Fight.prototype.monsterAttack = function (monster) {
       if (fightDamage < 0){
         fightDamage = 0;
       }
-      revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
+
+      if ((enemyRoll/2) >= playerRoll){
+        console.log('CRITICAL HIT');
+        fightDamage = (enemyRoll - playerRoll)*2;
+        revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. You take ${fightDamage} Damage!`;
+      } else {
+        console.log('NORMAL HIT');
+        fightDamage = enemyRoll - playerRoll;
+        revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. CRITICAL HIT! You take ${fightDamage} Damage!`;
+      }
+
+
       // Update player HP
       var newPlayerHp = this.player.getHpHtml() - fightDamage;
       this.player.updateHp(newPlayerHp);
@@ -124,22 +144,24 @@ Fight.prototype.monsterAttack = function (monster) {
 }
 
 Fight.prototype.run = function(enemy){
-  const enemyName = enemy.name;
-  var enemyHp = enemy.hp;
-  const enemyAtk = enemy.attack;
-  var runResult = '';
+  if (enemy != null){
+    const enemyName = enemy.name;
+    var enemyHp = enemy.hp;
+    const enemyAtk = enemy.attack;
+    var runResult = '';
 
-  if (this.roll()%2 == 0){
-    runResult = `You run away from the ${enemyName}. It tries to hit you but misses.`;
-  } else {
-    var runDamage = Math.ceil(this.roll());
-    runResult = `You ran away from the ${enemyName}. It manages to hit you for [${runDamage}] as you bravely run away.`;
-    this.player.updateHp((this.player.getHpHtml() - runDamage));
-  }
-
-
-  this.enableNavigation()
-  this.clearMonster();
+    if (this.roll()%2 == 0){
+      runResult = `You run away from the ${enemyName}. It tries to hit you but misses.`;
+    } else {
+      var runDamage = Math.ceil(this.roll());
+      runResult = `You ran away from the ${enemyName}. It manages to hit you for [${runDamage}] as you bravely run away.`;
+      this.player.updateHp((this.player.getHpHtml() - runDamage));
+    }
+  };
+  setTimeout(()=>{
+    this.enableNavigation()
+    this.clearMonster();
+  },2050);
   return runResult;
 };
 
@@ -148,27 +170,45 @@ Fight.prototype.sendMonster = function(monsterInfo){
   const attackButton = document.getElementById('nav-attack-btn').addEventListener('click',()=>{
     var yourAttack = this.playerAttack(monsterInfo);
 
-    var theirAttack = this.monsterAttack(monsterInfo);
+    if (this.getMonsteHp() == 0){
+      var theirAttack = `You hit the ${monster.name} so hard it instantly disappears with no death animation.`;
+      monsterInfo = null;
+      this.enableNavigation();
+      this.clearMonster();
+
+    } else {
+      var theirAttack = this.monsterAttack(monsterInfo);
+    }
+
 
     this.printStuff(yourAttack,theirAttack);
 
-    if (this.getMonsteHp() == 0){
-      monsterInfo = null;
-      this.enableNavigation();
-    }
 
     const player = new Player();
     if (this.player.getHpHtml() <= 0) {
       const gameOver = new GameOver();
       gameOver.playerDied();
       this.disableUI();
+      var diceReset = ['...','...'];
+      setTimeout(function(){
+        PubSub.publish('Dice:input',diceReset);
+      },2000);
     }
   });
 
   // set up run function
 const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
     var runAway = this.run(monsterInfo);
+    if (this.player.getHpHtml() <= 0) {
+      const gameOver = new GameOver();
+      gameOver.playerDied();
+      this.disableUI();}
     this.printStuff(runAway);
+    monsterInfo = null;
+    var diceReset = ['...','...'];
+    setTimeout(function(){
+      PubSub.publish('Dice:input',diceReset);
+    },2000)
   });
 };
 
@@ -178,7 +218,6 @@ Fight.prototype.disableUI = function(){
     const rightNavButton = document.getElementById('nav-right-btn');
     const forwardNavButton = document.getElementById('nav-forward-btn');
     const attackButton = document.getElementById('nav-attack-btn');
-    const defendButton = document.getElementById('nav-defend-btn');
     const runButton = document.getElementById('nav-run-btn');
 
     leftNavButton.disabled = true;
@@ -190,8 +229,6 @@ Fight.prototype.disableUI = function(){
 
     attackButton.disabled = true;
     attackButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
-    defendButton.disabled = true;
-    defendButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
     runButton.disabled = true;
     runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
   };
@@ -236,8 +273,6 @@ Fight.prototype.restartFight = function(){
 
   attackButton.disabled = false;
   attackButton.setAttribute('class','btn-block navigate btn btn-lg');
-  defendButton.disabled = false;
-  defendButton.setAttribute('class','btn-block navigate btn btn-lg');
   runButton.disabled = false;
   runButton.setAttribute('class','btn-block navigate btn btn-lg');
 };
@@ -246,13 +281,10 @@ Fight.prototype.disableFight = function(){
   // Disable the fight buttons
   console.log('Fight Stopped');
   const attackButton = document.getElementById('nav-attack-btn');
-  const defendButton = document.getElementById('nav-defend-btn');
   const runButton = document.getElementById('nav-run-btn');
 
   attackButton.disabled = true;
   attackButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
-  defendButton.disabled = true;
-  defendButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
   runButton.disabled = true;
   runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
 };
@@ -262,7 +294,6 @@ Fight.prototype.enableNavigation = function(){
   const rightNavButton = document.getElementById('nav-right-btn');
   const forwardNavButton = document.getElementById('nav-forward-btn');
   const attackButton = document.getElementById('nav-attack-btn');
-  const defendButton = document.getElementById('nav-defend-btn');
   const runButton = document.getElementById('nav-run-btn');
 
   leftNavButton.disabled = false;
@@ -274,8 +305,6 @@ Fight.prototype.enableNavigation = function(){
 
   attackButton.disabled = true;
   attackButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
-  defendButton.disabled = true;
-  defendButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
   runButton.disabled = true;
   runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
 
