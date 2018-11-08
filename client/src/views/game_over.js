@@ -19,6 +19,9 @@ GameOver.prototype.playerDied = function () {
 
   const end = new EndView(this.container);
   end.disableButtons();
+
+  const player = document.querySelector("#playerImage")
+  player.src = "./images/Player-dead.gif"
 };
 
 module.exports = GameOver;
