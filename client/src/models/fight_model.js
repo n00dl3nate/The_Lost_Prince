@@ -199,6 +199,10 @@ Fight.prototype.sendMonster = function(monsterInfo){
   // set up run function
 const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
     var runAway = this.run(monsterInfo);
+    if (this.player.getHpHtml() <= 0) {
+      const gameOver = new GameOver();
+      gameOver.playerDied();
+      this.disableUI();}
     this.printStuff(runAway);
     monsterInfo = null;
     var diceReset = ['...','...'];
