@@ -124,22 +124,24 @@ Fight.prototype.monsterAttack = function (monster) {
 }
 
 Fight.prototype.run = function(enemy){
-  const enemyName = enemy.name;
-  var enemyHp = enemy.hp;
-  const enemyAtk = enemy.attack;
-  var runResult = '';
+  if (enemy != null){
+    const enemyName = enemy.name;
+    var enemyHp = enemy.hp;
+    const enemyAtk = enemy.attack;
+    var runResult = '';
 
-  if (this.roll()%2 == 0){
-    runResult = `You run away from the ${enemyName}. It tries to hit you but misses.`;
-  } else {
-    var runDamage = Math.ceil(this.roll());
-    runResult = `You ran away from the ${enemyName}. It manages to hit you for [${runDamage}] as you bravely run away.`;
-    this.player.updateHp((this.player.getHpHtml() - runDamage));
-  }
-
-
-  this.enableNavigation()
-  this.clearMonster();
+    if (this.roll()%2 == 0){
+      runResult = `You run away from the ${enemyName}. It tries to hit you but misses.`;
+    } else {
+      var runDamage = Math.ceil(this.roll());
+      runResult = `You ran away from the ${enemyName}. It manages to hit you for [${runDamage}] as you bravely run away.`;
+      this.player.updateHp((this.player.getHpHtml() - runDamage));
+    }
+  };
+  setTimeout(()=>{
+    this.enableNavigation()
+    this.clearMonster();
+  },2050);
   return runResult;
 };
 
@@ -148,20 +150,29 @@ Fight.prototype.sendMonster = function(monsterInfo){
   const attackButton = document.getElementById('nav-attack-btn').addEventListener('click',()=>{
     var yourAttack = this.playerAttack(monsterInfo);
 
-    var theirAttack = this.monsterAttack(monsterInfo);
+    if (this.getMonsteHp() == 0){
+      var theirAttack = `You hit the ${monster.name} so hard it instantly disappears with no death animation.`;
+      monsterInfo = null;
+      this.enableNavigation();
+      this.clearMonster();
+
+    } else {
+      var theirAttack = this.monsterAttack(monsterInfo);
+    }
+
 
     this.printStuff(yourAttack,theirAttack);
 
-    if (this.getMonsteHp() == 0){
-      monsterInfo = null;
-      this.enableNavigation();
-    }
 
     const player = new Player();
     if (this.player.getHpHtml() <= 0) {
       const gameOver = new GameOver();
       gameOver.playerDied();
       this.disableUI();
+      var diceReset = ['...','...'];
+      setTimeout(function(){
+        PubSub.publish('Dice:input',diceReset);
+      },2000);
     }
   });
 
@@ -169,6 +180,11 @@ Fight.prototype.sendMonster = function(monsterInfo){
 const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
     var runAway = this.run(monsterInfo);
     this.printStuff(runAway);
+    monsterInfo = null;
+    var diceReset = ['...','...'];
+    setTimeout(function(){
+      PubSub.publish('Dice:input',diceReset);
+    },2000)
   });
 };
 
@@ -178,7 +194,6 @@ Fight.prototype.disableUI = function(){
     const rightNavButton = document.getElementById('nav-right-btn');
     const forwardNavButton = document.getElementById('nav-forward-btn');
     const attackButton = document.getElementById('nav-attack-btn');
-    const defendButton = document.getElementById('nav-defend-btn');
     const runButton = document.getElementById('nav-run-btn');
 
     leftNavButton.disabled = true;
@@ -190,8 +205,6 @@ Fight.prototype.disableUI = function(){
 
     attackButton.disabled = true;
     attackButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
-    defendButton.disabled = true;
-    defendButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
     runButton.disabled = true;
     runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
   };
@@ -236,8 +249,6 @@ Fight.prototype.restartFight = function(){
 
   attackButton.disabled = false;
   attackButton.setAttribute('class','btn-block navigate btn btn-lg');
-  defendButton.disabled = false;
-  defendButton.setAttribute('class','btn-block navigate btn btn-lg');
   runButton.disabled = false;
   runButton.setAttribute('class','btn-block navigate btn btn-lg');
 };
@@ -246,13 +257,10 @@ Fight.prototype.disableFight = function(){
   // Disable the fight buttons
   console.log('Fight Stopped');
   const attackButton = document.getElementById('nav-attack-btn');
-  const defendButton = document.getElementById('nav-defend-btn');
   const runButton = document.getElementById('nav-run-btn');
 
   attackButton.disabled = true;
   attackButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
-  defendButton.disabled = true;
-  defendButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
   runButton.disabled = true;
   runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
 };
@@ -262,7 +270,6 @@ Fight.prototype.enableNavigation = function(){
   const rightNavButton = document.getElementById('nav-right-btn');
   const forwardNavButton = document.getElementById('nav-forward-btn');
   const attackButton = document.getElementById('nav-attack-btn');
-  const defendButton = document.getElementById('nav-defend-btn');
   const runButton = document.getElementById('nav-run-btn');
 
   leftNavButton.disabled = false;
@@ -274,8 +281,6 @@ Fight.prototype.enableNavigation = function(){
 
   attackButton.disabled = true;
   attackButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
-  defendButton.disabled = true;
-  defendButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
   runButton.disabled = true;
   runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
 
