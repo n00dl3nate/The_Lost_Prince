@@ -55,6 +55,7 @@ EndView.prototype.disableButtons = function () {
   monster.innerHTML = ""
   const playerhealthbar = document.querySelector("div#player-health-bar")
   playerhealthbar.innerHTML = ""
+  
 
 };
 
