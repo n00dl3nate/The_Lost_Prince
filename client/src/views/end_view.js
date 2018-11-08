@@ -55,6 +55,7 @@ EndView.prototype.disableButtons = function () {
   runButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
 
   const player = document.querySelector('#player-image')
+  
 };
 
 
