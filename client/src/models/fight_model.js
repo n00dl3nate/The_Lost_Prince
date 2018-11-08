@@ -186,6 +186,7 @@ Fight.prototype.sendMonster = function(monsterInfo){
 
     const player = new Player();
     if (this.player.getHpHtml() <= 0) {
+      this.player.updateHp(0)
       const gameOver = new GameOver();
       gameOver.playerDied();
       setTimeout(()=>{
@@ -205,6 +206,7 @@ Fight.prototype.sendMonster = function(monsterInfo){
     const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
     var runAway = this.run(monsterInfo);
     if (this.player.getHpHtml() <= 0) {
+      this.player.updateHp(0)
       const gameOver = new GameOver();
       gameOver.playerDied();
 
