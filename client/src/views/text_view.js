@@ -209,9 +209,12 @@ TextView.prototype.createMonsterBar = function(monster){
   monsterBar.setAttribute('id','enemy-hp-bar');
   monsterBar.setAttribute('role','progressbar');
   monsterBar.setAttribute('style','width:100%');
-  monsterBar.setAttribute('aria-valuenow','100');
+
+  // monsterHealthParse = (100/monster.hp)
+
+  monsterBar.setAttribute('aria-valuenow',monster.hp);
   monsterBar.setAttribute('aria-valuemin','0');
-  monsterBar.setAttribute('aria-valuemax','100');
+  monsterBar.setAttribute('aria-valuemax',monster.hp);
   monsterBar.textContent = `${monster.name}: ${monster.hp} HP`;
   monsterBarContainer.appendChild(monsterBar);
 };

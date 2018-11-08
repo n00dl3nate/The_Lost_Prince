@@ -188,7 +188,12 @@ Fight.prototype.sendMonster = function(monsterInfo){
     if (this.player.getHpHtml() <= 0) {
       const gameOver = new GameOver();
       gameOver.playerDied();
-      this.disableUI();
+      setTimeout(()=>{
+        this.disableUI();
+        this.clearMonster();
+        this.removeMonsterBar();
+      },2050);
+
       var diceReset = ['...','...'];
       setTimeout(function(){
         PubSub.publish('Dice:input',diceReset);
@@ -197,12 +202,15 @@ Fight.prototype.sendMonster = function(monsterInfo){
   });
 
   // set up run function
-const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
+    const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
     var runAway = this.run(monsterInfo);
     if (this.player.getHpHtml() <= 0) {
       const gameOver = new GameOver();
       gameOver.playerDied();
-      this.disableUI();}
+
+      this.disableUI();
+    }
+
     this.printStuff(runAway);
     monsterInfo = null;
     var diceReset = ['...','...'];
@@ -213,8 +221,7 @@ const runButton = document.getElementById('nav-run-btn').addEventListener('click
 };
 
 Fight.prototype.disableUI = function(){
-  TextView.prototype.disableNavigation = function(){
-    const leftNavButton = document.getElementById('nav-left-btn');
+  const leftNavButton = document.getElementById('nav-left-btn');
     const rightNavButton = document.getElementById('nav-right-btn');
     const forwardNavButton = document.getElementById('nav-forward-btn');
     const attackButton = document.getElementById('nav-attack-btn');
@@ -231,7 +238,7 @@ Fight.prototype.disableUI = function(){
     attackButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
     runButton.disabled = true;
     runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
-  };
+
 }
 
 Fight.prototype.printStuff = function(yourInput,theirInput){
