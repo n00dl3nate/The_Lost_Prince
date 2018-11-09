@@ -86,11 +86,9 @@ TextView.prototype.setupExits = function(setupRoom){
   const rightNavButton = document.getElementById('nav-right-btn');
   const forwardNavButton = document.getElementById('nav-forward-btn');
   const attackButton = document.getElementById('nav-attack-btn');
-  const defendButton = document.getElementById('nav-defend-btn');
   const runButton = document.getElementById('nav-run-btn');
 
   attackButton.disabled = true;
-  defendButton.disabled = true;
   runButton.disabled = true;
 
   if (setupRoom[0].exitLeft == 1){
@@ -126,7 +124,6 @@ TextView.prototype.disableNavigation = function(){
   const rightNavButton = document.getElementById('nav-right-btn');
   const forwardNavButton = document.getElementById('nav-forward-btn');
   const attackButton = document.getElementById('nav-attack-btn');
-  const defendButton = document.getElementById('nav-defend-btn');
   const runButton = document.getElementById('nav-run-btn');
 
   leftNavButton.disabled = true;
@@ -138,8 +135,6 @@ TextView.prototype.disableNavigation = function(){
 
   attackButton.disabled = false;
   attackButton.setAttribute('class','btn-block navigate btn btn-lg');
-  defendButton.disabled = true;
-  defendButton.setAttribute('class','btn-block navigate btn btn-lg');
   runButton.disabled = false;
   runButton.setAttribute('class','btn-block navigate btn btn-lg');
 };
@@ -214,9 +209,12 @@ TextView.prototype.createMonsterBar = function(monster){
   monsterBar.setAttribute('id','enemy-hp-bar');
   monsterBar.setAttribute('role','progressbar');
   monsterBar.setAttribute('style','width:100%');
-  monsterBar.setAttribute('aria-valuenow','100');
+
+  // monsterHealthParse = (100/monster.hp)
+
+  monsterBar.setAttribute('aria-valuenow',monster.hp);
   monsterBar.setAttribute('aria-valuemin','0');
-  monsterBar.setAttribute('aria-valuemax','100');
+  monsterBar.setAttribute('aria-valuemax',monster.hp);
   monsterBar.textContent = `${monster.name}: ${monster.hp} HP`;
   monsterBarContainer.appendChild(monsterBar);
 };
