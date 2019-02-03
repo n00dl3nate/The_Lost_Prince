@@ -3,7 +3,7 @@ const PubSub = require('../helpers/pub_sub.js');
 const UnfortunateCircumstance = function(){
 };
 
-UnfortunateCircumstance.prototype.bindEvents = function(){
+UnfortunateCircumstance.prototype.spawnTrap = function(){
   const trapType = [
     {
       description:'A large boulder drops from the ceiling. It misses you, but you get hit by stone shrapnel.',
@@ -59,18 +59,15 @@ UnfortunateCircumstance.prototype.bindEvents = function(){
     // What type of trap?
     const trapNo = Math.floor(Math.random()*trapType.length);
     const trapDescription = trapType[trapNo]['description'];
-    console.log('Trap: ',trapType[trapNo])
     const damageModifier = trapType[trapNo]['damageModifier']
+
     // How much damage?
     const trapDamage = (Math.floor(Math.random()*8)+1)*damageModifier;
     const trapReturn = {
       trap: trapDescription,
       damage: trapDamage
     }
-
     return trapReturn
-
-
 };
 
 module.exports = UnfortunateCircumstance;

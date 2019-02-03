@@ -5,7 +5,7 @@ const Player = function () {
   this.healthStats = document.querySelector("div#statsHealth");
   this.attackStats = document.querySelector("div#statsAttack");
   this.healsStats = document.querySelector("div#statsHeals");
-  this.hp = 100
+  this.hp = 1000
   this.attack = 6
   this.heals = 0
 }
