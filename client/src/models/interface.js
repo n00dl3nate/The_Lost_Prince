@@ -9,9 +9,6 @@ Interface.prototype.bindEvents = function(){
 
   PubSub.subscribe('StartView:choice-button-clicked', (event)=> {
 
-    const newRoom = new RoomGenerator;
-    newRoom.bindEvents();
-
     this.createButtons();
 
     const text = document.getElementById("text-display");
@@ -23,27 +20,22 @@ Interface.prototype.bindEvents = function(){
       text.textContent = "You make your way towards a towering mansion until you reach a fork in the path. Do you head Left, Forward, or Right?";
     };
 
+    const newRoom = new RoomGenerator;
+    newRoom.bindEvents();
+
 
     const leftButton = document.getElementById('nav-left-btn').addEventListener('click',()=>{
-      PubSub.publish('DirectionButton:direction-clicked',leftButton);
+      // PubSub.publish('DirectionButton:direction-clicked',leftButton);
+      newRoom.bindEvents();
     });
     const rightButton = document.getElementById('nav-right-btn').addEventListener('click',()=>{
-      PubSub.publish('DirectionButton:direction-clicked',rightButton);
+      // PubSub.publish('DirectionButton:direction-clicked',rightButton);
+      newRoom.bindEvents();
     });
     const forwardButton = document.getElementById('nav-forward-btn').addEventListener('click',()=>{
-      PubSub.publish('DirectionButton:direction-clicked',forwardButton);
+      // PubSub.publish('DirectionButton:direction-clicked',forwardButton);
+      newRoom.bindEvents();
     });
-
-    // const attackButton = document.getElementById('nav-attack-btn').addEventListener('click',()=>{
-    //   PubSub.publish('Fight:attack-clicked');
-    // });
-    // const defendButton = document.getElementById('nav-defend-btn').addEventListener('click',()=>{
-    //   PubSub.publish('Fight:defend-clicked');
-    // });
-    // const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
-    //   PubSub.publish('Fight:run-clicked');
-    // });
-
     const healButton = document.getElementById("nav-heal-btn").addEventListener('click',()=> {
       const playerstats = document.querySelector("div#stats");
       PubSub.publish(`PlayerButton:Heal`,'heal');
@@ -51,14 +43,11 @@ Interface.prototype.bindEvents = function(){
   });
 };
 
-
-
 Interface.prototype.createButtons = function () {
   this.container.innerHTML = "";
   this.directionButtons();
   this.healButton();
 };
-
 
 Interface.prototype.directionButtons = function () {
   const leftButton = document.createElement("button");
@@ -81,7 +70,6 @@ Interface.prototype.directionButtons = function () {
   this.container.appendChild(rightButton);
 };
 
-
 Interface.prototype.healButton = function () {
   const healButton = document.createElement("button");
   healButton.textContent = "Use Health Pack";
@@ -92,5 +80,104 @@ Interface.prototype.healButton = function () {
   this.container.appendChild(healButton);
 };
 
+Interface.prototype.disableLeftButton = function (){
+  const leftNavButton = document.getElementById('nav-left-btn');
+  leftNavButton.disabled = true;
+  leftNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
+};
+
+Interface.prototype.disableRightButton = function (){
+  const rightNavButton = document.getElementById('nav-right-btn');
+  rightNavButton.disabled = true;
+  rightNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
+};
+
+Interface.prototype.disableForwardButton = function() {
+  const forwardNavButton = document.getElementById('nav-forward-btn');
+  forwardNavButton.disabled = true;
+  forwardNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
+};
+
+Interface.prototype.disableAttackButton = function(){
+  const attackButton = document.getElementById('nav-attack-btn');
+  attackButton.disabled = true;
+  attackButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
+};
+
+Interface.prototype.disableHealButton = function(){
+  const healButton = document.getElementById("nav-heal-btn")
+  healButton.disabled = true
+  healButton.setAttribute('class','btn-block btn-disabled navigate btn btn-lg')
+}
+
+Interface.prototype.enableHealButton = function(){
+  const healButton = document.getElementById("nav-heal-btn")
+  healButton.disabled = false
+  healButton.setAttribute("class","btn btn-block navigate btn-lg");
+}
+
+Interface.prototype.disableRunButton = function(){
+  const runButton = document.getElementById('nav-run-btn');
+  runButton.disabled = true;
+  runButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
+};
+
+Interface.prototype.enableLeftButton = function(){
+  const leftNavButton = document.getElementById('nav-left-btn');
+  leftNavButton.disabled = false;
+  leftNavButton.setAttribute('class','navigate btn btn-lg btn-block');
+};
+
+Interface.prototype.enableRightButton = function(){
+  const rightNavButton = document.getElementById('nav-right-btn');
+  rightNavButton.disabled = false;
+  rightNavButton.setAttribute('class','navigate btn btn-lg btn-block');
+};
+
+Interface.prototype.enableForwardButton = function(){
+  const forwardNavButton = document.getElementById('nav-forward-btn');
+  forwardNavButton.disabled = false;
+  forwardNavButton.setAttribute('class','navigate btn btn-lg btn-block');
+};
+
+Interface.prototype.enableAttackButton = function(){
+  const attackButton = document.getElementById('nav-attack-btn');
+  attackButton.disabled = false;
+  attackButton.setAttribute('class','btn-block navigate btn btn-lg');
+};
+
+Interface.prototype.enableRunButton = function(){
+  const runButton = document.getElementById('nav-run-btn');
+  runButton.disabled = false;
+  runButton.setAttribute('class','btn-block navigate btn btn-lg');
+};
+
+Interface.prototype.disableAllNavButtons = function(){
+  this.disableLeftButton();
+  this.disableRightButton();
+  this.disableForwardButton();
+};
+
+Interface.prototype.enableAllNavButtons = function(){
+  this.enableLeftButton();
+  this.enableRightButton();
+  this.enableForwardButton();
+};
+
+Interface.prototype.disableAllFightButtons = function(){
+  this.disableRunButton();
+  this.disableAttackButton();
+}
+
+Interface.prototype.enableAllFightButtons = function(){
+  this.enableRunButton();
+  this.enableAttackButton();
+}
+
+Interface.prototype.disableAllButtons = function () {
+  this.disableAllNavButtons();
+  this.disableAllFightButtons();
+  this.disableHealButton();
+};
 
 module.exports = Interface;

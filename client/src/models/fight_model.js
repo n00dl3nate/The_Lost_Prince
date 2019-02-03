@@ -3,9 +3,12 @@ const Player = require('./player_model.js');
 const TextView = require('../views/text_view.js');
 const GameOver = require('../views/game_over.js');
 const PointsTracker = require('./points_model.js');
+const Interface = require('./interface.js')
 
 const Fight = function () {
   this.player = new Player;
+  this.gameOver = new GameOver();
+  this.interface = new Interface
 };
 
 const pointsTracker = new PointsTracker();
@@ -18,18 +21,16 @@ Fight.prototype.roll = function(){
 Fight.prototype.playerAttack = function (monster){
   //monster declaration
   if (monster != null){
-    const monsterName = monster.name;
-    const monsterAttack = monster.attack;
+    let monsterName = monster.name;
+    let monsterAttack = monster.attack;
 
     //Dice Roll Values Per Attack
-    const playerAtk = this.player.getAttackHtml();
-    const playerRoll = this.roll() + playerAtk;
-    const enemyRoll = this.roll() + monsterAttack;
+    let playerAtk = this.player.getAttackHtml();
+    let playerRoll = this.roll() + playerAtk;
+    let enemyRoll = this.roll() + monsterAttack;
 
-    const diceUpdate = [playerRoll,enemyRoll];
+    let diceUpdate = [playerRoll,enemyRoll];
     PubSub.publish('Dice:input',diceUpdate);
-
-    //Damage for monster
 
     //Result declaration
     let yourResult = '';
@@ -44,18 +45,21 @@ Fight.prototype.playerAttack = function (monster){
       if ((playerRoll/2) >= enemyRoll){
         console.log('CRITICAL HIT');
         monsterDamage = (playerRoll - enemyRoll)*2;
+        this.updateMonsterHp(this.getMonsteHp() - monsterDamage);
+        this.updateMonsterBar(this.getMonsteHp());
         yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. CRITICAL HIT! It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
       } else {
         console.log('NORMAL HIT');
         monsterDamage = playerRoll - enemyRoll;
+        this.updateMonsterHp(this.getMonsteHp() - monsterDamage);
+        this.updateMonsterBar(this.getMonsteHp());
         yourResult = `You attacked the ${monsterName}. You rolled [${playerRoll}] and it rolled [${enemyRoll}]. It took ${monsterDamage} Damage! Monster Hp:${this.getMonsteHp()}`;
       }
 
       if (monsterDamage < 0){
         monsterDamage = 0;
       }
-      this.updateMonsterHp(this.getMonsteHp() - monsterDamage);
-      this.updateMonsterBar(this.getMonsteHp());
+
 
       if (this.getMonsteHp() < 0){
         this.updateMonsterHp(0);
@@ -67,9 +71,6 @@ Fight.prototype.playerAttack = function (monster){
 
 Fight.prototype.monsterAttack = function (monster) {
   //monster declaration
-
-
-
   //Dice Roll Values Per Attack
   if (monster != null){
     const monsterName = monster.name;
@@ -103,11 +104,6 @@ Fight.prototype.monsterAttack = function (monster) {
         revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. CRITICAL HIT! You take ${fightDamage} Damage!`;
       }
 
-
-      // Update player HP
-      var newPlayerHp = this.player.getHpHtml() - fightDamage;
-      this.player.updateHp(newPlayerHp);
-
     } else {
       revengeResult = `The ${monsterName} attacked you. It rolled [${enemyRoll}] and you rolled [${playerRoll}]. It failed to hurt you physically, but emotionally you are devastated.`
     }
@@ -115,8 +111,7 @@ Fight.prototype.monsterAttack = function (monster) {
 
     if (this.getMonsteHp() <= 0){
       var additional = `The ${monsterName} is dead.`;
-      this.enableNavigation();
-      this.clearMonster();
+      this.killMonster()
       var diceReset = ['...','...'];
       setTimeout(function(){
         PubSub.publish('Dice:input',diceReset);
@@ -170,36 +165,24 @@ Fight.prototype.run = function(enemy){
     }
   };
   setTimeout(()=>{
-    this.enableNavigation()
-    this.clearMonster();
+    this.killMonster()
   },2050);
   return runResult;
 };
 
 
-Fight.prototype.sendMonster = function(monsterInfo){
+Fight.prototype.bindEvents = function(){
+  PubSub.subscribe(`Monster:monster-ready`,(evt)=>{
+  let monsterInfo = evt.detail;
   const attackButton = document.getElementById('nav-attack-btn').addEventListener('click',()=>{
     var yourAttack = this.playerAttack(monsterInfo);
-
-    if (this.getMonsteHp() == 0){
-      var theirAttack = `You hit the ${monster.name} so hard it instantly disappears with no death animation.`;
-      monsterInfo = null;
-      this.enableNavigation();
-      this.clearMonster();
-
-    } else {
-      var theirAttack = this.monsterAttack(monsterInfo);
-    }
-
-
+    console.log(monsterInfo,"############");
+    theirAttack = this.checkMonsterDead(monsterInfo);
     this.printStuff(yourAttack,theirAttack);
 
-
-    const player = new Player();
     if (this.player.getHpHtml() <= 0) {
       this.player.updateHp(0)
-      const gameOver = new GameOver();
-      gameOver.playerDied();
+      this.gameOver.playerDied();
       setTimeout(()=>{
         this.disableUI();
         this.clearMonster();
@@ -216,42 +199,21 @@ Fight.prototype.sendMonster = function(monsterInfo){
   // set up run function
     const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
     var runAway = this.run(monsterInfo);
-    if (this.player.getHpHtml() <= 0) {
-      this.player.updateHp(0)
-      const gameOver = new GameOver();
-      gameOver.playerDied();
 
-      this.disableUI();
-    }
-
+    this.checkPlayerDead()
     this.printStuff(runAway);
     monsterInfo = null;
     var diceReset = ['...','...'];
     setTimeout(function(){
       PubSub.publish('Dice:input',diceReset);
     },2000)
+    });
   });
 };
 
 Fight.prototype.disableUI = function(){
-  const leftNavButton = document.getElementById('nav-left-btn');
-    const rightNavButton = document.getElementById('nav-right-btn');
-    const forwardNavButton = document.getElementById('nav-forward-btn');
-    const attackButton = document.getElementById('nav-attack-btn');
-    const runButton = document.getElementById('nav-run-btn');
-
-    leftNavButton.disabled = true;
-    leftNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
-    rightNavButton.disabled = true;
-    rightNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
-    forwardNavButton.disabled = true;
-    forwardNavButton.setAttribute('class','btn-disabled navigate btn btn-lg btn-block');
-
-    attackButton.disabled = true;
-    attackButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
-    runButton.disabled = true;
-    runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
-
+  this.interface.enableAllNavButtons();
+  this.interface.disableAllFightButtons();
 }
 
 Fight.prototype.printStuff = function(yourInput,theirInput){
@@ -273,16 +235,17 @@ Fight.prototype.printStuff = function(yourInput,theirInput){
       }
     },2000);
   } else if (theirInput == '' && this.getMonsteHp() > 0){
-    this.enableNavigation();
+    this.killMonster();
     // this.restartFight();
   } else {
-    this.enableNavigation();
+    this.killMonster();
     var diceReset = ['...','...'];
     setTimeout(function(){
       PubSub.publish('Dice:input',diceReset);
     },2000)
   }
 };
+
 
 Fight.prototype.restartFight = function(){
   // Enable the fight buttons again
@@ -298,7 +261,6 @@ Fight.prototype.restartFight = function(){
 };
 
 Fight.prototype.disableFight = function(){
-  // Disable the fight buttons
   console.log('Fight Stopped');
   const attackButton = document.getElementById('nav-attack-btn');
   const runButton = document.getElementById('nav-run-btn');
@@ -309,26 +271,11 @@ Fight.prototype.disableFight = function(){
   runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
 };
 
-Fight.prototype.enableNavigation = function(){
-  const leftNavButton = document.getElementById('nav-left-btn');
-  const rightNavButton = document.getElementById('nav-right-btn');
-  const forwardNavButton = document.getElementById('nav-forward-btn');
-  const attackButton = document.getElementById('nav-attack-btn');
-  const runButton = document.getElementById('nav-run-btn');
-
-  leftNavButton.disabled = false;
-  leftNavButton.setAttribute('class','navigate btn btn-lg btn-block');
-  rightNavButton.disabled = false;
-  rightNavButton.setAttribute('class','navigate btn btn-lg btn-block');
-  forwardNavButton.disabled = false;
-  forwardNavButton.setAttribute('class','navigate btn btn-lg btn-block');
-
-  attackButton.disabled = true;
-  attackButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
-  runButton.disabled = true;
-  runButton.setAttribute('class','btn-disabled btn-block navigate btn btn-lg');
-
+Fight.prototype.killMonster = function(){
+  this.interface.enableAllNavButtons()
+  this.interface.disableAllFightButtons()
   this.removeMonsterBar();
+  this.clearMonster();
 };
 
 Fight.prototype.updateMonsterBar = function(){
@@ -345,7 +292,6 @@ Fight.prototype.removeMonsterBar = function(){
   var monsterBarContainer = document.getElementById('enemybar');
   monsterBarContainer.setAttribute('class','');
   monsterBarContainer.innerHTML = "";
-  // <div id="enemybar" class=""></div>
 };
 
 Fight.prototype.updateMonsterHp = function(amount){
@@ -361,7 +307,28 @@ Fight.prototype.getMonsteHp = function(){
 Fight.prototype.clearMonster = function(){
   monsterImg = document.querySelector("#monsterPlacement")
   monsterImg.src = ""
-}
+};
+
+Fight.prototype.checkPlayerDead = function(){
+  if (this.player.getHpHtml() <= 0) {
+    this.player.updateHp(0)
+    const gameOver = new GameOver();
+    gameOver.playerDied();
+    this.disableUI();
+  };
+};
+
+Fight.prototype.checkMonsterDead = function(monsterInfo){
+  if (this.getMonsteHp() == 0){
+    var theirAttack = `You hit the ${monsterInfo.name} so hard it instantly disappears with no death animation.`;
+    monsterInfo = null;
+    this.killMonster()
+
+  } else {
+    var theirAttack = this.monsterAttack(monsterInfo);
+  };
+  return theirAttack
+};
 
 
 module.exports = Fight
