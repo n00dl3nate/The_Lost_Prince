@@ -2,12 +2,12 @@ const PubSub = require('../helpers/pub_sub.js');
 const Player = require('../models/player_model.js');
 const PointsTracker = require('../models/points_model.js');
 const GameOver = require('./game_over.js');
-const Interface = require('./interface.js');
+const Interface = require('../models/interface.js');
 
 const PlayerView = function(container){
   this.container = container;
   this.player = new Player;
-  this.interface = new Inte
+  this.interface = new Interface;
 }
 
 

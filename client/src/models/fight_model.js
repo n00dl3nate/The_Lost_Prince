@@ -178,6 +178,9 @@ Fight.prototype.bindEvents = function(){
     var yourAttack = this.playerAttack(monsterInfo);
     console.log(monsterInfo,"############");
     theirAttack = this.checkMonsterDead(monsterInfo);
+    if (this.getMonsteHp() <= 0){
+      monsterInfo = null;
+    }
     this.printStuff(yourAttack,theirAttack);
 
     if (this.player.getHpHtml() <= 0) {
@@ -199,7 +202,6 @@ Fight.prototype.bindEvents = function(){
   // set up run function
     const runButton = document.getElementById('nav-run-btn').addEventListener('click',()=>{
     var runAway = this.run(monsterInfo);
-
     this.checkPlayerDead()
     this.printStuff(runAway);
     monsterInfo = null;
